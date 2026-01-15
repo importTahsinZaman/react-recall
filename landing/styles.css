@@ -126,14 +126,14 @@ body {
 }
 
 .brand-name {
-  font-size: 34px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
 .brand-tagline {
-  font-size: 17px;
+  font-size: 11px;
   color: var(--text-secondary);
 }
 
@@ -219,7 +219,7 @@ body {
   gap: 6px;
   padding: 6px 14px;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 12px;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -236,7 +236,7 @@ body {
 }
 
 .tab-icon {
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .recall-icon-small {
@@ -251,7 +251,7 @@ body {
 .terminal-title,
 .notepad-title {
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
@@ -263,7 +263,7 @@ body {
 
 .window-action {
   color: var(--text-muted);
-  font-size: 17px;
+  font-size: 11px;
   cursor: pointer;
 }
 
@@ -274,7 +274,7 @@ body {
 
 /* Browser Window */
 .window-browser {
-  height: 1048px;
+  height: 891px;
 }
 
 .browser-split {
@@ -322,14 +322,14 @@ body {
 
 .chat-title {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .chat-status {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 17px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
@@ -380,7 +380,7 @@ body {
 .message-content {
   padding: 10px 14px;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 10px;
   line-height: 1.4;
 }
 
@@ -411,7 +411,7 @@ body {
   border-radius: 6px;
   padding: 8px 12px;
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 12px;
   margin-bottom: 10px;
 }
 
@@ -433,7 +433,7 @@ body {
 .chat-code-multi code {
   display: block;
   line-height: 1.5;
-  font-size: 17px;
+  font-size: 11px;
 }
 
 .chat-input-area {
@@ -453,7 +453,7 @@ body {
   border-radius: 8px;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .chat-input:focus {
@@ -516,7 +516,7 @@ body {
   border: 1px solid rgba(255, 77, 106, 0.3);
   border-radius: 8px;
   color: var(--color-error);
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 500;
   opacity: 0;
   visibility: hidden;
@@ -559,7 +559,7 @@ body {
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .recall-icon {
@@ -586,7 +586,7 @@ body {
   border: 1px solid var(--border-default);
   border-radius: 6px;
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
@@ -612,7 +612,7 @@ body {
 
 .chip-count {
   font-family: var(--font-mono);
-  font-size: 16px;
+  font-size: 10px;
   padding: 1px 5px;
   background: var(--bg-active);
   border-radius: 4px;
@@ -635,7 +635,7 @@ body {
   justify-content: center;
   height: 100%;
   color: var(--text-muted);
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .log-entry {
@@ -703,13 +703,13 @@ body {
 }
 
 .log-type {
-  font-size: 17px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .log-status {
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 600;
   font-family: var(--font-mono);
   padding: 2px 6px;
@@ -727,20 +727,20 @@ body {
 }
 
 .log-duration {
-  font-size: 16px;
+  font-size: 10px;
   font-family: var(--font-mono);
   color: var(--text-muted);
 }
 
 .log-time {
-  font-size: 16px;
+  font-size: 10px;
   font-family: var(--font-mono);
   color: var(--text-disabled);
   margin-left: auto;
 }
 
 .log-details {
-  font-size: 17px;
+  font-size: 11px;
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -762,7 +762,7 @@ body {
 }
 
 .action-bar-count {
-  font-size: 15px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
@@ -781,7 +781,7 @@ body {
   border-radius: 6px;
   color: var(--bg-void);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -807,7 +807,7 @@ body {
   height: 100%;
   padding: 14px;
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 12px;
   overflow-y: auto;
   background: #0a0a0a;
 }
@@ -841,7 +841,7 @@ body {
 
 .claude-logo {
   color: var(--accent);
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .claude-title {
@@ -851,12 +851,12 @@ body {
 
 .claude-version {
   color: var(--text-muted);
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .claude-hint {
   color: var(--text-muted);
-  font-size: 17px;
+  font-size: 11px;
   margin-bottom: 14px;
 }
 
@@ -880,7 +880,7 @@ body {
   border-left: 2px solid var(--border-default);
   margin-left: 8px;
   margin-top: 4px;
-  font-size: 17px;
+  font-size: 11px;
 }
 
 .claude-code {
@@ -890,7 +890,7 @@ body {
   border-radius: 6px;
   margin: 8px 0;
   border: 1px solid var(--border-subtle);
-  font-size: 17px;
+  font-size: 11px;
 }
 
 .claude-success {
@@ -928,12 +928,12 @@ body {
 
 .notepad-body {
   padding: 20px;
-  font-size: 16px;
+  font-size: 10px;
   line-height: 1.6;
 }
 
 .notepad-body h1 {
-  font-size: 34px;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 4px;
   color: var(--text-primary);
@@ -942,11 +942,11 @@ body {
 .notepad-tagline {
   color: var(--text-muted);
   margin-bottom: 20px;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .notepad-body h2 {
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--accent);
   margin-top: 20px;
@@ -958,7 +958,7 @@ body {
 .notepad-body p {
   color: var(--text-secondary);
   margin-bottom: 12px;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .notepad-body strong {
@@ -974,7 +974,7 @@ body {
   border-radius: 6px;
   padding: 10px 14px;
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 12px;
   margin-bottom: 8px;
 }
 
@@ -996,7 +996,7 @@ body {
 .notepad-code-multi code {
   display: block;
   line-height: 1.5;
-  font-size: 17px;
+  font-size: 11px;
 }
 
 .copy-btn-small {
@@ -1049,7 +1049,7 @@ body {
   gap: 6px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 15px;
+  font-size: 12px;
   transition: color 0.15s ease;
 }
 
@@ -1153,7 +1153,7 @@ body {
 
   .filter-chip {
     padding: 4px 8px;
-    font-size: 16px;
+    font-size: 10px;
   }
 
   .notepad-body {
