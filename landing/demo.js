@@ -330,6 +330,23 @@ function initLogSelection() {
   if (cancelBtn) {
     cancelBtn.addEventListener('click', clearSelection);
   }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Only handle if we have selected logs
+    if (selectedLogs.size === 0) return;
+
+    // Cmd+C / Ctrl+C to copy
+    if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
+      e.preventDefault();
+      copySelectedLogs();
+    }
+
+    // Esc to cancel selection
+    if (e.key === 'Escape') {
+      clearSelection();
+    }
+  });
 }
 
 function clearSelection() {
