@@ -505,7 +505,7 @@ body {
 
 .error-toast {
   position: absolute;
-  bottom: 70px;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   display: flex;
