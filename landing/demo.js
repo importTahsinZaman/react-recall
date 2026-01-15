@@ -402,12 +402,12 @@ function generateNetworkDetailsHtml(index, extra) {
   `;
 }
 
-function highlightLogEntry(index) {
+function highlightLogEntry(index, clearOthers = true) {
   const entries = recallTimeline.querySelectorAll('.log-entry');
   entries.forEach((e, i) => {
     if (i === index) {
       e.classList.add('highlight');
-    } else {
+    } else if (clearOthers) {
       e.classList.remove('highlight');
     }
   });
@@ -602,65 +602,53 @@ async function claudeInvestigates() {
   let line = addTerminalLine('<span class="claude-user">&gt; </span>');
   await typeText(line, 'i just sent another message and got an error', 30);
 
-  await sleep(600);
+  await sleep(1000);
 
-  // Claude responds
-  line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'I see an error in the ReactRecall logs. Let me investigate.', 20);
-
-  await sleep(400);
-
-  // Highlight error in timeline
-  highlightLogEntry(logEntries.length - 1);
-  bringToFront(browserWindow);
-
-  await sleep(800);
-  bringToFront(terminalWindow);
-
-  // Line 2 - Grep
-  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Grep</span>(pattern: "stream|parse|error", path: ".react-recall/")');
-
-  await sleep(300);
-
-  addTerminalLine('<div class="claude-result">Found: AI_STREAM_PARSE error</div>');
+  // Claude immediately checks recent logs
+  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Bash</span>(tail -n 5 .react-recall/logs.jsonl)');
 
   await sleep(500);
 
-  // Highlight network entry
-  highlightLogEntry(logEntries.length - 2);
+  // Highlight all recent entries at once (last 5)
+  bringToFront(browserWindow);
+  const entriesToHighlight = Math.min(5, logEntries.length);
+  for (let i = 0; i < entriesToHighlight; i++) {
+    highlightLogEntry(logEntries.length - 1 - i, false); // false = don't clear others
+  }
 
   await sleep(600);
+  clearHighlights();
+  bringToFront(terminalWindow);
 
-  // Line 3 - Key insight: 200 but still errored
+  // Claude summarizes what it sees
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'Interesting — the request returned 200, but there\'s a parse error.', 18);
-
-  await sleep(400);
-
-  // Line 4 - Read response
-  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Read</span>(.react-recall/network/req_2.json)');
+  await typeText(line, 'I see you got a stream parse error after sending another message.', 20);
 
   await sleep(300);
 
-  addTerminalLine('<div class="claude-result">Stream truncated mid-response:<br><span class="claude-dim">data: {"choices":[{"delta":{"content":"Here\'s—</span><br><span class="claude-dim">data: [DONE]</span></div>');
+  line = addTerminalLine('<span class="claude-bullet">●</span> ');
+  await typeText(line, 'The request returned 200 but the response was truncated:', 18);
 
-  await sleep(700);
+  await sleep(300);
+
+  addTerminalLine('<div class="claude-result"><span class="claude-dim">data: {"choices":[{"delta":{"content":"Here\'s—</span><br><span class="claude-dim">data: [DONE]</span></div>');
+
+  await sleep(500);
 
   clearHighlights();
 
-  // Line 5 - Explanation
+  // Claude suggests the fix
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'The stream was cut off before completing. Add error handling:', 20);
+  await typeText(line, 'You need error handling for interrupted streams. Here\'s the fix:', 18);
 
-  await sleep(200);
+  await sleep(300);
 
-  // Code fix
   addTerminalLine('<div class="claude-code">const { messages, error, reload } = useChat({<br>  onError: (e) => toast.error(\'Stream interrupted\')<br>});</div>');
 
-  await sleep(400);
+  await sleep(500);
 
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'Then add a retry button that calls reload() when error occurs.', 20);
+  await typeText(line, 'Want me to add this to Chat.tsx?', 20);
 
   claudeIsTyping = false;
 }
