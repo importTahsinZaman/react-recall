@@ -225,6 +225,11 @@ function removeLoadingSpinner() {
 
 function showErrorToast() {
   errorToast.classList.add('visible');
+
+  // Auto-dismiss after 3 seconds
+  setTimeout(() => {
+    errorToast.classList.remove('visible');
+  }, 3000);
 }
 
 function escapeHtml(str) {
@@ -280,6 +285,14 @@ function addLogEntry(type, label, details, extra = {}) {
     entry.style.display = 'none';
   }
 
+  // Generate network details HTML if we have detailed network info
+  let detailsButtonHtml = '';
+  let networkDetailsHtml = '';
+  if (type === 'network' && extra.requestHeaders) {
+    detailsButtonHtml = `<button class="expand-btn" onclick="toggleNetworkDetails(${index}, event)" data-index="${index}">Details</button>`;
+    networkDetailsHtml = generateNetworkDetailsHtml(index, extra);
+  }
+
   entry.innerHTML = `
     <span class="log-dot ${dotColor}"></span>
     <div class="log-content">
@@ -287,9 +300,11 @@ function addLogEntry(type, label, details, extra = {}) {
         <span class="log-type">${label}</span>
         ${statusHtml}
         ${durationHtml}
+        ${detailsButtonHtml}
         <span class="log-time">${time}</span>
       </div>
       <div class="log-details">${escapeHtml(details)}</div>
+      ${networkDetailsHtml}
     </div>
   `;
 
@@ -302,6 +317,89 @@ function addLogEntry(type, label, details, extra = {}) {
   updateCount(type);
 
   return entry;
+}
+
+function generateNetworkDetailsHtml(index, extra) {
+  const reqHeaderCount = extra.requestHeaders ? Object.keys(extra.requestHeaders).length : 0;
+  const resHeaderCount = extra.responseHeaders ? Object.keys(extra.responseHeaders).length : 0;
+
+  let reqHeadersRows = '';
+  if (extra.requestHeaders) {
+    for (const [key, value] of Object.entries(extra.requestHeaders)) {
+      reqHeadersRows += `<tr><td>${escapeHtml(key)}</td><td>${escapeHtml(value)}</td></tr>`;
+    }
+  }
+
+  let resHeadersRows = '';
+  if (extra.responseHeaders) {
+    for (const [key, value] of Object.entries(extra.responseHeaders)) {
+      resHeadersRows += `<tr><td>${escapeHtml(key)}</td><td>${escapeHtml(value)}</td></tr>`;
+    }
+  }
+
+  const reqBody = extra.requestBody ? JSON.stringify(extra.requestBody, null, 2) : '';
+  const resBody = extra.responseBody || '';
+
+  return `
+    <div class="network-details" id="network-details-${index}">
+      <div class="network-section open" onclick="toggleNetworkSection(event)">
+        <div class="network-section-header">
+          <span class="chevron">▶</span>
+          General
+        </div>
+        <div class="network-section-content">
+          <table class="network-headers-table">
+            <tr><td>Started</td><td>${extra.started || 'N/A'}</td></tr>
+            <tr><td>Completed</td><td>${extra.completed || 'N/A'}</td></tr>
+            <tr><td>Duration</td><td>${extra.duration}ms</td></tr>
+            <tr><td>Status</td><td>${extra.status}</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="network-section" onclick="toggleNetworkSection(event)">
+        <div class="network-section-header">
+          <span class="chevron">▶</span>
+          Request Headers
+          <span class="badge">${reqHeaderCount}</span>
+        </div>
+        <div class="network-section-content">
+          <table class="network-headers-table">
+            ${reqHeadersRows}
+          </table>
+        </div>
+      </div>
+      <div class="network-section" onclick="toggleNetworkSection(event)">
+        <div class="network-section-header">
+          <span class="chevron">▶</span>
+          Response Headers
+          <span class="badge">${resHeaderCount}</span>
+        </div>
+        <div class="network-section-content">
+          <table class="network-headers-table">
+            ${resHeadersRows}
+          </table>
+        </div>
+      </div>
+      <div class="network-section" onclick="toggleNetworkSection(event)">
+        <div class="network-section-header">
+          <span class="chevron">▶</span>
+          Request Body
+        </div>
+        <div class="network-section-content">
+          <pre>${escapeHtml(reqBody)}</pre>
+        </div>
+      </div>
+      <div class="network-section" onclick="toggleNetworkSection(event)">
+        <div class="network-section-header">
+          <span class="chevron">▶</span>
+          Response Body
+        </div>
+        <div class="network-section-content">
+          <pre>${escapeHtml(resBody)}</pre>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function highlightLogEntry(index) {
@@ -586,7 +684,32 @@ async function handleSendClick() {
   await sleep(1200);
 
   // Simulate API call - streaming starts successfully (200) but fails mid-stream
-  addLogEntry('network', 'POST', '/api/chat (stream)', { status: 200, duration: 1847 });
+  addLogEntry('network', 'POST', '/api/chat (stream)', {
+    status: 200,
+    duration: 1847,
+    started: '14:23:15.203',
+    completed: '14:23:17.050',
+    requestHeaders: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer sk-...a8f2'
+    },
+    responseHeaders: {
+      'content-type': 'text/event-stream',
+      'x-request-id': 'req_xyz789'
+    },
+    requestBody: {
+      messages: [
+        { role: 'user', content: message }
+      ],
+      model: 'gpt-4',
+      stream: true
+    },
+    responseBody: `data: {"id":"chatcmpl-9x7...","choices":[{"delta":{"content":"Here's—
+
+data: [DONE]
+
+// Stream terminated unexpectedly`
+  });
 
   await sleep(300);
 

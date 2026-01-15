@@ -544,9 +544,9 @@ body {
 
 .error-toast {
   position: absolute;
-  bottom: 90px;
+  top: 20px;
   left: 50%;
-  transform: translateX(-50%) translateY(10px);
+  transform: translateX(-50%) translateY(-20px);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -561,6 +561,7 @@ body {
   visibility: hidden;
   transition: all 0.3s ease;
   white-space: nowrap;
+  z-index: 10;
 }
 
 .error-toast.visible {
