@@ -27,10 +27,46 @@ const recallActionBar = document.getElementById('recallActionBar');
 const copyLogsBtn = document.getElementById('copyLogsBtn');
 
 // ============================================
-// WINDOW DRAGGING
+// WINDOW DRAGGING & PERSISTENCE
 // ============================================
 let activeWindow = null;
 let dragOffset = { x: 0, y: 0 };
+
+function saveWindowPositions() {
+  const windows = document.querySelectorAll('.window');
+  const positions = {};
+
+  windows.forEach(win => {
+    const rect = win.getBoundingClientRect();
+    positions[win.id] = {
+      left: rect.left,
+      top: rect.top
+    };
+  });
+
+  localStorage.setItem('reactrecall-window-positions', JSON.stringify(positions));
+}
+
+function loadWindowPositions() {
+  const saved = localStorage.getItem('reactrecall-window-positions');
+  if (!saved) return;
+
+  try {
+    const positions = JSON.parse(saved);
+
+    Object.keys(positions).forEach(id => {
+      const win = document.getElementById(id);
+      if (win && positions[id]) {
+        win.style.left = positions[id].left + 'px';
+        win.style.top = positions[id].top + 'px';
+        win.style.right = 'auto';
+        win.style.bottom = 'auto';
+      }
+    });
+  } catch (e) {
+    console.warn('Could not restore window positions:', e);
+  }
+}
 
 function initDragging() {
   const windows = document.querySelectorAll('.window');
@@ -91,6 +127,7 @@ function initDragging() {
   document.addEventListener('mouseup', () => {
     if (activeWindow) {
       activeWindow.classList.remove('dragging');
+      saveWindowPositions();
       activeWindow = null;
     }
   });
@@ -581,6 +618,7 @@ function resetDemo() {
 // INITIALIZE
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+  loadWindowPositions();
   initDragging();
   initLogSelection();
   initCopyButtons();
