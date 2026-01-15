@@ -8,6 +8,7 @@
 // ============================================
 let counts = { event: 2, log: 1, error: 0, network: 1 };
 let selectedLogs = new Set();
+let activeFilters = new Set(['event', 'log', 'error', 'network']);
 // Pre-populate with initial dummy entries
 let logEntries = [
   { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
@@ -245,6 +246,13 @@ function addLogEntry(type, label, details, extra = {}) {
   const entry = document.createElement('div');
   entry.className = 'log-entry';
   entry.dataset.index = index;
+  entry.dataset.type = type;
+
+  // Hide if this type is filtered out
+  if (!activeFilters.has(type)) {
+    entry.style.display = 'none';
+  }
+
   entry.innerHTML = `
     <span class="log-dot ${dotColor}"></span>
     <div class="log-content">
@@ -539,6 +547,44 @@ async function handleSendClick() {
 }
 
 // ============================================
+// FILTER CHIPS
+// ============================================
+function initFilters() {
+  const filterChips = document.querySelectorAll('.filter-chip');
+
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filterType = chip.dataset.filter;
+
+      // Toggle filter state
+      if (activeFilters.has(filterType)) {
+        activeFilters.delete(filterType);
+        chip.classList.remove('active');
+      } else {
+        activeFilters.add(filterType);
+        chip.classList.add('active');
+      }
+
+      // Show/hide log entries based on filters
+      applyFilters();
+    });
+  });
+}
+
+function applyFilters() {
+  const entries = recallTimeline.querySelectorAll('.log-entry');
+
+  entries.forEach(entry => {
+    const type = entry.dataset.type;
+    if (activeFilters.has(type)) {
+      entry.style.display = '';
+    } else {
+      entry.style.display = 'none';
+    }
+  });
+}
+
+// ============================================
 // COPY BUTTONS (for notepad window)
 // ============================================
 function initCopyButtons() {
@@ -703,6 +749,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadWindowPositions();
   initDragging();
   initLogSelection();
+  initFilters();
   initCopyButtons();
 
   // Send button click

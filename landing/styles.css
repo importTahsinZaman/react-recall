@@ -541,7 +541,7 @@ body {
 
 .recall-dashboard {
   flex: 35;
-  background: var(--bg-surface);
+  background: var(--bg-base);
   position: relative;
 }
 
@@ -551,7 +551,7 @@ body {
   align-items: center;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border-subtle);
-  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-base) 100%);
   flex-shrink: 0;
 }
 
