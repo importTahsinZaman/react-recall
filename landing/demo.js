@@ -6,7 +6,7 @@
 // ============================================
 // STATE
 // ============================================
-let counts = { event: 0, log: 0, error: 0, network: 0 };
+let counts = { event: 2, log: 1, error: 0, network: 1 };
 let selectedLogs = new Set();
 let logEntries = [];
 let hasTriggeredDemo = false;
@@ -17,7 +17,6 @@ let claudeIsTyping = false;
 // ============================================
 const browserWindow = document.getElementById('browserWindow');
 const terminalWindow = document.getElementById('terminalWindow');
-const notepadWindow = document.getElementById('notepadWindow');
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const sendButton = document.getElementById('sendButton');
@@ -506,20 +505,32 @@ function initCopyButtons() {
 function resetDemo() {
   // Reset chat
   chatMessages.innerHTML = `
+    <div class="message message-user">
+      <div class="message-content">Hi, I heard about ReactRecall. Can you tell me about it?</div>
+    </div>
     <div class="message message-assistant">
-      <div class="message-content">Hello! How can I help you today?</div>
+      <div class="message-content">
+        <strong>ReactRecall</strong> is a debug session recorder for AI-assisted development.<br><br>
+        It captures every click, log, and network request in your React app — so Claude Code can find bugs in seconds.<br><br>
+        <strong>Install:</strong><br>
+        <code>npm install react-recall</code><br><br>
+        <strong>Setup:</strong><br>
+        <code>import { ReactRecallProvider } from 'react-recall'</code><br><br>
+        Wrap your app with <code>&lt;ReactRecallProvider&gt;</code>, then run <code>npx react-recall</code> to start the dashboard.<br><br>
+        Want to try it out? Click Send below and watch Claude Code debug an error using the logs!
+      </div>
     </div>
   `;
-  chatInput.value = "What's the weather?";
+  chatInput.value = "Can I try it out?";
   errorToast.classList.remove('visible');
   removeLoadingSpinner();
 
-  // Reset counts
-  counts = { event: 0, log: 0, error: 0, network: 0 };
-  Object.keys(counts).forEach(type => {
-    const el = document.getElementById(`${type}Count`);
-    if (el) el.textContent = '0';
-  });
+  // Reset counts to initial dummy data values
+  counts = { event: 2, log: 1, error: 0, network: 1 };
+  document.getElementById('eventCount').textContent = '2';
+  document.getElementById('logCount').textContent = '1';
+  document.getElementById('errorCount').textContent = '0';
+  document.getElementById('networkCount').textContent = '1';
 
   // Reset timeline
   clearTimeline();
