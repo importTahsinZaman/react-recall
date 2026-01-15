@@ -362,7 +362,7 @@ async function copySelectedLogs() {
 function clearTerminal() {
   terminalOutput.innerHTML = `
     <div class="claude-welcome">
-      <span class="claude-logo">◆</span> <span class="claude-title">Claude Code</span> <span class="claude-version">v1.0.0</span>
+      <span class="claude-title">Claude Code</span> <span class="claude-version">v1.0.0</span>
     </div>
     <div class="claude-hint">
       Watching ReactRecall logs at localhost:4312...
