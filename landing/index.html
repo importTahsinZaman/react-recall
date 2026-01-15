@@ -69,14 +69,45 @@
             </div>
             <div class="message message-assistant">
               <div class="message-content">
-                <strong>ReactRecall</strong> is a debug session recorder for AI-assisted development.<br><br>
-                It captures every click, log, and network request in your React app — so Claude Code can find bugs in seconds.<br><br>
-                <strong>Install:</strong><br>
-                <code>npm install react-recall</code><br><br>
-                <strong>Setup:</strong><br>
-                <code>import { ReactRecallProvider } from 'react-recall'</code><br><br>
-                Wrap your app with <code>&lt;ReactRecallProvider&gt;</code>, then run <code>npx react-recall</code> to start the dashboard.<br><br>
-                Want to try it out? Click Send below and watch Claude Code debug an error using the logs!
+                <p><strong>ReactRecall</strong> is a debug session recorder for AI-assisted development.</p>
+                <p>It captures every click, log, and network request in your React app — so Claude Code can find bugs in seconds.</p>
+
+                <p><strong>Install:</strong></p>
+                <div class="chat-code">
+                  <code>npm install react-recall</code>
+                  <button class="copy-btn-small" data-copy="npm install react-recall">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <p><strong>Setup:</strong></p>
+                <div class="chat-code chat-code-multi">
+                  <pre><code><span class="hl-keyword">import</span> { ReactRecallProvider } <span class="hl-keyword">from</span> <span class="hl-string">'react-recall'</span>
+
+<span class="hl-keyword">function</span> <span class="hl-function">App</span>() {
+  <span class="hl-keyword">return</span> (
+    <span class="hl-tag">&lt;ReactRecallProvider&gt;</span>
+      <span class="hl-tag">&lt;YourApp /&gt;</span>
+    <span class="hl-tag">&lt;/ReactRecallProvider&gt;</span>
+  )
+}</code></pre>
+                </div>
+
+                <p><strong>Run:</strong></p>
+                <div class="chat-code">
+                  <code>npx react-recall</code>
+                  <button class="copy-btn-small" data-copy="npx react-recall">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <p>Want to try it out? Click <strong>Send</strong> below and watch Claude Code debug an error using the logs!</p>
               </div>
             </div>
           </div>

@@ -394,6 +394,48 @@ body {
   color: var(--bg-void);
 }
 
+.message-content p {
+  margin: 0 0 10px 0;
+}
+
+.message-content p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-code {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-void);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.chat-code code {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.chat-code-multi {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.chat-code-multi pre {
+  margin: 0;
+  overflow-x: auto;
+}
+
+.chat-code-multi code {
+  display: block;
+  line-height: 1.5;
+  font-size: 11px;
+}
+
 .chat-input-area {
   display: flex;
   gap: 10px;
