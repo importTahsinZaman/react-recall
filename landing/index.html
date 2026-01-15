@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReactRecall - Debug with your AI agent</title>
+  <meta name="description" content="ReactRecall captures every click, log, and network request—so Claude Code can find bugs in seconds.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ReactRecall - Debug with your AI agent">
+  <meta property="og:description" content="Real-time session recording for AI-assisted debugging">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Scan line overlay -->
+  <div class="scanlines"></div>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Open Source
+      </div>
+      <h1 class="hero-title">Debug with your AI agent</h1>
+      <p class="hero-subtitle">
+        ReactRecall captures every click, log, and network request—so Claude Code can find bugs in seconds.
+      </p>
+      <p class="hero-instruction">
+        Try it below: click Send in the chat, then watch Claude debug it
+      </p>
+    </div>
+  </header>
+
+  <!-- Interactive Desktop Environment -->
+  <section class="desktop-section">
+    <div class="desktop-env" id="desktop">
+      <!-- Browser Window -->
+      <div class="window window-browser" id="browserWindow" style="left: 40px; top: 20px; width: 700px;">
+        <div class="window-titlebar" data-drag="true">
+          <div class="window-controls">
+            <span class="control control-close"></span>
+            <span class="control control-minimize"></span>
+            <span class="control control-maximize"></span>
+          </div>
+          <div class="window-tabs">
+            <div class="window-tab active">
+              <span class="tab-icon">○</span>
+              localhost:3000
+            </div>
+            <div class="window-tab">
+              <span class="tab-icon recall-icon-small">◆</span>
+              ReactRecall
+            </div>
+          </div>
+          <div class="window-actions">
+            <span class="window-action">⟳</span>
+          </div>
+        </div>
+        <div class="window-content browser-split">
+          <!-- Left: Demo App -->
+          <div class="browser-pane demo-app" id="demoApp">
+            <div class="chat-container">
+              <div class="chat-header">
+                <div class="chat-title">AI Chat</div>
+                <div class="chat-status">
+                  <span class="status-dot online"></span>
+                  Online
+                </div>
+              </div>
+              <div class="chat-messages" id="chatMessages">
+                <div class="message message-assistant">
+                  <div class="message-content">Hello! How can I help you today?</div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." value="What's the weather?">
+                <button class="chat-send" id="sendButton">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <!-- Error Toast -->
+              <div class="error-toast" id="errorToast">
+                <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span>Failed to send message</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="browser-divider"></div>
+
+          <!-- Right: ReactRecall Dashboard -->
+          <div class="browser-pane recall-dashboard" id="recallDashboard">
+            <div class="recall-header">
+              <div class="recall-logo">
+                <svg class="recall-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                  <line x1="16" y1="8" x2="2" y2="22"></line>
+                  <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                </svg>
+                <span>ReactRecall</span>
+              </div>
+              <div class="recall-status">
+                <span class="status-dot recording"></span>
+              </div>
+            </div>
+            <div class="recall-filters">
+              <button class="filter-chip active" data-filter="event">
+                <span class="chip-dot blue"></span>
+                Events <span class="chip-count" id="eventCount">0</span>
+              </button>
+              <button class="filter-chip active" data-filter="log">
+                <span class="chip-dot gray"></span>
+                Logs <span class="chip-count" id="logCount">0</span>
+              </button>
+              <button class="filter-chip active" data-filter="error">
+                <span class="chip-dot red"></span>
+                Errors <span class="chip-count" id="errorCount">0</span>
+              </button>
+              <button class="filter-chip active" data-filter="network">
+                <span class="chip-dot purple"></span>
+                Network <span class="chip-count" id="networkCount">0</span>
+              </button>
+            </div>
+            <div class="recall-timeline" id="recallTimeline">
+              <div class="timeline-empty">
+                <span>Interact with the app to see events</span>
+              </div>
+            </div>
+            <div class="recall-action-bar" id="recallActionBar">
+              <span class="action-bar-count"><strong id="selectedCount">0</strong> selected</span>
+              <button class="action-bar-btn" id="copyLogsBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminal Window -->
+      <div class="window window-terminal" id="terminalWindow" style="left: 80px; top: 400px; width: 680px;">
+        <div class="window-titlebar" data-drag="true">
+          <div class="window-controls">
+            <span class="control control-close"></span>
+            <span class="control control-minimize"></span>
+            <span class="control control-maximize"></span>
+          </div>
+          <div class="window-title-center">
+            <span class="terminal-title">claude — ~/my-chat-app</span>
+          </div>
+          <div class="window-actions"></div>
+        </div>
+        <div class="window-content terminal-content" id="terminalContent">
+          <div class="terminal-line">
+            <span class="terminal-prompt">~/my-chat-app $</span>
+            <span class="terminal-command">claude</span>
+          </div>
+          <div class="terminal-output" id="terminalOutput">
+            <div class="claude-welcome">
+              <span class="claude-logo">◆</span> <span class="claude-title">Claude Code</span> <span class="claude-version">v1.0.0</span>
+            </div>
+            <div class="claude-hint">
+              Watching ReactRecall logs at localhost:4312...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="section-container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </div>
+          <h3 class="step-title">Wrap</h3>
+          <p class="step-desc">Add ReactRecallProvider to your app. One line of code, zero config.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <h3 class="step-title">Capture</h3>
+          <p class="step-desc">Every click, input, console log, error, and API call is recorded automatically.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="step-title">Debug</h3>
+          <p class="step-desc">Your AI agent reads the logs to instantly find and fix issues.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install Section -->
+  <section class="install-section">
+    <div class="section-container">
+      <h2 class="section-title">Get Started</h2>
+      <div class="install-grid">
+        <div class="install-step">
+          <div class="install-label">Install</div>
+          <div class="code-block">
+            <code>npm install react-recall</code>
+            <button class="copy-btn" data-copy="npm install react-recall">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="install-label">Add to your app</div>
+          <div class="code-block code-block-multi">
+            <pre><code><span class="code-keyword">import</span> { ReactRecallProvider } <span class="code-keyword">from</span> <span class="code-string">'react-recall'</span>
+
+<span class="code-keyword">function</span> <span class="code-function">App</span>() {
+  <span class="code-keyword">return</span> (
+    <span class="code-tag">&lt;ReactRecallProvider&gt;</span>
+      <span class="code-tag">&lt;YourApp /&gt;</span>
+    <span class="code-tag">&lt;/ReactRecallProvider&gt;</span>
+  )
+}</code></pre>
+            <button class="copy-btn" data-copy="import { ReactRecallProvider } from 'react-recall'
+
+function App() {
+  return (
+    <ReactRecallProvider>
+      <YourApp />
+    </ReactRecallProvider>
+  )
+}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="install-label">Start the dashboard</div>
+          <div class="code-block">
+            <code>npx react-recall</code>
+            <button class="copy-btn" data-copy="npx react-recall">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <svg class="footer-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+          <line x1="16" y1="8" x2="2" y2="22"></line>
+          <line x1="17.5" y1="15" x2="9" y2="15"></line>
+        </svg>
+        <span>ReactRecall</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/importTahsinZaman/react-recall" target="_blank">GitHub</a>
+        <a href="https://www.npmjs.com/package/react-recall" target="_blank">npm</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="demo.js"></script>
+</body>
+</html>
