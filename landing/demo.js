@@ -165,14 +165,15 @@ function initDragging() {
     let newX = e.clientX - dragOffset.x;
     let newY = e.clientY - dragOffset.y;
 
-    // Keep at least 100px of window visible on screen
+    // Keep at least 80% of window visible (allow 20% to go off screen)
     const winRect = activeWindow.getBoundingClientRect();
-    const minVisible = 100;
+    const minVisibleX = winRect.width * 0.8;
+    const minVisibleY = winRect.height * 0.8;
 
-    const maxX = window.innerWidth - minVisible;
-    const maxY = window.innerHeight - minVisible;
-    const minX = -(winRect.width - minVisible);
+    const minX = -(winRect.width - minVisibleX);
+    const maxX = window.innerWidth - minVisibleX;
     const minY = 0; // Don't let title bar go above viewport
+    const maxY = window.innerHeight - minVisibleY;
 
     newX = Math.max(minX, Math.min(newX, maxX));
     newY = Math.max(minY, Math.min(newY, maxY));
