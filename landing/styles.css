@@ -469,14 +469,14 @@ body {
 }
 
 .chat-action-btn {
-  width: 36px;
-  height: 36px;
+  width: 31px;
+  height: 31px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #5a6370;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -496,13 +496,13 @@ body {
 }
 
 .chat-action-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .chat-send {
-  width: 36px;
-  height: 36px;
+  width: 31px;
+  height: 31px;
   display: flex;
   align-items: center;
   justify-content: center;
