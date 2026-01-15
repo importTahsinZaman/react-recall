@@ -298,9 +298,10 @@ body {
    CHAT APP
    ============================================ */
 
+/* Demo App - Distinct palette from ReactRecall */
 .demo-app {
   flex: 65;
-  background: var(--bg-surface);
+  background: #0a0c0e;
 }
 
 .chat-container {
@@ -310,58 +311,14 @@ body {
   position: relative;
 }
 
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg-elevated);
-  flex-shrink: 0;
-}
-
-.chat-title {
-  font-weight: 600;
-  font-size: 10px;
-}
-
-.chat-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-.status-dot.online {
-  background: var(--color-success);
-  box-shadow: 0 0 8px rgba(0, 229, 122, 0.5);
-}
-
-.status-dot.recording {
-  background: var(--color-error);
-  box-shadow: 0 0 8px rgba(255, 77, 106, 0.5);
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
 .chat-messages {
   flex: 1;
-  padding: 14px;
+  padding: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  background: #0a0c0e;
 }
 
 .message {
@@ -379,19 +336,21 @@ body {
 
 .message-content {
   padding: 12px 16px;
-  border-radius: 10px;
+  border-radius: 16px;
   font-size: 14px;
   line-height: 1.5;
 }
 
 .message-assistant .message-content {
-  background: var(--bg-elevated);
-  color: var(--text-primary);
+  background: #12151a;
+  color: #c8cdd4;
+  border-radius: 16px 16px 16px 4px;
 }
 
 .message-user .message-content {
-  background: var(--accent);
-  color: var(--bg-void);
+  background: #4a6380;
+  color: #e4e8ec;
+  border-radius: 16px 16px 4px 16px;
 }
 
 .message-content p {
@@ -402,13 +361,21 @@ body {
   margin-bottom: 0;
 }
 
+.message-content strong {
+  color: #7090b0;
+}
+
+.message-user .message-content strong {
+  color: #e4e8ec;
+}
+
 .chat-code {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--bg-void);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  background: #060809;
+  border: 1px solid #1a1e24;
+  border-radius: 8px;
   padding: 10px 14px;
   font-family: var(--font-mono);
   font-size: 13px;
@@ -417,7 +384,7 @@ body {
 
 .chat-code code {
   flex: 1;
-  color: var(--text-primary);
+  color: #c8cdd4;
 }
 
 .chat-code-multi {
@@ -439,44 +406,48 @@ body {
 .chat-input-area {
   display: flex;
   gap: 10px;
-  padding: 12px 14px;
-  border-top: 1px solid var(--border-subtle);
-  background: var(--bg-base);
+  padding: 14px 16px;
+  background: #080a0c;
+  border-top: 1px solid #1a1e24;
   flex-shrink: 0;
 }
 
 .chat-input {
   flex: 1;
   padding: 12px 16px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: 8px;
-  color: var(--text-primary);
+  background: #0a0c0e;
+  border: 1px solid #1a1e24;
+  border-radius: 24px;
+  color: #c8cdd4;
   font-family: var(--font-sans);
   font-size: 14px;
 }
 
+.chat-input::placeholder {
+  color: #4a5060;
+}
+
 .chat-input:focus {
   outline: none;
-  border-color: var(--accent-dim);
+  border-color: #4a6380;
 }
 
 .chat-send {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent);
+  background: #4a6380;
   border: none;
-  border-radius: 8px;
-  color: var(--bg-void);
+  border-radius: 50%;
+  color: #e4e8ec;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .chat-send:hover {
-  background: var(--accent-bright);
+  background: #5a7090;
   transform: scale(1.05);
 }
 
@@ -492,8 +463,8 @@ body {
 .loading-spinner {
   width: 24px;
   height: 24px;
-  border: 2px solid var(--border-default);
-  border-top-color: var(--accent);
+  border: 2px solid #1a1e24;
+  border-top-color: #4a6380;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   align-self: flex-start;
@@ -512,11 +483,11 @@ body {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: var(--color-error-dim);
-  border: 1px solid rgba(255, 77, 106, 0.3);
+  background: #180a0a;
+  border: 1px solid #3a1a1a;
   border-radius: 8px;
-  color: var(--color-error);
-  font-size: 10px;
+  color: #c06060;
+  font-size: 12px;
   font-weight: 500;
   opacity: 0;
   visibility: hidden;
