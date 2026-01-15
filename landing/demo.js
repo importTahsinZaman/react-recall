@@ -6,11 +6,12 @@
 // ============================================
 // STATE
 // ============================================
-let counts = { event: 2, log: 1, error: 0, network: 1 };
+let counts = { event: 4, log: 1, error: 0, network: 1 };
 let selectedLogs = new Set();
 let activeFilters = new Set(['event', 'log', 'error', 'network']);
 // Pre-populate with initial dummy entries
 let logEntries = [
+  { type: 'event', label: 'Toggle', details: '"Reasoning" enabled', time: '14:22:45', extra: {} },
   { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
   { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
   {
@@ -41,7 +42,8 @@ let logEntries = [
       }
     }
   },
-  { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} }
+  { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} },
+  { type: 'event', label: 'Copy', details: '"npm install react-recall" (CodeBlock)', time: '14:22:52', extra: {} }
 ];
 let hasTriggeredDemo = false;
 let claudeIsTyping = false;
@@ -869,24 +871,36 @@ function resetDemo() {
   removeLoadingSpinner();
 
   // Reset counts to initial dummy data values
-  counts = { event: 2, log: 1, error: 0, network: 1 };
-  document.getElementById('eventCount').textContent = '2';
+  counts = { event: 4, log: 1, error: 0, network: 1 };
+  document.getElementById('eventCount').textContent = '4';
   document.getElementById('logCount').textContent = '1';
   document.getElementById('errorCount').textContent = '0';
   document.getElementById('networkCount').textContent = '1';
 
   // Reset timeline with initial entries
   logEntries = [
+    { type: 'event', label: 'Toggle', details: '"Reasoning" enabled', time: '14:22:45', extra: {} },
     { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
     { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
     { type: 'network', label: 'POST', details: '/api/chat', time: '14:22:48', extra: { status: 200, duration: 312 } },
-    { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} }
+    { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} },
+    { type: 'event', label: 'Copy', details: '"npm install react-recall" (CodeBlock)', time: '14:22:52', extra: {} }
   ];
   selectedLogs.clear();
   updateActionBar();
 
   recallTimeline.innerHTML = `
-    <div class="log-entry" data-index="0">
+    <div class="log-entry" data-index="0" data-type="event">
+      <span class="log-dot blue"></span>
+      <div class="log-content">
+        <div class="log-header">
+          <span class="log-type">Toggle</span>
+          <span class="log-time">14:22:45</span>
+        </div>
+        <div class="log-details">"Reasoning" enabled</div>
+      </div>
+    </div>
+    <div class="log-entry" data-index="1" data-type="event">
       <span class="log-dot blue"></span>
       <div class="log-content">
         <div class="log-header">
@@ -896,7 +910,7 @@ function resetDemo() {
         <div class="log-details">"Send" (ChatInput &gt; SendButton)</div>
       </div>
     </div>
-    <div class="log-entry" data-index="1">
+    <div class="log-entry" data-index="2" data-type="event">
       <span class="log-dot blue"></span>
       <div class="log-content">
         <div class="log-header">
@@ -906,7 +920,7 @@ function resetDemo() {
         <div class="log-details">value: "Hi, I heard about ReactRecall..."</div>
       </div>
     </div>
-    <div class="log-entry" data-index="2">
+    <div class="log-entry" data-index="3" data-type="network">
       <span class="log-dot purple"></span>
       <div class="log-content">
         <div class="log-header">
@@ -918,7 +932,7 @@ function resetDemo() {
         <div class="log-details">/api/chat</div>
       </div>
     </div>
-    <div class="log-entry" data-index="3">
+    <div class="log-entry" data-index="4" data-type="log">
       <span class="log-dot gray"></span>
       <div class="log-content">
         <div class="log-header">
@@ -926,6 +940,16 @@ function resetDemo() {
           <span class="log-time">14:22:48</span>
         </div>
         <div class="log-details">Response received, rendering message</div>
+      </div>
+    </div>
+    <div class="log-entry" data-index="5" data-type="event">
+      <span class="log-dot blue"></span>
+      <div class="log-content">
+        <div class="log-header">
+          <span class="log-type">Copy</span>
+          <span class="log-time">14:22:52</span>
+        </div>
+        <div class="log-details">"npm install react-recall" (CodeBlock)</div>
       </div>
     </div>
   `;
@@ -971,6 +995,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.chat-action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
+      const isActive = btn.classList.contains('active');
+      const name = btn.title === 'Reasoning' ? 'Reasoning' : 'Web Search';
+      addLogEntry('event', 'Toggle', `"${name}" ${isActive ? 'enabled' : 'disabled'}`);
+    });
+  });
+
+  // Copy buttons in chat code blocks
+  document.querySelectorAll('.copy-btn-small').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const code = btn.dataset.copy;
+      if (code) {
+        addLogEntry('event', 'Copy', `"${code}" (CodeBlock)`);
+      }
     });
   });
 });

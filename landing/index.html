@@ -170,7 +170,7 @@
         <div class="recall-filters">
           <button class="filter-chip active" data-filter="event">
             <span class="chip-dot blue"></span>
-            Events <span class="chip-count" id="eventCount">2</span>
+            Events <span class="chip-count" id="eventCount">4</span>
           </button>
           <button class="filter-chip active" data-filter="log">
             <span class="chip-dot gray"></span>
@@ -190,13 +190,23 @@
             <span class="log-dot blue"></span>
             <div class="log-content">
               <div class="log-header">
+                <span class="log-type">Toggle</span>
+                <span class="log-time">14:22:45</span>
+              </div>
+              <div class="log-details">"Reasoning" enabled</div>
+            </div>
+          </div>
+          <div class="log-entry" data-index="1" data-type="event">
+            <span class="log-dot blue"></span>
+            <div class="log-content">
+              <div class="log-header">
                 <span class="log-type">Click</span>
                 <span class="log-time">14:22:47</span>
               </div>
               <div class="log-details">"Send" (ChatInput &gt; SendButton)</div>
             </div>
           </div>
-          <div class="log-entry" data-index="1" data-type="event">
+          <div class="log-entry" data-index="2" data-type="event">
             <span class="log-dot blue"></span>
             <div class="log-content">
               <div class="log-header">
@@ -206,18 +216,18 @@
               <div class="log-details">value: "Hi, I heard about ReactRecall..."</div>
             </div>
           </div>
-          <div class="log-entry" data-index="2" data-type="network">
+          <div class="log-entry" data-index="3" data-type="network">
             <span class="log-dot purple"></span>
             <div class="log-content">
               <div class="log-header">
                 <span class="log-type">POST</span>
                 <span class="log-status success">200</span>
                 <span class="log-duration">312ms</span>
-                <button class="expand-btn" onclick="toggleNetworkDetails(2, event)" data-index="2">Details</button>
+                <button class="expand-btn" onclick="toggleNetworkDetails(3, event)" data-index="3">Details</button>
                 <span class="log-time">14:22:48</span>
               </div>
               <div class="log-details">/api/chat</div>
-              <div class="network-details" id="network-details-2">
+              <div class="network-details" id="network-details-3">
                 <div class="network-section open" onclick="toggleNetworkSection(event)">
                   <div class="network-section-header">
                     <span class="chevron">▶</span>
@@ -295,7 +305,7 @@
               </div>
             </div>
           </div>
-          <div class="log-entry" data-index="3" data-type="log">
+          <div class="log-entry" data-index="4" data-type="log">
             <span class="log-dot gray"></span>
             <div class="log-content">
               <div class="log-header">
@@ -303,6 +313,16 @@
                 <span class="log-time">14:22:48</span>
               </div>
               <div class="log-details">Response received, rendering message</div>
+            </div>
+          </div>
+          <div class="log-entry" data-index="5" data-type="event">
+            <span class="log-dot blue"></span>
+            <div class="log-content">
+              <div class="log-header">
+                <span class="log-type">Copy</span>
+                <span class="log-time">14:22:52</span>
+              </div>
+              <div class="log-details">"npm install react-recall" (CodeBlock)</div>
             </div>
           </div>
         </div>
