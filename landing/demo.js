@@ -594,9 +594,10 @@ function toggleNetworkDetails(index, event) {
   const btn = document.querySelector(`.expand-btn[data-index="${index}"]`);
 
   if (details) {
-    details.classList.toggle('expanded');
+    const isExpanded = details.classList.toggle('expanded');
     if (btn) {
       btn.classList.toggle('expanded');
+      btn.textContent = isExpanded ? 'Hide' : 'Details';
     }
   }
 }
