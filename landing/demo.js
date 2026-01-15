@@ -1036,4 +1036,176 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Initialize bouncing screensaver
+  initBouncers();
 });
+
+// ============================================
+// BOUNCING SCREENSAVER
+// ============================================
+
+const bouncers = [];
+let mousePos = { x: -1000, y: -1000 }; // Start far away
+
+function initBouncers() {
+  const githubEl = document.getElementById('bouncerGithub');
+  const npmEl = document.getElementById('bouncerNpm');
+
+  if (!githubEl || !npmEl) return;
+
+  // GitHub starts bottom-left, moving up-right
+  bouncers.push({
+    el: githubEl,
+    x: 40,
+    y: window.innerHeight - 80,
+    vx: 2,
+    vy: -1.5
+  });
+
+  // npm starts top-right, moving down-left
+  bouncers.push({
+    el: npmEl,
+    x: window.innerWidth - 120,
+    y: 40,
+    vx: -1.8,
+    vy: 2
+  });
+
+  // Track mouse position
+  document.addEventListener('mousemove', (e) => {
+    mousePos.x = e.clientX;
+    mousePos.y = e.clientY;
+  });
+
+  // Start animation loop
+  requestAnimationFrame(animateBouncers);
+}
+
+function animateBouncers() {
+  const windowRects = [
+    document.getElementById('browserWindow')?.getBoundingClientRect(),
+    document.getElementById('terminalWindow')?.getBoundingClientRect()
+  ].filter(Boolean);
+
+  bouncers.forEach((bouncer, index) => {
+    const rect = bouncer.el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    // Calculate speed modifier based on cursor distance
+    const centerX = bouncer.x + width / 2;
+    const centerY = bouncer.y + height / 2;
+    const dist = Math.hypot(mousePos.x - centerX, mousePos.y - centerY);
+    const minDist = 50;
+    const maxDist = 300;
+    let speedMod = 1;
+    if (dist < minDist) {
+      speedMod = 0;
+    } else if (dist < maxDist) {
+      speedMod = (dist - minDist) / (maxDist - minDist);
+    }
+
+    // Move
+    bouncer.x += bouncer.vx * speedMod;
+    bouncer.y += bouncer.vy * speedMod;
+
+    // Screen boundary collision
+    if (bouncer.x <= 0) {
+      bouncer.x = 0;
+      bouncer.vx *= -1;
+    }
+    if (bouncer.x + width >= window.innerWidth) {
+      bouncer.x = window.innerWidth - width;
+      bouncer.vx *= -1;
+    }
+    if (bouncer.y <= 0) {
+      bouncer.y = 0;
+      bouncer.vy *= -1;
+    }
+    if (bouncer.y + height >= window.innerHeight) {
+      bouncer.y = window.innerHeight - height;
+      bouncer.vy *= -1;
+    }
+
+    // Window collision
+    windowRects.forEach(winRect => {
+      if (rectsOverlap(bouncer.x, bouncer.y, width, height, winRect)) {
+        resolveWindowCollision(bouncer, width, height, winRect);
+      }
+    });
+
+    // Update position
+    bouncer.el.style.left = bouncer.x + 'px';
+    bouncer.el.style.top = bouncer.y + 'px';
+    bouncer.el.style.right = 'auto';
+    bouncer.el.style.bottom = 'auto';
+  });
+
+  // Bouncer-to-bouncer collision
+  if (bouncers.length === 2) {
+    const b1 = bouncers[0];
+    const b2 = bouncers[1];
+    const r1 = b1.el.getBoundingClientRect();
+    const r2 = b2.el.getBoundingClientRect();
+
+    if (rectsOverlap(b1.x, b1.y, r1.width, r1.height, { left: b2.x, top: b2.y, right: b2.x + r2.width, bottom: b2.y + r2.height })) {
+      // Swap velocities (simple elastic collision)
+      const tempVx = b1.vx;
+      const tempVy = b1.vy;
+      b1.vx = b2.vx;
+      b1.vy = b2.vy;
+      b2.vx = tempVx;
+      b2.vy = tempVy;
+
+      // Push apart
+      const overlapX = (r1.width + r2.width) / 2 - Math.abs((b1.x + r1.width / 2) - (b2.x + r2.width / 2));
+      const overlapY = (r1.height + r2.height) / 2 - Math.abs((b1.y + r1.height / 2) - (b2.y + r2.height / 2));
+      if (overlapX > 0 && overlapY > 0) {
+        if (overlapX < overlapY) {
+          const pushX = overlapX / 2 + 1;
+          b1.x += b1.x < b2.x ? -pushX : pushX;
+          b2.x += b2.x < b1.x ? -pushX : pushX;
+        } else {
+          const pushY = overlapY / 2 + 1;
+          b1.y += b1.y < b2.y ? -pushY : pushY;
+          b2.y += b2.y < b1.y ? -pushY : pushY;
+        }
+      }
+    }
+  }
+
+  requestAnimationFrame(animateBouncers);
+}
+
+function rectsOverlap(x, y, w, h, rect) {
+  return x < rect.right && x + w > rect.left && y < rect.bottom && y + h > rect.top;
+}
+
+function resolveWindowCollision(bouncer, width, height, winRect) {
+  const bouncerRight = bouncer.x + width;
+  const bouncerBottom = bouncer.y + height;
+
+  // Calculate overlap on each side
+  const overlapLeft = bouncerRight - winRect.left;
+  const overlapRight = winRect.right - bouncer.x;
+  const overlapTop = bouncerBottom - winRect.top;
+  const overlapBottom = winRect.bottom - bouncer.y;
+
+  // Find minimum overlap to determine collision side
+  const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+  if (minOverlap === overlapLeft && bouncer.vx > 0) {
+    bouncer.x = winRect.left - width - 1;
+    bouncer.vx *= -1;
+  } else if (minOverlap === overlapRight && bouncer.vx < 0) {
+    bouncer.x = winRect.right + 1;
+    bouncer.vx *= -1;
+  } else if (minOverlap === overlapTop && bouncer.vy > 0) {
+    bouncer.y = winRect.top - height - 1;
+    bouncer.vy *= -1;
+  } else if (minOverlap === overlapBottom && bouncer.vy < 0) {
+    bouncer.y = winRect.bottom + 1;
+    bouncer.vy *= -1;
+  }
+}
