@@ -622,33 +622,29 @@ async function claudeInvestigates() {
 
   // Claude summarizes what it sees
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'I see you got a stream parse error after sending another message.', 20);
+  await typeText(line, 'I see a stream parse error — "Failed to parse stream string. Invalid code"', 20);
 
   await sleep(300);
 
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'The request returned 200 but the response was truncated:', 18);
+  await typeText(line, 'This happens when the backend sends a text stream instead of the data protocol.', 18);
 
-  await sleep(300);
-
-  addTerminalLine('<div class="claude-result"><span class="claude-dim">data: {"choices":[{"delta":{"content":"Here\'s—</span><br><span class="claude-dim">data: [DONE]</span></div>');
-
-  await sleep(500);
+  await sleep(400);
 
   clearHighlights();
 
   // Claude suggests the fix
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'You need error handling for interrupted streams. Here\'s the fix:', 18);
+  await typeText(line, 'Add streamProtocol: \'text\' to your useChat hook:', 18);
 
   await sleep(300);
 
-  addTerminalLine('<div class="claude-code">const { messages, error, reload } = useChat({<br>  onError: (e) => toast.error(\'Stream interrupted\')<br>});</div>');
+  addTerminalLine('<div class="claude-code">const { messages } = useChat({<br>  streamProtocol: \'text\'<br>});</div>');
 
   await sleep(500);
 
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'Want me to add this to Chat.tsx?', 20);
+  await typeText(line, 'Want me to update Chat.tsx?', 20);
 
   claudeIsTyping = false;
 }
@@ -698,17 +694,15 @@ async function handleSendClick() {
       model: 'gpt-4',
       stream: true
     },
-    responseBody: `data: {"id":"chatcmpl-9x7...","choices":[{"delta":{"content":"Here's—
+    responseBody: `Here's how to implement that feature...
 
-data: [DONE]
-
-// Stream terminated unexpectedly`
+(raw text stream - missing data: prefix)`
   });
 
   await sleep(300);
 
   // Stream parse error - the interesting part!
-  addLogEntry('error', 'Error', 'AI_STREAM_PARSE: Unexpected token \'d\' at position 847');
+  addLogEntry('error', 'Error', 'Failed to parse stream string. Invalid code');
 
   await sleep(100);
 
