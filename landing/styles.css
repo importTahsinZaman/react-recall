@@ -195,13 +195,6 @@ body {
   border-radius: 5px;
   font-size: 10px;
   color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.window-tab:hover {
-  color: var(--text-secondary);
-  background: var(--bg-hover);
 }
 
 .window-tab.active {
@@ -211,6 +204,12 @@ body {
 
 .tab-icon {
   font-size: 9px;
+}
+
+.tab-divider {
+  width: 1px;
+  height: 12px;
+  background: var(--border-default);
 }
 
 .window-title-center {
