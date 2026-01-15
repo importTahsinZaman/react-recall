@@ -598,8 +598,14 @@ async function claudeInvestigates() {
 
   await sleep(500);
 
-  // Line 1 - Notice error
-  let line = addTerminalLine('<span class="claude-bullet">●</span> ');
+  // User asks Claude Code for help
+  let line = addTerminalLine('<span class="claude-user">&gt; </span>');
+  await typeText(line, 'i just sent another message and got an error', 30);
+
+  await sleep(600);
+
+  // Claude responds
+  line = addTerminalLine('<span class="claude-bullet">●</span> ');
   await typeText(line, 'I see an error in the ReactRecall logs. Let me investigate.', 20);
 
   await sleep(400);

@@ -1101,6 +1101,17 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
+.claude-user {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.claude-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 12px 0;
+}
+
 .typing-cursor {
   display: inline-block;
   width: 8px;
