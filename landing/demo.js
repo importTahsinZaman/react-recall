@@ -585,6 +585,32 @@ function applyFilters() {
 }
 
 // ============================================
+// NETWORK DETAILS TOGGLE
+// ============================================
+function toggleNetworkDetails(index, event) {
+  event.stopPropagation();
+
+  const details = document.getElementById(`network-details-${index}`);
+  const btn = document.querySelector(`.expand-btn[data-index="${index}"]`);
+
+  if (details) {
+    details.classList.toggle('expanded');
+    if (btn) {
+      btn.classList.toggle('expanded');
+    }
+  }
+}
+
+function toggleNetworkSection(event) {
+  event.stopPropagation();
+
+  const section = event.target.closest('.network-section');
+  if (section) {
+    section.classList.toggle('open');
+  }
+}
+
+// ============================================
 // COPY BUTTONS (for notepad window)
 // ============================================
 function initCopyButtons() {

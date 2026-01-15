@@ -712,6 +712,17 @@ body {
   margin-left: auto;
 }
 
+.log-header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.log-header-right .log-time {
+  margin-left: 0;
+}
+
 .log-details {
   font-size: 11px;
   color: var(--text-secondary);
@@ -719,6 +730,121 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: var(--font-mono);
+}
+
+/* Network Details Expandable */
+.expand-btn {
+  background: none;
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-size: 10px;
+  padding: 2px 6px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.expand-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.expand-btn.expanded {
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.network-details {
+  margin-top: 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+  display: none;
+}
+
+.network-details.expanded {
+  display: block;
+}
+
+.network-section {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.network-section:last-child {
+  border-bottom: none;
+}
+
+.network-section-header {
+  padding: 8px 12px;
+  background: var(--bg-elevated);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: background 0.1s ease;
+}
+
+.network-section-header:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.network-section-header .chevron {
+  transition: transform 0.15s ease;
+  opacity: 0.5;
+  font-size: 10px;
+}
+
+.network-section.open .network-section-header .chevron {
+  transform: rotate(90deg);
+}
+
+.network-section-content {
+  display: none;
+  padding: 8px 12px;
+  background: var(--bg-surface);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.network-section.open .network-section-content {
+  display: block;
+}
+
+.network-section-content pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.network-headers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.network-headers-table td {
+  padding: 2px 0;
+  vertical-align: top;
+}
+
+.network-headers-table td:first-child {
+  color: var(--accent);
+  padding-right: 12px;
+  white-space: nowrap;
+}
+
+.network-headers-table td:last-child {
+  color: var(--text-secondary);
+  word-break: break-all;
 }
 
 .recall-action-bar {
