@@ -105,38 +105,6 @@ body {
   z-index: 0;
 }
 
-.desktop-brand {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  opacity: 0.15;
-  pointer-events: none;
-  user-select: none;
-}
-
-.brand-logo {
-  width: 64px;
-  height: 64px;
-  color: var(--accent);
-}
-
-.brand-name {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-.brand-tagline {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
 /* ============================================
    WINDOWS
    ============================================ */
@@ -1330,10 +1298,6 @@ body {
 
   .window-titlebar {
     cursor: default;
-  }
-
-  .desktop-brand {
-    display: none;
   }
 
   html, body {
