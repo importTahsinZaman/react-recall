@@ -323,16 +323,10 @@ body {
 
 .message {
   max-width: 85%;
-  animation: messageIn 0.2s ease;
 }
 
 .message-assistant {
   max-width: 100%;
-}
-
-@keyframes messageIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .message-assistant { align-self: flex-start; }
