@@ -1,69 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ReactRecall - Debug with your AI agent</title>
-  <meta name="description" content="ReactRecall captures every click, log, and network request—so your coding agent can find bugs in seconds.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Recall</title>
+    <meta
+      name="description"
+      content="ReactRecall captures every click, log, and network request—so your coding agent can find bugs in seconds."
+    />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Scan line overlay -->
-  <div class="scanlines"></div>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Scan line overlay -->
+    <div class="scanlines"></div>
 
-  <!-- Desktop wallpaper -->
-  <div class="desktop-bg"></div>
+    <!-- Desktop wallpaper -->
+    <div class="desktop-bg"></div>
 
-  <!-- Browser Window -->
-  <div class="window window-browser" id="browserWindow" style="left: 40px; top: 30px; width: 1334px;">
-    <div class="window-titlebar" data-drag="true">
-      <div class="window-controls">
-        <span class="control control-close"></span>
-        <span class="control control-minimize"></span>
-        <span class="control control-maximize"></span>
+    <!-- Browser Window -->
+    <div
+      class="window window-browser"
+      id="browserWindow"
+      style="left: 40px; top: 30px; width: 1334px"
+    >
+      <div class="window-titlebar" data-drag="true">
+        <div class="window-controls">
+          <span class="control control-close"></span>
+          <span class="control control-minimize"></span>
+          <span class="control control-maximize"></span>
+        </div>
+        <div class="window-tabs">
+          <div class="window-tab">localhost:3000</div>
+          <span class="tab-divider"></span>
+          <div class="window-tab">ReactRecall</div>
+        </div>
+        <div class="window-actions">
+          <span class="window-action">⟳</span>
+        </div>
       </div>
-      <div class="window-tabs">
-        <div class="window-tab">localhost:3000</div>
-        <span class="tab-divider"></span>
-        <div class="window-tab">ReactRecall</div>
-      </div>
-      <div class="window-actions">
-        <span class="window-action">⟳</span>
-      </div>
-    </div>
-    <div class="window-content browser-split">
-      <!-- Left: Demo App -->
-      <div class="browser-pane demo-app" id="demoApp">
-        <div class="chat-container">
-          <div class="chat-messages" id="chatMessages">
-            <div class="message message-user">
-              <div class="message-content">Hi, I heard about ReactRecall. Can you tell me about it?</div>
-            </div>
-            <div class="message message-assistant">
-              <div class="message-content">
-                <p><strong>ReactRecall</strong> is a debug session recorder for AI-assisted development.</p>
-                <p>It captures every click, log, and network request in your React app — so your coding agent can find bugs in seconds.</p>
-
-                <p><strong>Install:</strong></p>
-                <div class="chat-code">
-                  <code>npm install react-recall</code>
-                  <button class="copy-btn-small" data-copy="npm install react-recall">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                  </button>
+      <div class="window-content browser-split">
+        <!-- Left: Demo App -->
+        <div class="browser-pane demo-app" id="demoApp">
+          <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+              <div class="message message-user">
+                <div class="message-content">
+                  Hi, I heard about ReactRecall. Can you tell me about it?
                 </div>
+              </div>
+              <div class="message message-assistant">
+                <div class="message-content">
+                  <p>
+                    <strong>ReactRecall</strong> is a debug session recorder for
+                    AI-assisted development.
+                  </p>
+                  <p>
+                    It captures every click, log, and network request in your
+                    React app — so your coding agent can find bugs in seconds.
+                  </p>
 
-                <p><strong>Setup:</strong></p>
-                <div class="chat-code chat-code-multi" data-lang="jsx">
-                  <pre><code><span class="hl-keyword">import</span> { ReactRecallProvider } <span class="hl-keyword">from</span> <span class="hl-string">'react-recall'</span>
+                  <p><strong>Install:</strong></p>
+                  <div class="chat-code">
+                    <code>npm install react-recall</code>
+                    <button
+                      class="copy-btn-small"
+                      data-copy="npm install react-recall"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <rect
+                          x="9"
+                          y="9"
+                          width="13"
+                          height="13"
+                          rx="2"
+                          ry="2"
+                        ></rect>
+                        <path
+                          d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <p><strong>Setup:</strong></p>
+                  <div class="chat-code chat-code-multi" data-lang="jsx">
+                    <pre><code><span class="hl-keyword">import</span> { ReactRecallProvider } <span class="hl-keyword">from</span> <span class="hl-string">'react-recall'</span>
 
 <span class="hl-keyword">function</span> <span class="hl-function">App</span>() {
   <span class="hl-keyword">return</span> (
@@ -72,198 +107,313 @@
     <span class="hl-tag">&lt;/ReactRecallProvider&gt;</span>
   )
 }</code></pre>
-                </div>
+                  </div>
 
-                <p><strong>Run:</strong></p>
-                <div class="chat-code">
-                  <code>npx react-recall</code>
-                  <button class="copy-btn-small" data-copy="npx react-recall">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                  </button>
-                </div>
+                  <p><strong>Run:</strong></p>
+                  <div class="chat-code">
+                    <code>npx react-recall</code>
+                    <button class="copy-btn-small" data-copy="npx react-recall">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <rect
+                          x="9"
+                          y="9"
+                          width="13"
+                          height="13"
+                          rx="2"
+                          ry="2"
+                        ></rect>
+                        <path
+                          d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
 
-                <p>Want to try it out? Click <strong>Send</strong> below and watch your coding agent debug an error using the logs!</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat-input-area">
-            <div class="chat-input-container">
-              <textarea class="chat-input" id="chatInput" placeholder="Can I see it in action?" rows="2">Can I see it in action?</textarea>
-              <div class="chat-input-actions">
-                <div class="chat-input-left">
-                  <button class="chat-action-btn active" title="Reasoning">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path>
-                      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path>
-                      <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"></path>
-                      <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"></path>
-                      <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path>
-                      <path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path>
-                      <path d="M19.938 10.5a4 4 0 0 1 .585.396"></path>
-                      <path d="M6 18a4 4 0 0 1-1.967-.516"></path>
-                      <path d="M19.967 17.484A4 4 0 0 1 18 18"></path>
-                    </svg>
-                  </button>
-                  <button class="chat-action-btn" title="Web Search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <circle cx="12" cy="12" r="9"/>
-                      <path d="M3 12h18"/>
-                      <path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"/>
-                    </svg>
-                  </button>
-                </div>
-                <div class="send-hint-wrapper">
-                  <span class="send-hint">See it in action <span class="send-hint-arrow">→</span></span>
-                  <button class="chat-send" id="sendButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 19V5M5 12l7-7 7 7"/>
-                    </svg>
-                  </button>
+                  <p>
+                    Want to try it out? Click <strong>Send</strong> below and
+                    watch your coding agent debug an error using the logs!
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Error Toast -->
-          <div class="error-toast" id="errorToast">
-            <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="15" y1="9" x2="9" y2="15"></line>
-              <line x1="9" y1="9" x2="15" y2="15"></line>
-            </svg>
-            <span>Something went wrong</span>
+            <div class="chat-input-area">
+              <div class="chat-input-container">
+                <textarea
+                  class="chat-input"
+                  id="chatInput"
+                  placeholder="Can I see it in action?"
+                  rows="2"
+                >
+Can I see it in action?</textarea
+                >
+                <div class="chat-input-actions">
+                  <div class="chat-input-left">
+                    <button class="chat-action-btn active" title="Reasoning">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"
+                        ></path>
+                        <path
+                          d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"
+                        ></path>
+                        <path
+                          d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"
+                        ></path>
+                        <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"></path>
+                        <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path>
+                        <path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path>
+                        <path d="M19.938 10.5a4 4 0 0 1 .585.396"></path>
+                        <path d="M6 18a4 4 0 0 1-1.967-.516"></path>
+                        <path d="M19.967 17.484A4 4 0 0 1 18 18"></path>
+                      </svg>
+                    </button>
+                    <button class="chat-action-btn" title="Web Search">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M3 12h18" />
+                        <path
+                          d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="send-hint-wrapper">
+                    <span class="send-hint"
+                      >See it in action
+                      <span class="send-hint-arrow">→</span></span
+                    >
+                    <button class="chat-send" id="sendButton">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M12 19V5M5 12l7-7 7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Error Toast -->
+            <div class="error-toast" id="errorToast">
+              <svg
+                class="error-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span>Something went wrong</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Divider -->
-      <div class="browser-divider"></div>
+        <!-- Divider -->
+        <div class="browser-divider"></div>
 
-      <!-- Right: ReactRecall Dashboard -->
-      <div class="browser-pane recall-dashboard" id="recallDashboard">
-        <div class="recall-header">
-          <div class="recall-logo">
-            <svg class="recall-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-              <line x1="16" y1="8" x2="2" y2="22"></line>
-              <line x1="17.5" y1="15" x2="9" y2="15"></line>
-            </svg>
-            <span>ReactRecall</span>
-          </div>
-          <div class="recall-status">
-            <span class="status-dot recording"></span>
-          </div>
-        </div>
-        <div class="recall-filters">
-          <button class="filter-chip active" data-filter="event">
-            <span class="chip-dot blue"></span>
-            Events <span class="chip-count" id="eventCount">4</span>
-          </button>
-          <button class="filter-chip active" data-filter="log">
-            <span class="chip-dot gray"></span>
-            Logs <span class="chip-count" id="logCount">1</span>
-          </button>
-          <button class="filter-chip active" data-filter="error">
-            <span class="chip-dot red"></span>
-            Errors <span class="chip-count" id="errorCount">0</span>
-          </button>
-          <button class="filter-chip active" data-filter="network">
-            <span class="chip-dot purple"></span>
-            Network <span class="chip-count" id="networkCount">1</span>
-          </button>
-        </div>
-        <div class="recall-timeline" id="recallTimeline">
-          <div class="log-entry" data-index="0" data-type="event">
-            <span class="log-dot blue"></span>
-            <div class="log-content">
-              <div class="log-header">
-                <span class="log-type">Toggle</span>
-                <span class="log-time">14:22:45</span>
-              </div>
-              <div class="log-details">"Reasoning" enabled</div>
+        <!-- Right: ReactRecall Dashboard -->
+        <div class="browser-pane recall-dashboard" id="recallDashboard">
+          <div class="recall-header">
+            <div class="recall-logo">
+              <svg
+                class="recall-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"
+                ></path>
+                <line x1="16" y1="8" x2="2" y2="22"></line>
+                <line x1="17.5" y1="15" x2="9" y2="15"></line>
+              </svg>
+              <span>ReactRecall</span>
+            </div>
+            <div class="recall-status">
+              <span class="status-dot recording"></span>
             </div>
           </div>
-          <div class="log-entry" data-index="1" data-type="event">
-            <span class="log-dot blue"></span>
-            <div class="log-content">
-              <div class="log-header">
-                <span class="log-type">Click</span>
-                <span class="log-time">14:22:47</span>
-              </div>
-              <div class="log-details">"Send" (ChatInput &gt; SendButton)</div>
-            </div>
+          <div class="recall-filters">
+            <button class="filter-chip active" data-filter="event">
+              <span class="chip-dot blue"></span>
+              Events <span class="chip-count" id="eventCount">4</span>
+            </button>
+            <button class="filter-chip active" data-filter="log">
+              <span class="chip-dot gray"></span>
+              Logs <span class="chip-count" id="logCount">1</span>
+            </button>
+            <button class="filter-chip active" data-filter="error">
+              <span class="chip-dot red"></span>
+              Errors <span class="chip-count" id="errorCount">0</span>
+            </button>
+            <button class="filter-chip active" data-filter="network">
+              <span class="chip-dot purple"></span>
+              Network <span class="chip-count" id="networkCount">1</span>
+            </button>
           </div>
-          <div class="log-entry" data-index="2" data-type="event">
-            <span class="log-dot blue"></span>
-            <div class="log-content">
-              <div class="log-header">
-                <span class="log-type">Input</span>
-                <span class="log-time">14:22:47</span>
+          <div class="recall-timeline" id="recallTimeline">
+            <div class="log-entry" data-index="0" data-type="event">
+              <span class="log-dot blue"></span>
+              <div class="log-content">
+                <div class="log-header">
+                  <span class="log-type">Toggle</span>
+                  <span class="log-time">14:22:45</span>
+                </div>
+                <div class="log-details">"Reasoning" enabled</div>
               </div>
-              <div class="log-details">value: "Hi, I heard about ReactRecall..."</div>
             </div>
-          </div>
-          <div class="log-entry" data-index="3" data-type="network">
-            <span class="log-dot purple"></span>
-            <div class="log-content">
-              <div class="log-header">
-                <span class="log-type">POST</span>
-                <span class="log-status success">200</span>
-                <span class="log-duration">312ms</span>
-                <button class="expand-btn" onclick="toggleNetworkDetails(3, event)" data-index="3">Details</button>
-                <span class="log-time">14:22:48</span>
+            <div class="log-entry" data-index="1" data-type="event">
+              <span class="log-dot blue"></span>
+              <div class="log-content">
+                <div class="log-header">
+                  <span class="log-type">Click</span>
+                  <span class="log-time">14:22:47</span>
+                </div>
+                <div class="log-details">
+                  "Send" (ChatInput &gt; SendButton)
+                </div>
               </div>
-              <div class="log-details">/api/chat</div>
-              <div class="network-details" id="network-details-3">
-                <div class="network-section open" onclick="toggleNetworkSection(event)">
-                  <div class="network-section-header">
-                    <span class="chevron">▶</span>
-                    General
-                  </div>
-                  <div class="network-section-content">
-                    <table class="network-headers-table">
-                      <tr><td>Started</td><td>14:22:47.623</td></tr>
-                      <tr><td>Completed</td><td>14:22:47.935</td></tr>
-                      <tr><td>Duration</td><td>312ms</td></tr>
-                      <tr><td>Status</td><td>200</td></tr>
-                    </table>
-                  </div>
+            </div>
+            <div class="log-entry" data-index="2" data-type="event">
+              <span class="log-dot blue"></span>
+              <div class="log-content">
+                <div class="log-header">
+                  <span class="log-type">Input</span>
+                  <span class="log-time">14:22:47</span>
                 </div>
-                <div class="network-section" onclick="toggleNetworkSection(event)">
-                  <div class="network-section-header">
-                    <span class="chevron">▶</span>
-                    Request Headers
-                    <span class="badge">2</span>
-                  </div>
-                  <div class="network-section-content">
-                    <table class="network-headers-table">
-                      <tr><td>Content-Type</td><td>application/json</td></tr>
-                      <tr><td>Authorization</td><td>Bearer sk-...a8f2</td></tr>
-                    </table>
-                  </div>
+                <div class="log-details">
+                  value: "Hi, I heard about ReactRecall..."
                 </div>
-                <div class="network-section" onclick="toggleNetworkSection(event)">
-                  <div class="network-section-header">
-                    <span class="chevron">▶</span>
-                    Response Headers
-                    <span class="badge">2</span>
-                  </div>
-                  <div class="network-section-content">
-                    <table class="network-headers-table">
-                      <tr><td>content-type</td><td>application/json</td></tr>
-                      <tr><td>x-request-id</td><td>req_abc123</td></tr>
-                    </table>
-                  </div>
+              </div>
+            </div>
+            <div class="log-entry" data-index="3" data-type="network">
+              <span class="log-dot purple"></span>
+              <div class="log-content">
+                <div class="log-header">
+                  <span class="log-type">POST</span>
+                  <span class="log-status success">200</span>
+                  <span class="log-duration">312ms</span>
+                  <button
+                    class="expand-btn"
+                    onclick="toggleNetworkDetails(3, event)"
+                    data-index="3"
+                  >
+                    Details
+                  </button>
+                  <span class="log-time">14:22:48</span>
                 </div>
-                <div class="network-section" onclick="toggleNetworkSection(event)">
-                  <div class="network-section-header">
-                    <span class="chevron">▶</span>
-                    Request Body
+                <div class="log-details">/api/chat</div>
+                <div class="network-details" id="network-details-3">
+                  <div
+                    class="network-section open"
+                    onclick="toggleNetworkSection(event)"
+                  >
+                    <div class="network-section-header">
+                      <span class="chevron">▶</span>
+                      General
+                    </div>
+                    <div class="network-section-content">
+                      <table class="network-headers-table">
+                        <tr>
+                          <td>Started</td>
+                          <td>14:22:47.623</td>
+                        </tr>
+                        <tr>
+                          <td>Completed</td>
+                          <td>14:22:47.935</td>
+                        </tr>
+                        <tr>
+                          <td>Duration</td>
+                          <td>312ms</td>
+                        </tr>
+                        <tr>
+                          <td>Status</td>
+                          <td>200</td>
+                        </tr>
+                      </table>
+                    </div>
                   </div>
-                  <div class="network-section-content">
-                    <pre>{
+                  <div
+                    class="network-section"
+                    onclick="toggleNetworkSection(event)"
+                  >
+                    <div class="network-section-header">
+                      <span class="chevron">▶</span>
+                      Request Headers
+                      <span class="badge">2</span>
+                    </div>
+                    <div class="network-section-content">
+                      <table class="network-headers-table">
+                        <tr>
+                          <td>Content-Type</td>
+                          <td>application/json</td>
+                        </tr>
+                        <tr>
+                          <td>Authorization</td>
+                          <td>Bearer sk-...a8f2</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div
+                    class="network-section"
+                    onclick="toggleNetworkSection(event)"
+                  >
+                    <div class="network-section-header">
+                      <span class="chevron">▶</span>
+                      Response Headers
+                      <span class="badge">2</span>
+                    </div>
+                    <div class="network-section-content">
+                      <table class="network-headers-table">
+                        <tr>
+                          <td>content-type</td>
+                          <td>application/json</td>
+                        </tr>
+                        <tr>
+                          <td>x-request-id</td>
+                          <td>req_abc123</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div
+                    class="network-section"
+                    onclick="toggleNetworkSection(event)"
+                  >
+                    <div class="network-section-header">
+                      <span class="chevron">▶</span>
+                      Request Body
+                    </div>
+                    <div class="network-section-content">
+                      <pre>
+{
   "messages": [
     {
       "role": "user",
@@ -271,16 +421,21 @@
     }
   ],
   "model": "gpt-4"
-}</pre>
+}</pre
+                      >
+                    </div>
                   </div>
-                </div>
-                <div class="network-section" onclick="toggleNetworkSection(event)">
-                  <div class="network-section-header">
-                    <span class="chevron">▶</span>
-                    Response Body
-                  </div>
-                  <div class="network-section-content">
-                    <pre>{
+                  <div
+                    class="network-section"
+                    onclick="toggleNetworkSection(event)"
+                  >
+                    <div class="network-section-header">
+                      <span class="chevron">▶</span>
+                      Response Body
+                    </div>
+                    <div class="network-section-content">
+                      <pre>
+{
   "id": "chatcmpl-abc123",
   "choices": [{
     "message": {
@@ -288,109 +443,167 @@
       "content": "ReactRecall is a debug..."
     }
   }]
-}</pre>
+}</pre
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="log-entry" data-index="4" data-type="log">
-            <span class="log-dot gray"></span>
-            <div class="log-content">
-              <div class="log-header">
-                <span class="log-type">Log</span>
-                <span class="log-time">14:22:48</span>
+            <div class="log-entry" data-index="4" data-type="log">
+              <span class="log-dot gray"></span>
+              <div class="log-content">
+                <div class="log-header">
+                  <span class="log-type">Log</span>
+                  <span class="log-time">14:22:48</span>
+                </div>
+                <div class="log-details">
+                  Response received, rendering message
+                </div>
               </div>
-              <div class="log-details">Response received, rendering message</div>
+            </div>
+            <div class="log-entry" data-index="5" data-type="event">
+              <span class="log-dot blue"></span>
+              <div class="log-content">
+                <div class="log-header">
+                  <span class="log-type">Copy</span>
+                  <span class="log-time">14:22:52</span>
+                </div>
+                <div class="log-details">
+                  "npm install react-recall" (CodeBlock)
+                </div>
+              </div>
             </div>
           </div>
-          <div class="log-entry" data-index="5" data-type="event">
-            <span class="log-dot blue"></span>
-            <div class="log-content">
-              <div class="log-header">
-                <span class="log-type">Copy</span>
-                <span class="log-time">14:22:52</span>
-              </div>
-              <div class="log-details">"npm install react-recall" (CodeBlock)</div>
+          <div class="recall-action-bar" id="recallActionBar">
+            <span class="action-bar-count"
+              ><strong id="selectedCount">0</strong> selected</span
+            >
+            <div class="action-bar-buttons">
+              <button class="action-bar-btn" id="copyLogsBtn">
+                Copy <span class="keybind">⌘C</span>
+              </button>
+              <button
+                class="action-bar-btn action-bar-btn-text"
+                id="cancelSelectionBtn"
+              >
+                Cancel <span class="keybind">Esc</span>
+              </button>
             </div>
-          </div>
-        </div>
-        <div class="recall-action-bar" id="recallActionBar">
-          <span class="action-bar-count"><strong id="selectedCount">0</strong> selected</span>
-          <div class="action-bar-buttons">
-            <button class="action-bar-btn" id="copyLogsBtn">
-              Copy <span class="keybind">⌘C</span>
-            </button>
-            <button class="action-bar-btn action-bar-btn-text" id="cancelSelectionBtn">
-              Cancel <span class="keybind">Esc</span>
-            </button>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Terminal Window -->
-  <div class="window window-terminal" id="terminalWindow" style="right: 40px; bottom: 40px; width: 627px; z-index: 50;">
-    <div class="window-titlebar" data-drag="true">
-      <div class="window-controls">
-        <span class="control control-close"></span>
-        <span class="control control-minimize"></span>
-        <span class="control control-maximize"></span>
+    <!-- Terminal Window -->
+    <div
+      class="window window-terminal"
+      id="terminalWindow"
+      style="right: 40px; bottom: 40px; width: 627px; z-index: 50"
+    >
+      <div class="window-titlebar" data-drag="true">
+        <div class="window-controls">
+          <span class="control control-close"></span>
+          <span class="control control-minimize"></span>
+          <span class="control control-maximize"></span>
+        </div>
+        <div class="window-title-center">
+          <span class="terminal-title">claude — ~/my-chat-app</span>
+        </div>
+        <div class="window-actions"></div>
       </div>
-      <div class="window-title-center">
-        <span class="terminal-title">claude — ~/my-chat-app</span>
-      </div>
-      <div class="window-actions"></div>
-    </div>
-    <div class="window-content terminal-content" id="terminalContent">
-      <div class="terminal-output" id="terminalOutput">
-<div class="claude-welcome-box">
-  <div class="claude-box-header">Claude Code v2.1.6</div>
-  <div class="claude-box-content">
-    <div class="claude-box-left">
-      <div>Welcome back!</div>
-      <pre class="claude-pig">  ▐▛███▜▌
+      <div class="window-content terminal-content" id="terminalContent">
+        <div class="terminal-output" id="terminalOutput">
+          <div class="claude-welcome-box">
+            <div class="claude-box-header">Claude Code v2.1.6</div>
+            <div class="claude-box-content">
+              <div class="claude-box-left">
+                <div>Welcome back!</div>
+                <pre class="claude-pig">
+  ▐▛███▜▌
  ▝▜█████▛▘
-   ▘▘ ▝▝</pre>
-      <div>~/my-chat-app</div>
-    </div>
-    <div class="claude-box-right">
-      <div class="claude-tips-header">Tips for getting started</div>
-      <div class="claude-tips-text">Ask Claude to create a new app…</div>
-      <div class="claude-divider-line"></div>
-      <div class="claude-tips-header">Recent activity</div>
-      <div class="claude-tips-text">No recent activity</div>
-    </div>
-  </div>
-</div>
-        <div class="claude-model-info">Opus 4.5 · Claude Max</div>
-        <div class="claude-line"><span class="claude-user">&gt; add a loading state to the send button</span></div>
-        <div class="claude-line"><span class="claude-bullet">●</span> I'll add a loading state to the send button. Let me check the current implementation.</div>
-        <div class="claude-line"><span class="claude-bullet">●</span> <span class="claude-tool">Read</span>(src/components/ChatInput.tsx)</div>
-        <div class="claude-line"><div class="claude-result">Found SendButton component at line 42</div></div>
-        <div class="claude-line"><span class="claude-bullet">●</span> <span class="claude-tool">Edit</span>(src/components/ChatInput.tsx)</div>
-        <div class="claude-line"><div class="claude-result claude-success">✓ Added isLoading prop and spinner</div></div>
-        <div class="claude-line"><span class="claude-bullet">●</span> Done. The send button now shows a spinner while the message is being sent.</div>
-        <div class="claude-line claude-divider"></div>
+   ▘▘ ▝▝</pre
+                >
+                <div>~/my-chat-app</div>
+              </div>
+              <div class="claude-box-right">
+                <div class="claude-tips-header">Tips for getting started</div>
+                <div class="claude-tips-text">
+                  Ask Claude to create a new app…
+                </div>
+                <div class="claude-divider-line"></div>
+                <div class="claude-tips-header">Recent activity</div>
+                <div class="claude-tips-text">No recent activity</div>
+              </div>
+            </div>
+          </div>
+          <div class="claude-model-info">Opus 4.5 · Claude Max</div>
+          <div class="claude-line">
+            <span class="claude-user"
+              >&gt; add a loading state to the send button</span
+            >
+          </div>
+          <div class="claude-line">
+            <span class="claude-bullet">●</span> I'll add a loading state to the
+            send button. Let me check the current implementation.
+          </div>
+          <div class="claude-line">
+            <span class="claude-bullet">●</span>
+            <span class="claude-tool">Read</span>(src/components/ChatInput.tsx)
+          </div>
+          <div class="claude-line">
+            <div class="claude-result">
+              Found SendButton component at line 42
+            </div>
+          </div>
+          <div class="claude-line">
+            <span class="claude-bullet">●</span>
+            <span class="claude-tool">Edit</span>(src/components/ChatInput.tsx)
+          </div>
+          <div class="claude-line">
+            <div class="claude-result claude-success">
+              ✓ Added isLoading prop and spinner
+            </div>
+          </div>
+          <div class="claude-line">
+            <span class="claude-bullet">●</span> Done. The send button now shows
+            a spinner while the message is being sent.
+          </div>
+          <div class="claude-line claude-divider"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Bouncing Screensaver Elements -->
-  <a href="https://github.com/importTahsinZaman/react-recall" target="_blank" class="bouncer" id="bouncerGithub" style="display: none;">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-    </svg>
-    <span>GitHub</span>
-  </a>
-  <a href="https://www.npmjs.com/package/react-recall" target="_blank" class="bouncer" id="bouncerNpm" style="display: none;">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331z"/>
-    </svg>
-    <span>npm</span>
-  </a>
+    <!-- Bouncing Screensaver Elements -->
+    <a
+      href="https://github.com/importTahsinZaman/react-recall"
+      target="_blank"
+      class="bouncer"
+      id="bouncerGithub"
+      style="display: none"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+        />
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <a
+      href="https://www.npmjs.com/package/react-recall"
+      target="_blank"
+      class="bouncer"
+      id="bouncerNpm"
+      style="display: none"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0v1.336H8.001V8.667h5.334v5.332h-2.669v-.001zm12.001 0h-1.33v-4h-1.336v4h-1.335v-4h-1.33v4h-2.671V8.667h8.002v5.331z"
+        />
+      </svg>
+      <span>npm</span>
+    </a>
 
-  <script src="demo.js"></script>
-</body>
+    <script src="demo.js"></script>
+  </body>
 </html>
