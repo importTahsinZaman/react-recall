@@ -134,6 +134,11 @@
       <div class="browser-pane recall-dashboard" id="recallDashboard">
         <div class="recall-header">
           <div class="recall-logo">
+            <svg class="recall-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+              <line x1="16" y1="8" x2="2" y2="22"></line>
+              <line x1="17.5" y1="15" x2="9" y2="15"></line>
+            </svg>
             <span>ReactRecall</span>
           </div>
           <div class="recall-status">
@@ -160,8 +165,7 @@
         </div>
         <div class="recall-timeline" id="recallTimeline">
           <div class="log-entry">
-            <input type="checkbox" class="log-checkbox">
-            <span class="log-dot blue"></span>
+                        <span class="log-dot blue"></span>
             <div class="log-content">
               <div class="log-header">
                 <span class="log-type">Click</span>
@@ -171,8 +175,7 @@
             </div>
           </div>
           <div class="log-entry">
-            <input type="checkbox" class="log-checkbox">
-            <span class="log-dot blue"></span>
+                        <span class="log-dot blue"></span>
             <div class="log-content">
               <div class="log-header">
                 <span class="log-type">Input</span>
@@ -182,8 +185,7 @@
             </div>
           </div>
           <div class="log-entry">
-            <input type="checkbox" class="log-checkbox">
-            <span class="log-dot purple"></span>
+                        <span class="log-dot purple"></span>
             <div class="log-content">
               <div class="log-header">
                 <span class="log-type">POST</span>
@@ -195,8 +197,7 @@
             </div>
           </div>
           <div class="log-entry">
-            <input type="checkbox" class="log-checkbox">
-            <span class="log-dot gray"></span>
+                        <span class="log-dot gray"></span>
             <div class="log-content">
               <div class="log-header">
                 <span class="log-type">Log</span>
@@ -208,13 +209,14 @@
         </div>
         <div class="recall-action-bar" id="recallActionBar">
           <span class="action-bar-count"><strong id="selectedCount">0</strong> selected</span>
-          <button class="action-bar-btn" id="copyLogsBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy
-          </button>
+          <div class="action-bar-buttons">
+            <button class="action-bar-btn" id="copyLogsBtn">
+              Copy <span class="keybind">⌘C</span>
+            </button>
+            <button class="action-bar-btn action-bar-btn-text" id="cancelSelectionBtn">
+              Cancel <span class="keybind">Esc</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

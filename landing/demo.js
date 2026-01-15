@@ -240,7 +240,6 @@ function addLogEntry(type, label, details, extra = {}) {
   entry.className = 'log-entry';
   entry.dataset.index = index;
   entry.innerHTML = `
-    <input type="checkbox" class="log-checkbox" data-index="${index}">
     <span class="log-dot ${dotColor}"></span>
     <div class="log-content">
       <div class="log-header">
@@ -286,37 +285,35 @@ function clearHighlights() {
 // ============================================
 function initLogSelection() {
   recallTimeline.addEventListener('click', (e) => {
-    const checkbox = e.target.closest('.log-checkbox');
     const entry = e.target.closest('.log-entry');
 
-    if (checkbox) {
-      const index = parseInt(checkbox.dataset.index);
-      if (checkbox.checked) {
-        selectedLogs.add(index);
-        entry.classList.add('selected');
-      } else {
-        selectedLogs.delete(index);
-        entry.classList.remove('selected');
-      }
-      updateActionBar();
-    } else if (entry && !e.target.closest('.log-checkbox')) {
-      // Click on entry (not checkbox) toggles selection
+    if (entry) {
       const index = parseInt(entry.dataset.index);
-      const checkbox = entry.querySelector('.log-checkbox');
       if (selectedLogs.has(index)) {
         selectedLogs.delete(index);
         entry.classList.remove('selected');
-        checkbox.checked = false;
       } else {
         selectedLogs.add(index);
         entry.classList.add('selected');
-        checkbox.checked = true;
       }
       updateActionBar();
     }
   });
 
   copyLogsBtn.addEventListener('click', copySelectedLogs);
+
+  const cancelBtn = document.getElementById('cancelSelectionBtn');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', clearSelection);
+  }
+}
+
+function clearSelection() {
+  selectedLogs.clear();
+  recallTimeline.querySelectorAll('.log-entry.selected').forEach(entry => {
+    entry.classList.remove('selected');
+  });
+  updateActionBar();
 }
 
 function updateActionBar() {
@@ -338,21 +335,12 @@ async function copySelectedLogs() {
 
   await navigator.clipboard.writeText(text);
 
-  copyLogsBtn.innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="20 6 9 17 4 12"></polyline>
-    </svg>
-    Copied!
-  `;
+  copyLogsBtn.innerHTML = `Copied! <span class="keybind">⌘C</span>`;
+  copyLogsBtn.classList.add('copied');
 
   setTimeout(() => {
-    copyLogsBtn.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-      </svg>
-      Copy
-    `;
+    copyLogsBtn.innerHTML = `Copy <span class="keybind">⌘C</span>`;
+    copyLogsBtn.classList.remove('copied');
   }, 1500);
 }
 

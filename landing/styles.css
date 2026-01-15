@@ -541,7 +541,8 @@ body {
 
 .recall-dashboard {
   flex: 35;
-  background: var(--bg-base);
+  background: var(--bg-surface);
+  position: relative;
 }
 
 .recall-header {
@@ -550,32 +551,25 @@ body {
   align-items: center;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg-elevated);
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
   flex-shrink: 0;
 }
 
 .recall-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-weight: 600;
-  font-size: 10px;
-  line-height: 1;
-}
-
-.recall-logo span {
-  display: flex;
-  align-items: center;
+  font-size: 14px;
+  letter-spacing: 0.02em;
 }
 
 .recall-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   color: var(--accent);
   filter: drop-shadow(0 0 4px var(--accent-glow));
   flex-shrink: 0;
-  position: relative;
-  top: 1px;
 }
 
 .recall-filters {
@@ -758,12 +752,19 @@ body {
 }
 
 .recall-action-bar {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   display: none;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
+  gap: 16px;
+  padding: 8px 16px;
   background: var(--bg-elevated);
-  border-top: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: 9px;
+  box-shadow: var(--shadow-lg), var(--glow-accent);
+  z-index: 100;
 }
 
 .recall-action-bar.visible {
@@ -772,6 +773,7 @@ body {
 
 .action-bar-count {
   font-size: 12px;
+  white-space: nowrap;
   color: var(--text-secondary);
 }
 
@@ -780,28 +782,51 @@ body {
   font-family: var(--font-mono);
 }
 
+.action-bar-buttons {
+  display: flex;
+  gap: 6px;
+}
+
 .action-bar-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   background: var(--accent);
-  border: none;
+  border: 1px solid var(--accent);
   border-radius: 6px;
   color: var(--bg-void);
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .action-bar-btn:hover {
   background: var(--accent-bright);
 }
 
-.action-bar-btn svg {
-  width: 14px;
-  height: 14px;
+.action-bar-btn-text {
+  background: transparent;
+  border-color: var(--border-default);
+  color: var(--text-secondary);
+}
+
+.action-bar-btn-text:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.keybind {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.action-bar-btn.copied {
+  background: var(--color-success);
+  border-color: var(--color-success);
 }
 
 /* ============================================
