@@ -500,9 +500,9 @@ async function claudeInvestigates() {
 
   await sleep(500);
 
-  // Line 1
+  // Line 1 - Notice error
   let line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'I detected an error in the ReactRecall logs. Let me investigate.', 20);
+  await typeText(line, 'I see an error in the ReactRecall logs. Let me investigate.', 20);
 
   await sleep(400);
 
@@ -514,11 +514,11 @@ async function claudeInvestigates() {
   bringToFront(terminalWindow);
 
   // Line 2 - Grep
-  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Grep</span>(pattern: "500|error", path: ".react-recall/logs.jsonl")');
+  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Grep</span>(pattern: "stream|parse|error", path: ".react-recall/")');
 
   await sleep(300);
 
-  addTerminalLine('<div class="claude-result">Found 2 matches in logs</div>');
+  addTerminalLine('<div class="claude-result">Found: AI_STREAM_PARSE error</div>');
 
   await sleep(500);
 
@@ -527,35 +527,36 @@ async function claudeInvestigates() {
 
   await sleep(600);
 
-  // Line 3 - Analysis
+  // Line 3 - Key insight: 200 but still errored
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'The /api/chat endpoint returned a 500 error. Checking the response body...', 18);
+  await typeText(line, 'Interesting — the request returned 200, but there\'s a parse error.', 18);
 
   await sleep(400);
 
-  // Line 4 - Read
-  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Read</span>(.react-recall/logs.jsonl)');
+  // Line 4 - Read response
+  addTerminalLine('<span class="claude-bullet">●</span> <span class="claude-tool">Read</span>(.react-recall/network/req_2.json)');
 
   await sleep(300);
 
-  addTerminalLine('<div class="claude-result">POST 500 /api/chat (342ms)<br>Response: {"error": "Missing API key"}</div>');
+  addTerminalLine('<div class="claude-result">Stream truncated mid-response:<br><span class="claude-dim">data: {"choices":[{"delta":{"content":"Here\'s—</span><br><span class="claude-dim">data: [DONE]</span></div>');
 
   await sleep(700);
 
   clearHighlights();
 
-  // Line 5 - Solution
+  // Line 5 - Explanation
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'Found it! The API key is missing. Add this to your .env file:', 20);
+  await typeText(line, 'The stream was cut off before completing. Add error handling:', 20);
 
   await sleep(200);
 
-  addTerminalLine('<div class="claude-code">OPENAI_API_KEY=sk-...</div>');
+  // Code fix
+  addTerminalLine('<div class="claude-code">const { messages, error, reload } = useChat({<br>  onError: (e) => toast.error(\'Stream interrupted\')<br>});</div>');
 
-  await sleep(300);
+  await sleep(400);
 
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'Then restart your dev server and try again.', 20);
+  await typeText(line, 'Then add a retry button that calls reload() when error occurs.', 20);
 
   claudeIsTyping = false;
 }
@@ -582,15 +583,15 @@ async function handleSendClick() {
   // Show loading
   addLoadingSpinner();
 
-  await sleep(800);
+  await sleep(1200);
 
-  // Simulate API call
-  addLogEntry('network', 'POST', '/api/chat', { status: 500, duration: 342 });
+  // Simulate API call - streaming starts successfully (200) but fails mid-stream
+  addLogEntry('network', 'POST', '/api/chat (stream)', { status: 200, duration: 1847 });
 
-  await sleep(200);
+  await sleep(300);
 
-  // Error
-  addLogEntry('error', 'Error', 'Failed to fetch chat response: Missing API key');
+  // Stream parse error - the interesting part!
+  addLogEntry('error', 'Error', 'AI_STREAM_PARSE: Unexpected token \'d\' at position 847');
 
   await sleep(100);
 

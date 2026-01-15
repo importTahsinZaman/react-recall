@@ -1095,6 +1095,11 @@ body {
   color: var(--color-success);
 }
 
+.claude-dim {
+  color: #6a7080;
+  font-family: 'JetBrains Mono', monospace;
+}
+
 .typing-cursor {
   display: inline-block;
   width: 8px;
