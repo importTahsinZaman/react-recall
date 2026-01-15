@@ -1054,22 +1054,25 @@ function initBouncers() {
 
   if (!githubEl || !npmEl) return;
 
+  // Try to load saved positions
+  const saved = loadBouncerPositions();
+
   // GitHub starts bottom-left, moving up-right
   bouncers.push({
     el: githubEl,
-    x: 40,
-    y: window.innerHeight - 80,
-    vx: 2,
-    vy: -1.5
+    x: saved?.github?.x ?? 40,
+    y: saved?.github?.y ?? (window.innerHeight - 80),
+    vx: saved?.github?.vx ?? 2,
+    vy: saved?.github?.vy ?? -1.5
   });
 
   // npm starts top-right, moving down-left
   bouncers.push({
     el: npmEl,
-    x: window.innerWidth - 120,
-    y: 40,
-    vx: -1.8,
-    vy: 2
+    x: saved?.npm?.x ?? (window.innerWidth - 120),
+    y: saved?.npm?.y ?? 40,
+    vx: saved?.npm?.vx ?? -1.8,
+    vy: saved?.npm?.vy ?? 2
   });
 
   // Track mouse position
@@ -1078,8 +1081,46 @@ function initBouncers() {
     mousePos.y = e.clientY;
   });
 
+  // Save positions before page unload
+  window.addEventListener('beforeunload', saveBouncerPositions);
+
   // Start animation loop
   requestAnimationFrame(animateBouncers);
+}
+
+function saveBouncerPositions() {
+  if (bouncers.length < 2) return;
+
+  const data = {
+    github: { x: bouncers[0].x, y: bouncers[0].y, vx: bouncers[0].vx, vy: bouncers[0].vy },
+    npm: { x: bouncers[1].x, y: bouncers[1].y, vx: bouncers[1].vx, vy: bouncers[1].vy }
+  };
+
+  localStorage.setItem('reactrecall-bouncer-positions', JSON.stringify(data));
+}
+
+function loadBouncerPositions() {
+  const saved = localStorage.getItem('reactrecall-bouncer-positions');
+  if (!saved) return null;
+
+  try {
+    const data = JSON.parse(saved);
+
+    // Validate positions are within current viewport (in case window size changed)
+    if (data.github) {
+      data.github.x = Math.max(0, Math.min(data.github.x, window.innerWidth - 100));
+      data.github.y = Math.max(0, Math.min(data.github.y, window.innerHeight - 40));
+    }
+    if (data.npm) {
+      data.npm.x = Math.max(0, Math.min(data.npm.x, window.innerWidth - 100));
+      data.npm.y = Math.max(0, Math.min(data.npm.y, window.innerHeight - 40));
+    }
+
+    return data;
+  } catch (e) {
+    console.warn('Could not restore bouncer positions:', e);
+    return null;
+  }
 }
 
 function animateBouncers() {
