@@ -269,13 +269,6 @@ function escapeHtml(str) {
 // ============================================
 // REACTRECALL TIMELINE
 // ============================================
-function clearTimeline() {
-  recallTimeline.innerHTML = '<div class="timeline-empty"><span>Interact with the app to see events</span></div>';
-  logEntries = [];
-  selectedLogs.clear();
-  updateActionBar();
-}
-
 function addLogEntry(type, label, details, extra = {}) {
   // Remove empty state
   const empty = recallTimeline.querySelector('.timeline-empty');
@@ -581,17 +574,6 @@ async function copySelectedLogs() {
 // ============================================
 // TERMINAL / CLAUDE CODE
 // ============================================
-function clearTerminal() {
-  terminalOutput.innerHTML = `
-    <div class="claude-welcome">
-      <span class="claude-title">Claude Code</span> <span class="claude-version">v1.0.0</span>
-    </div>
-    <div class="claude-hint">
-      Watching ReactRecall logs at localhost:4312...
-    </div>
-  `;
-}
-
 async function typeText(element, text, speed = 15) {
   const cursor = document.createElement('span');
   cursor.className = 'typing-cursor';
@@ -838,158 +820,6 @@ function initCopyButtons() {
 }
 
 // ============================================
-// RESET DEMO
-// ============================================
-function resetDemo() {
-  // Reset chat
-  chatMessages.innerHTML = `
-    <div class="message message-user">
-      <div class="message-content">Hi, I heard about ReactRecall. Can you tell me about it?</div>
-    </div>
-    <div class="message message-assistant">
-      <div class="message-content">
-        <p><strong>ReactRecall</strong> is a debug session recorder for AI-assisted development.</p>
-        <p>It captures every click, log, and network request in your React app — so Claude Code can find bugs in seconds.</p>
-
-        <p><strong>Install:</strong></p>
-        <div class="chat-code">
-          <code>npm install react-recall</code>
-          <button class="copy-btn-small" data-copy="npm install react-recall">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-
-        <p><strong>Setup:</strong></p>
-        <div class="chat-code chat-code-multi">
-          <pre><code><span class="hl-keyword">import</span> { ReactRecallProvider } <span class="hl-keyword">from</span> <span class="hl-string">'react-recall'</span>
-
-<span class="hl-keyword">function</span> <span class="hl-function">App</span>() {
-  <span class="hl-keyword">return</span> (
-    <span class="hl-tag">&lt;ReactRecallProvider&gt;</span>
-      <span class="hl-tag">&lt;YourApp /&gt;</span>
-    <span class="hl-tag">&lt;/ReactRecallProvider&gt;</span>
-  )
-}</code></pre>
-        </div>
-
-        <p><strong>Run:</strong></p>
-        <div class="chat-code">
-          <code>npx react-recall</code>
-          <button class="copy-btn-small" data-copy="npx react-recall">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-
-        <p>Want to try it out? Click <strong>Send</strong> below and watch Claude Code debug an error using the logs!</p>
-      </div>
-    </div>
-  `;
-  chatInput.value = "Can I try it out?";
-  errorToast.classList.remove('visible');
-  removeLoadingSpinner();
-
-  // Reset counts to initial dummy data values
-  counts = { event: 4, log: 1, error: 0, network: 1 };
-  document.getElementById('eventCount').textContent = '4';
-  document.getElementById('logCount').textContent = '1';
-  document.getElementById('errorCount').textContent = '0';
-  document.getElementById('networkCount').textContent = '1';
-
-  // Reset timeline with initial entries
-  logEntries = [
-    { type: 'event', label: 'Toggle', details: '"Reasoning" enabled', time: '14:22:45', extra: {} },
-    { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
-    { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
-    { type: 'network', label: 'POST', details: '/api/chat', time: '14:22:48', extra: { status: 200, duration: 312 } },
-    { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} },
-    { type: 'event', label: 'Copy', details: '"npm install react-recall" (CodeBlock)', time: '14:22:52', extra: {} }
-  ];
-  selectedLogs.clear();
-  updateActionBar();
-
-  recallTimeline.innerHTML = `
-    <div class="log-entry" data-index="0" data-type="event">
-      <span class="log-dot blue"></span>
-      <div class="log-content">
-        <div class="log-header">
-          <span class="log-type">Toggle</span>
-          <span class="log-time">14:22:45</span>
-        </div>
-        <div class="log-details">"Reasoning" enabled</div>
-      </div>
-    </div>
-    <div class="log-entry" data-index="1" data-type="event">
-      <span class="log-dot blue"></span>
-      <div class="log-content">
-        <div class="log-header">
-          <span class="log-type">Click</span>
-          <span class="log-time">14:22:47</span>
-        </div>
-        <div class="log-details">"Send" (ChatInput &gt; SendButton)</div>
-      </div>
-    </div>
-    <div class="log-entry" data-index="2" data-type="event">
-      <span class="log-dot blue"></span>
-      <div class="log-content">
-        <div class="log-header">
-          <span class="log-type">Input</span>
-          <span class="log-time">14:22:47</span>
-        </div>
-        <div class="log-details">value: "Hi, I heard about ReactRecall..."</div>
-      </div>
-    </div>
-    <div class="log-entry" data-index="3" data-type="network">
-      <span class="log-dot purple"></span>
-      <div class="log-content">
-        <div class="log-header">
-          <span class="log-type">POST</span>
-          <span class="log-status success">200</span>
-          <span class="log-duration">312ms</span>
-          <span class="log-time">14:22:48</span>
-        </div>
-        <div class="log-details">/api/chat</div>
-      </div>
-    </div>
-    <div class="log-entry" data-index="4" data-type="log">
-      <span class="log-dot gray"></span>
-      <div class="log-content">
-        <div class="log-header">
-          <span class="log-type">Log</span>
-          <span class="log-time">14:22:48</span>
-        </div>
-        <div class="log-details">Response received, rendering message</div>
-      </div>
-    </div>
-    <div class="log-entry" data-index="5" data-type="event">
-      <span class="log-dot blue"></span>
-      <div class="log-content">
-        <div class="log-header">
-          <span class="log-type">Copy</span>
-          <span class="log-time">14:22:52</span>
-        </div>
-        <div class="log-details">"npm install react-recall" (CodeBlock)</div>
-      </div>
-    </div>
-  `;
-
-  // Reset terminal
-  clearTerminal();
-
-  // Reset state
-  hasTriggeredDemo = false;
-  claudeIsTyping = false;
-
-  // Reinitialize copy buttons for new DOM elements
-  initCopyButtons();
-}
-
-// ============================================
 // INITIALIZE
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1007,12 +837,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') {
       handleSendClick();
     }
-  });
-
-  // Focus input to log it (for demo realism)
-  chatInput.addEventListener('focus', () => {
-    if (logEntries.length > 0) return; // Only log first focus
-    // Could add focus event here if desired
   });
 
   // Toggle brain/web action buttons
