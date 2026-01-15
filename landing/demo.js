@@ -8,7 +8,13 @@
 // ============================================
 let counts = { event: 2, log: 1, error: 0, network: 1 };
 let selectedLogs = new Set();
-let logEntries = [];
+// Pre-populate with initial dummy entries
+let logEntries = [
+  { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
+  { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
+  { type: 'network', label: 'POST', details: '/api/chat', time: '14:22:48', extra: { status: 200, duration: 312 } },
+  { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} }
+];
 let hasTriggeredDemo = false;
 let claudeIsTyping = false;
 
@@ -283,19 +289,37 @@ function clearHighlights() {
 // ============================================
 // LOG SELECTION
 // ============================================
+let lastClickedIndex = null;
+
 function initLogSelection() {
   recallTimeline.addEventListener('click', (e) => {
     const entry = e.target.closest('.log-entry');
 
     if (entry) {
       const index = parseInt(entry.dataset.index);
-      if (selectedLogs.has(index)) {
-        selectedLogs.delete(index);
-        entry.classList.remove('selected');
+
+      // Shift+click for range selection
+      if (e.shiftKey && lastClickedIndex !== null) {
+        const start = Math.min(lastClickedIndex, index);
+        const end = Math.max(lastClickedIndex, index);
+
+        for (let i = start; i <= end; i++) {
+          selectedLogs.add(i);
+          const el = recallTimeline.querySelector(`[data-index="${i}"]`);
+          if (el) el.classList.add('selected');
+        }
       } else {
-        selectedLogs.add(index);
-        entry.classList.add('selected');
+        // Regular click - toggle selection
+        if (selectedLogs.has(index)) {
+          selectedLogs.delete(index);
+          entry.classList.remove('selected');
+        } else {
+          selectedLogs.add(index);
+          entry.classList.add('selected');
+        }
+        lastClickedIndex = index;
       }
+
       updateActionBar();
     }
   });
@@ -310,6 +334,7 @@ function initLogSelection() {
 
 function clearSelection() {
   selectedLogs.clear();
+  lastClickedIndex = null;
   recallTimeline.querySelectorAll('.log-entry.selected').forEach(entry => {
     entry.classList.remove('selected');
   });
@@ -588,8 +613,60 @@ function resetDemo() {
   document.getElementById('errorCount').textContent = '0';
   document.getElementById('networkCount').textContent = '1';
 
-  // Reset timeline
-  clearTimeline();
+  // Reset timeline with initial entries
+  logEntries = [
+    { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
+    { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
+    { type: 'network', label: 'POST', details: '/api/chat', time: '14:22:48', extra: { status: 200, duration: 312 } },
+    { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} }
+  ];
+  selectedLogs.clear();
+  updateActionBar();
+
+  recallTimeline.innerHTML = `
+    <div class="log-entry" data-index="0">
+      <span class="log-dot blue"></span>
+      <div class="log-content">
+        <div class="log-header">
+          <span class="log-type">Click</span>
+          <span class="log-time">14:22:47</span>
+        </div>
+        <div class="log-details">"Send" (ChatInput &gt; SendButton)</div>
+      </div>
+    </div>
+    <div class="log-entry" data-index="1">
+      <span class="log-dot blue"></span>
+      <div class="log-content">
+        <div class="log-header">
+          <span class="log-type">Input</span>
+          <span class="log-time">14:22:47</span>
+        </div>
+        <div class="log-details">value: "Hi, I heard about ReactRecall..."</div>
+      </div>
+    </div>
+    <div class="log-entry" data-index="2">
+      <span class="log-dot purple"></span>
+      <div class="log-content">
+        <div class="log-header">
+          <span class="log-type">POST</span>
+          <span class="log-status success">200</span>
+          <span class="log-duration">312ms</span>
+          <span class="log-time">14:22:48</span>
+        </div>
+        <div class="log-details">/api/chat</div>
+      </div>
+    </div>
+    <div class="log-entry" data-index="3">
+      <span class="log-dot gray"></span>
+      <div class="log-content">
+        <div class="log-header">
+          <span class="log-type">Log</span>
+          <span class="log-time">14:22:48</span>
+        </div>
+        <div class="log-details">Response received, rendering message</div>
+      </div>
+    </div>
+  `;
 
   // Reset terminal
   clearTerminal();

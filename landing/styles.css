@@ -647,6 +647,8 @@ body {
   gap: 10px;
   padding: 8px 10px;
   border-radius: 6px;
+  user-select: none;
+  -webkit-user-select: none;
   cursor: pointer;
   transition: background 0.1s ease;
   animation: slideIn 0.2s ease;
