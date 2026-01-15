@@ -274,7 +274,7 @@ body {
 
 /* Browser Window */
 .window-browser {
-  height: 806px;
+  height: 1048px;
 }
 
 .browser-split {
@@ -800,7 +800,7 @@ body {
    ============================================ */
 
 .window-terminal {
-  height: 510px;
+  height: 612px;
 }
 
 .terminal-content {
