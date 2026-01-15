@@ -844,9 +844,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Send button click
   sendButton.addEventListener('click', handleSendClick);
 
-  // Enter key in chat input
+  // Enter key in chat input (Shift+Enter for newline)
   chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       handleSendClick();
     }
   });
