@@ -622,7 +622,7 @@ async function claudeInvestigates() {
 
   // Claude summarizes what it sees
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
-  await typeText(line, 'I see a stream parse error — "Failed to parse stream string. Invalid code"', 20);
+  await typeText(line, 'I see a stream parse error — "Failed to parse stream string"', 20);
 
   await sleep(300);
 
@@ -702,7 +702,7 @@ async function handleSendClick() {
   await sleep(300);
 
   // Stream parse error - the interesting part!
-  addLogEntry('error', 'Error', 'Failed to parse stream string. Invalid code');
+  addLogEntry('error', 'Error', 'Failed to parse stream string');
 
   await sleep(100);
 
