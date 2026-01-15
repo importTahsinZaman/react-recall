@@ -663,8 +663,9 @@ body {
 }
 
 .log-entry.highlight {
-  background: rgba(255, 184, 0, 0.1);
-  border-bottom-color: rgba(255, 184, 0, 0.3);
+  background: rgba(255, 184, 0, 0.08);
+  border-left: 2px solid var(--color-warning);
+  padding-left: 11px;
 }
 
 .log-dot {
