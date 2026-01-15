@@ -104,6 +104,30 @@ function loadWindowPositions() {
   }
 }
 
+function saveToggleStates() {
+  const states = {};
+  document.querySelectorAll('.chat-action-btn').forEach(btn => {
+    states[btn.title] = btn.classList.contains('active');
+  });
+  localStorage.setItem('reactrecall-toggle-states', JSON.stringify(states));
+}
+
+function loadToggleStates() {
+  const saved = localStorage.getItem('reactrecall-toggle-states');
+  if (!saved) return;
+
+  try {
+    const states = JSON.parse(saved);
+    document.querySelectorAll('.chat-action-btn').forEach(btn => {
+      if (states[btn.title] !== undefined) {
+        btn.classList.toggle('active', states[btn.title]);
+      }
+    });
+  } catch (e) {
+    console.warn('Could not restore toggle states:', e);
+  }
+}
+
 function initDragging() {
   const windows = document.querySelectorAll('.window');
 
@@ -992,12 +1016,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Toggle brain/web action buttons
+  loadToggleStates();
   document.querySelectorAll('.chat-action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
       const isActive = btn.classList.contains('active');
       const name = btn.title === 'Reasoning' ? 'Reasoning' : 'Web Search';
       addLogEntry('event', 'Toggle', `"${name}" ${isActive ? 'enabled' : 'disabled'}`);
+      saveToggleStates();
     });
   });
 
