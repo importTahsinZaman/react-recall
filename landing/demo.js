@@ -15,9 +15,9 @@ let claudeIsTyping = false;
 // ============================================
 // DOM ELEMENTS
 // ============================================
-const desktop = document.getElementById('desktop');
 const browserWindow = document.getElementById('browserWindow');
 const terminalWindow = document.getElementById('terminalWindow');
+const notepadWindow = document.getElementById('notepadWindow');
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const sendButton = document.getElementById('sendButton');
@@ -48,7 +48,6 @@ function initDragging() {
 
       activeWindow = win;
       const rect = win.getBoundingClientRect();
-      const desktopRect = desktop.getBoundingClientRect();
 
       dragOffset.x = e.clientX - rect.left;
       dragOffset.y = e.clientY - rect.top;
@@ -68,20 +67,26 @@ function initDragging() {
   document.addEventListener('mousemove', (e) => {
     if (!activeWindow) return;
 
-    const desktopRect = desktop.getBoundingClientRect();
-    let newX = e.clientX - desktopRect.left - dragOffset.x;
-    let newY = e.clientY - desktopRect.top - dragOffset.y;
+    let newX = e.clientX - dragOffset.x;
+    let newY = e.clientY - dragOffset.y;
 
-    // Constrain to desktop bounds
+    // Keep at least 100px of window visible on screen
     const winRect = activeWindow.getBoundingClientRect();
-    const maxX = desktopRect.width - winRect.width;
-    const maxY = desktopRect.height - winRect.height;
+    const minVisible = 100;
 
-    newX = Math.max(0, Math.min(newX, maxX));
-    newY = Math.max(0, Math.min(newY, maxY));
+    const maxX = window.innerWidth - minVisible;
+    const maxY = window.innerHeight - minVisible;
+    const minX = -(winRect.width - minVisible);
+    const minY = 0; // Don't let title bar go above viewport
+
+    newX = Math.max(minX, Math.min(newX, maxX));
+    newY = Math.max(minY, Math.min(newY, maxY));
 
     activeWindow.style.left = newX + 'px';
     activeWindow.style.top = newY + 'px';
+    // Clear right/bottom positioning when dragging
+    activeWindow.style.right = 'auto';
+    activeWindow.style.bottom = 'auto';
   });
 
   document.addEventListener('mouseup', () => {
@@ -468,16 +473,28 @@ async function handleSendClick() {
 }
 
 // ============================================
-// COPY BUTTONS (for install section)
+// COPY BUTTONS (for notepad window)
 // ============================================
 function initCopyButtons() {
-  document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
+  document.querySelectorAll('[data-copy]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const text = btn.dataset.copy;
       if (text) {
         await navigator.clipboard.writeText(text);
         btn.classList.add('copied');
-        setTimeout(() => btn.classList.remove('copied'), 1500);
+
+        // Update button content for visual feedback
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
+
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = originalHTML;
+        }, 1500);
       }
     });
   });
