@@ -665,6 +665,11 @@ async function handleSendClick() {
   const message = chatInput.value.trim();
   if (!message) return;
 
+  // Hide the hint and remove glow animation after first send
+  const sendHint = document.querySelector('.send-hint');
+  if (sendHint) sendHint.style.display = 'none';
+  sendButton.classList.add('sent');
+
   // Add user message
   addUserMessage(message);
   chatInput.value = '';

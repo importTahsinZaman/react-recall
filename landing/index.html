@@ -91,7 +91,7 @@
           </div>
           <div class="chat-input-area">
             <div class="chat-input-container">
-              <textarea class="chat-input" id="chatInput" placeholder="What can I do for you?" rows="2">Can I try it out?</textarea>
+              <textarea class="chat-input" id="chatInput" placeholder="Can I see it in action?" rows="2">Can I see it in action?</textarea>
               <div class="chat-input-actions">
                 <div class="chat-input-left">
                   <button class="chat-action-btn active" title="Reasoning">
@@ -115,11 +115,14 @@
                     </svg>
                   </button>
                 </div>
-                <button class="chat-send" id="sendButton">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 19V5M5 12l7-7 7 7"/>
-                  </svg>
-                </button>
+                <div class="send-hint-wrapper">
+                  <span class="send-hint">See it in action <span class="send-hint-arrow">→</span></span>
+                  <button class="chat-send" id="sendButton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 19V5M5 12l7-7 7 7"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

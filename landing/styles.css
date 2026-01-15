@@ -468,17 +468,72 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #3a4250;
+  background: var(--accent);
   border: none;
   border-radius: 7px;
-  color: #c8cdd4;
+  color: var(--bg-void);
   cursor: pointer;
   transition: all 0.15s ease;
   flex-shrink: 0;
+  animation: sendPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .chat-send:hover {
+  background: var(--accent-bright);
+  box-shadow: 0 0 20px var(--accent-glow);
+  animation: none;
+}
+
+.chat-send.sent {
+  animation: none;
+  box-shadow: none;
+  background: #3a4250;
+}
+
+.chat-send.sent:hover {
   background: #4a5260;
+  box-shadow: none;
+}
+
+@keyframes sendPulse {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--accent-glow);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 18px var(--accent-glow), 0 0 30px rgba(0, 212, 255, 0.2);
+    transform: scale(1.05);
+  }
+}
+
+.send-hint-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.send-hint {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 500;
+  animation: hintBounce 1.5s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.send-hint-arrow {
+  display: inline-block;
+  animation: arrowBounce 1s ease-in-out infinite;
+}
+
+@keyframes hintBounce {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
 }
 
 .chat-send:active {
