@@ -274,7 +274,7 @@ body {
 
 /* Browser Window */
 .window-browser {
-  height: 360px;
+  height: 806px;
 }
 
 .browser-split {
@@ -283,7 +283,6 @@ body {
 }
 
 .browser-pane {
-  flex: 1;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -300,6 +299,7 @@ body {
    ============================================ */
 
 .demo-app {
+  flex: 65;
   background: var(--bg-surface);
 }
 
@@ -498,6 +498,7 @@ body {
    ============================================ */
 
 .recall-dashboard {
+  flex: 35;
   background: var(--bg-base);
 }
 
@@ -757,7 +758,7 @@ body {
    ============================================ */
 
 .window-terminal {
-  height: 280px;
+  height: 510px;
 }
 
 .terminal-content {
@@ -1023,19 +1024,19 @@ body {
    RESPONSIVE
    ============================================ */
 
-@media (max-width: 1100px) {
+@media (max-width: 1400px) {
   .window-browser {
-    width: calc(100% - 380px) !important;
+    width: calc(100% - 720px) !important;
     left: 20px !important;
   }
 
   .window-notepad {
-    width: 320px !important;
+    width: 660px !important;
     right: 20px !important;
   }
 
   .window-terminal {
-    width: calc(100% - 380px) !important;
+    width: calc(100% - 720px) !important;
     left: 20px !important;
   }
 }
@@ -1051,7 +1052,7 @@ body {
   }
 
   .window-browser {
-    height: 340px;
+    height: 400px;
   }
 
   .browser-split {
