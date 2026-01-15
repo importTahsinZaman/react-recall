@@ -13,7 +13,34 @@ let activeFilters = new Set(['event', 'log', 'error', 'network']);
 let logEntries = [
   { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
   { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
-  { type: 'network', label: 'POST', details: '/api/chat', time: '14:22:48', extra: { status: 200, duration: 312 } },
+  {
+    type: 'network',
+    label: 'POST',
+    details: '/api/chat',
+    time: '14:22:48',
+    extra: {
+      status: 200,
+      duration: 312,
+      started: '14:22:47.623',
+      completed: '14:22:47.935',
+      requestHeaders: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer sk-...a8f2'
+      },
+      responseHeaders: {
+        'content-type': 'application/json',
+        'x-request-id': 'req_abc123'
+      },
+      requestBody: {
+        messages: [{ role: 'user', content: 'Hi, I heard about ReactRecall...' }],
+        model: 'gpt-4'
+      },
+      responseBody: {
+        id: 'chatcmpl-abc123',
+        choices: [{ message: { role: 'assistant', content: 'ReactRecall is a debug...' } }]
+      }
+    }
+  },
   { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} }
 ];
 let hasTriggeredDemo = false;
@@ -380,8 +407,41 @@ async function copySelectedLogs() {
   const selected = Array.from(selectedLogs).sort((a, b) => a - b);
   const text = selected.map(i => {
     const log = logEntries[i];
+
+    // Format network requests with full details
+    if (log.type === 'network' && log.extra) {
+      const e = log.extra;
+      let output = `[${log.time}] ${log.label} ${e.status} ${log.details} (${e.duration}ms)`;
+
+      if (e.requestHeaders) {
+        output += `\n  Request Headers:`;
+        for (const [key, value] of Object.entries(e.requestHeaders)) {
+          output += `\n    ${key}: ${value}`;
+        }
+      }
+
+      if (e.requestBody) {
+        output += `\n  Request Body:`;
+        output += `\n    ${JSON.stringify(e.requestBody, null, 2).split('\n').join('\n    ')}`;
+      }
+
+      if (e.responseHeaders) {
+        output += `\n  Response Headers:`;
+        for (const [key, value] of Object.entries(e.responseHeaders)) {
+          output += `\n    ${key}: ${value}`;
+        }
+      }
+
+      if (e.responseBody) {
+        output += `\n  Response Body:`;
+        output += `\n    ${JSON.stringify(e.responseBody, null, 2).split('\n').join('\n    ')}`;
+      }
+
+      return output;
+    }
+
     return `[${log.time}] ${log.label}: ${log.details}`;
-  }).join('\n');
+  }).join('\n\n');
 
   await navigator.clipboard.writeText(text);
 
