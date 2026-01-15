@@ -655,6 +655,12 @@ async function claudeInvestigates() {
   line = addTerminalLine('<span class="claude-bullet">●</span> ');
   await typeText(line, 'Want me to update Chat.tsx?', 20);
 
+  // Show the bouncer chips after demo ends
+  const githubBouncer = document.getElementById('bouncerGithub');
+  const npmBouncer = document.getElementById('bouncerNpm');
+  if (githubBouncer) githubBouncer.style.display = 'flex';
+  if (npmBouncer) npmBouncer.style.display = 'flex';
+
   claudeIsTyping = false;
 }
 
