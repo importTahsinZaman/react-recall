@@ -300,7 +300,7 @@ body {
 
 /* Demo App - Distinct palette from ReactRecall */
 .demo-app {
-  flex: 65;
+  flex: 70;
   background: #0a0c0e;
 }
 
@@ -511,7 +511,7 @@ body {
    ============================================ */
 
 .recall-dashboard {
-  flex: 35;
+  flex: 30;
   background: var(--bg-base);
   position: relative;
 }
@@ -768,7 +768,7 @@ body {
 
 .network-section-header {
   padding: 8px 12px;
-  background: var(--bg-elevated);
+  background: #101214;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -780,7 +780,7 @@ body {
 }
 
 .network-section-header:hover {
-  background: var(--bg-hover);
+  background: #151719;
   color: var(--text-primary);
 }
 
