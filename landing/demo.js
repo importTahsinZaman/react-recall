@@ -11,7 +11,7 @@ let selectedLogs = new Set();
 let activeFilters = new Set(['event', 'log', 'error', 'network']);
 // Pre-populate with initial dummy entries
 let logEntries = [
-  { type: 'event', label: 'Toggle', details: '"Reasoning" enabled', time: '14:22:45', extra: {} },
+  { type: 'event', label: 'Click', details: '"Reasoning" enabled', time: '14:22:45', extra: {} },
   { type: 'event', label: 'Click', details: '"Send" (ChatInput > SendButton)', time: '14:22:47', extra: {} },
   { type: 'event', label: 'Input', details: 'value: "Hi, I heard about ReactRecall..."', time: '14:22:47', extra: {} },
   {
@@ -43,7 +43,7 @@ let logEntries = [
     }
   },
   { type: 'log', label: 'Log', details: 'Response received, rendering message', time: '14:22:48', extra: {} },
-  { type: 'event', label: 'Copy', details: '"npm install react-recall" (CodeBlock)', time: '14:22:52', extra: {} }
+  { type: 'event', label: 'Click', details: '"npm install react-recall" (CodeBlock)', time: '14:22:52', extra: {} }
 ];
 let hasTriggeredDemo = false;
 let claudeIsTyping = false;
@@ -858,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.toggle('active');
       const isActive = btn.classList.contains('active');
       const name = btn.title === 'Reasoning' ? 'Reasoning' : 'Web Search';
-      addLogEntry('event', 'Toggle', `"${name}" ${isActive ? 'enabled' : 'disabled'}`);
+      addLogEntry('event', 'Click', `"${name}" ${isActive ? 'enabled' : 'disabled'}`);
       saveToggleStates();
     });
   });
@@ -868,7 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       const code = btn.dataset.copy;
       if (code) {
-        addLogEntry('event', 'Copy', `"${code}" (CodeBlock)`);
+        addLogEntry('event', 'Click', `"${code}" (CodeBlock)`);
       }
     });
   });

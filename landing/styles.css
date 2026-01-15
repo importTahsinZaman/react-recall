@@ -934,7 +934,7 @@ body {
   align-items: center;
   gap: 14px;
   padding: 7px 14px;
-  background: var(--bg-surface);
+  background: var(--bg-base);
   border: 1px solid var(--border-default);
   border-radius: 8px;
   box-shadow: var(--shadow-lg), 0 0 15px rgba(0, 212, 255, 0.1);
