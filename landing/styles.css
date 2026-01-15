@@ -97,12 +97,48 @@ body {
 .desktop-bg {
   position: fixed;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 30%, rgba(0, 212, 255, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(168, 85, 247, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.3) 0%, transparent 100%),
-    var(--bg-void);
+  background: linear-gradient(180deg,
+    #ddd0d6 0%,
+    #c9b0be 15%,
+    #a8899c 35%,
+    #8e7084 50%,
+    #7a5c70 65%,
+    #654a5c 80%,
+    #523a4a 100%
+  );
   z-index: 0;
+}
+
+/* Flowing wave layers */
+.desktop-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* Light caustic highlights */
+    radial-gradient(ellipse 80% 20% at 30% 25%, rgba(255,255,255,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 15% at 70% 35%, rgba(255,255,255,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 25% at 50% 15%, rgba(240,230,235,0.25) 0%, transparent 60%),
+    /* Darker wave troughs */
+    radial-gradient(ellipse 100% 30% at 20% 55%, rgba(60,40,52,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 120% 35% at 80% 65%, rgba(55,35,48,0.25) 0%, transparent 65%),
+    radial-gradient(ellipse 100% 40% at 50% 75%, rgba(50,30,42,0.22) 0%, transparent 70%),
+    /* Mid-tone flowing shapes */
+    radial-gradient(ellipse 70% 25% at 15% 70%, rgba(90,65,80,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 20% at 85% 45%, rgba(110,85,100,0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Subtle light streaks */
+.desktop-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(165deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%),
+    linear-gradient(175deg, transparent 55%, rgba(255,255,255,0.06) 62%, transparent 70%),
+    linear-gradient(160deg, transparent 70%, rgba(255,255,255,0.05) 78%, transparent 85%);
+  pointer-events: none;
 }
 
 /* ============================================
