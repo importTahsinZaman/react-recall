@@ -854,4 +854,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logEntries.length > 0) return; // Only log first focus
     // Could add focus event here if desired
   });
+
+  // Toggle brain/web action buttons
+  document.querySelectorAll('.chat-action-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+    });
+  });
 });
