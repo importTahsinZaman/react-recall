@@ -76,7 +76,7 @@
           </svg>
           <h1 class="mobile-title">React Recall</h1>
         </div>
-        <p class="mobile-tagline">Debug with your AI agent</p>
+        <p class="mobile-tagline">Contextualized Logging</p>
         <p class="mobile-description">
           Capture every click, log, and network request to a file—so coding
           agents can contextualize errors in seconds.
@@ -88,10 +88,20 @@
             <span class="step-label">1. Install</span>
             <div class="step-code">
               <code>npm install -D react-recall</code>
-              <button class="mobile-copy-btn" data-copy="npm install -D react-recall">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <button
+                class="mobile-copy-btn"
+                data-copy="npm install -D react-recall"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
                 </svg>
               </button>
             </div>
@@ -111,9 +121,16 @@
             <div class="step-code">
               <code>npx react-recall</code>
               <button class="mobile-copy-btn" data-copy="npx react-recall">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
                 </svg>
               </button>
             </div>
@@ -122,12 +139,43 @@
           <div class="setup-output">
             <span class="step-label">.react-recall/logs.jsonl</span>
             <div class="step-code step-code-logs">
-              <div class="log-line"><span class="log-key">"type"</span>:<span class="log-string">"click"</span>, <span class="log-key">"target"</span>:<span class="log-string">"SendButton"</span></div>
-              <div class="log-line"><span class="log-key">"type"</span>:<span class="log-string">"input"</span>, <span class="log-key">"value"</span>:<span class="log-string">"Hello world"</span></div>
-              <div class="log-line log-line-error"><span class="log-key">"type"</span>:<span class="log-error">"error"</span>, <span class="log-key">"msg"</span>:<span class="log-string">"Failed to parse"</span></div>
-              <div class="log-line"><span class="log-key">"type"</span>:<span class="log-string">"fetch"</span>, <span class="log-key">"url"</span>:<span class="log-string">"/api/chat"</span>, <span class="log-key">"status"</span>:<span class="log-number">200</span></div>
+              <div class="log-line">
+                <span class="log-key">"type"</span>:<span class="log-string"
+                  >"click"</span
+                >, <span class="log-key">"target"</span>:<span
+                  class="log-string"
+                  >"SendButton"</span
+                >
+              </div>
+              <div class="log-line">
+                <span class="log-key">"type"</span>:<span class="log-string"
+                  >"input"</span
+                >, <span class="log-key">"value"</span>:<span class="log-string"
+                  >"Hello world"</span
+                >
+              </div>
+              <div class="log-line log-line-error">
+                <span class="log-key">"type"</span>:<span class="log-error"
+                  >"error"</span
+                >, <span class="log-key">"msg"</span>:<span class="log-string"
+                  >"Failed to parse"</span
+                >
+              </div>
+              <div class="log-line">
+                <span class="log-key">"type"</span>:<span class="log-string"
+                  >"fetch"</span
+                >, <span class="log-key">"url"</span>:<span class="log-string"
+                  >"/api/chat"</span
+                >, <span class="log-key">"status"</span>:<span
+                  class="log-number"
+                  >200</span
+                >
+              </div>
             </div>
-            <p class="logs-hint">Your agent reads this to debug in seconds</p>
+            <p class="logs-hint">
+              Your agent can use the tools it already knows, like grep and jq,
+              to analyze the logs.
+            </p>
           </div>
         </div>
       </section>
@@ -135,9 +183,15 @@
       <!-- Footer -->
       <footer class="mobile-footer">
         <div class="mobile-footer-links">
-          <a href="https://github.com/importTahsinZaman/react-recall" target="_blank">GitHub</a>
+          <a
+            href="https://github.com/importTahsinZaman/react-recall"
+            target="_blank"
+            >GitHub</a
+          >
           <span class="footer-dot">·</span>
-          <a href="https://www.npmjs.com/package/react-recall" target="_blank">npm</a>
+          <a href="https://www.npmjs.com/package/react-recall" target="_blank"
+            >npm</a
+          >
           <span class="footer-dot">·</span>
           <span class="footer-desktop">View demo on desktop</span>
         </div>
