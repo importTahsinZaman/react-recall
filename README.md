@@ -1,4 +1,4 @@
-# React Recall
+# React Recall | react-recall.com
 
 React Recall is a debug session recorder that makes it really easy for you and your AI agents to view logs and trace user flows.
 
