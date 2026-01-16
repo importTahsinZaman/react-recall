@@ -45,12 +45,12 @@ Navigate to [http://localhost:4312](http://localhost:4312) to view captured even
 
 ### 3. (Optional) Add to your AGENTS.md
 
-Help your AI coding agents discover ReactRecall by adding this to your project's `AGENTS.md`:
+Help your AI coding agents discover React Recall by adding this to your project's `AGENTS.md`:
 
 ````markdown
-## ReactRecall Debug Logs
+## React Recall Debug Logs
 
-ReactRecall captures user interactions, console logs, errors, and network requests in `.react-recall/logs.jsonl`. Each line is a JSON object.
+React Recall captures user interactions, console logs, errors, and network requests in `.react-recall/logs.jsonl`. Each line is a JSON object.
 
 ### Querying Logs
 
@@ -125,7 +125,7 @@ Options:
 
 ## How It Works
 
-ReactRecall uses standard browser APIs to observe your application without interfering:
+React Recall uses standard browser APIs to observe your application without interfering:
 
 - **Console/Errors**: Wraps native methods, calls originals after capture
 - **Network**: Intercepts fetch/XHR, clones responses before reading
