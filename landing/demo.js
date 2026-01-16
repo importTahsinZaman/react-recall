@@ -4,6 +4,51 @@
  */
 
 // ============================================
+// GRID BACKGROUND
+// ============================================
+const gridCanvas = document.getElementById('gridCanvas');
+const gridCtx = gridCanvas ? gridCanvas.getContext('2d') : null;
+const GRID_SPACING = 35;
+const GRID_COLOR = 'rgba(50, 55, 65, 0.35)';
+
+function resizeCanvas() {
+  if (!gridCanvas) return;
+  gridCanvas.width = window.innerWidth;
+  gridCanvas.height = window.innerHeight;
+  drawGrid();
+}
+
+function drawGrid() {
+  if (!gridCtx) return;
+
+  const width = gridCanvas.width;
+  const height = gridCanvas.height;
+
+  gridCtx.clearRect(0, 0, width, height);
+  gridCtx.strokeStyle = GRID_COLOR;
+  gridCtx.lineWidth = 1;
+
+  // Draw horizontal lines
+  for (let y = 0; y <= height; y += GRID_SPACING) {
+    gridCtx.beginPath();
+    gridCtx.moveTo(0, y);
+    gridCtx.lineTo(width, y);
+    gridCtx.stroke();
+  }
+
+  // Draw vertical lines
+  for (let x = 0; x <= width; x += GRID_SPACING) {
+    gridCtx.beginPath();
+    gridCtx.moveTo(x, 0);
+    gridCtx.lineTo(x, height);
+    gridCtx.stroke();
+  }
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// ============================================
 // STATE
 // ============================================
 let counts = { event: 4, log: 1, error: 0, network: 1 };
@@ -183,7 +228,8 @@ function initDragging() {
     // Clear right/bottom positioning when dragging
     activeWindow.style.right = 'auto';
     activeWindow.style.bottom = 'auto';
-  });
+
+      });
 
   document.addEventListener('mouseup', () => {
     if (activeWindow) {

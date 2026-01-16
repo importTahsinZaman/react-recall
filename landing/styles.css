@@ -97,17 +97,14 @@ body {
 .desktop-bg {
   position: fixed;
   inset: 0;
-  background: url('assets/bears.jpg') center center / cover no-repeat;
+  background: var(--bg-void);
   z-index: 0;
 }
 
-.desktop-bg::before {
-  content: '';
-  position: absolute;
+#gridCanvas {
+  position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(1.3px);
-  -webkit-backdrop-filter: blur(1.3px);
+  z-index: 1;
   pointer-events: none;
 }
 
