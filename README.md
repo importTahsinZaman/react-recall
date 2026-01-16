@@ -43,7 +43,7 @@ Navigate to [http://localhost:4312](http://localhost:4312) to view captured even
 > "dev": "next dev & react-recall"
 > ```
 
-### 3. (Optional) Add to your AGENTS.md
+### 3. (Recommended) Add to your AGENTS.md
 
 Help your AI coding agents discover React Recall by adding this to your project's `AGENTS.md`:
 
