@@ -1,8 +1,8 @@
 # ReactRecall
 
-ReactRecall makes it really easy for you and your AI Agents to read logs, trace flows, and find bugs.
+React Recall is a debug session recorder that makes it really easy for you and your AI agents to view logs and trace user flows.
 
-It adds a real-time session recorder to your React app and captures clicks, inputs, logs, errors, and network requests.
+It captures every click, log, error, and network request in your React app to a .react-recall/logs.jsonl file, so your coding agent can use the tools it already knows to analyze the logs in context to the user flow.
 
 ## Installation
 
