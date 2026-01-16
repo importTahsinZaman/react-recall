@@ -854,13 +854,38 @@ function toggleNetworkSection(event) {
 // ============================================
 function initCopyButtons() {
   document.querySelectorAll('[data-copy]').forEach(btn => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
       const text = btn.dataset.copy;
       if (text) {
         await navigator.clipboard.writeText(text);
         btn.classList.add('copied');
 
         // Update button content for visual feedback
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
+
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = originalHTML;
+        }, 1500);
+      }
+    });
+  });
+
+  // Also handle mobile copy buttons
+  document.querySelectorAll('.mobile-copy-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const text = btn.dataset.copy;
+      if (text) {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('copied');
+
         const originalHTML = btn.innerHTML;
         btn.innerHTML = `
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
