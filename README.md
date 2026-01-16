@@ -1,4 +1,4 @@
-# ReactRecall
+# React Recall
 
 React Recall is a debug session recorder that makes it really easy for you and your AI agents to view logs and trace user flows.
 
@@ -37,7 +37,7 @@ npx react-recall
 
 Navigate to [http://localhost:4312](http://localhost:4312) to view captured events in real-time.
 
-> Tip: Add `react-recall` to your dev script so you don't need another terminal screen:
+> Tip: Add `react-recall` to your dev script so you don't need to run an extra command:
 >
 > ```json
 > "dev": "next dev & react-recall"
@@ -64,14 +64,8 @@ grep '"type":"error"' .react-recall/logs.jsonl
 # All network failures (4xx, 5xx)
 grep '"type":"network"' .react-recall/logs.jsonl | grep -E '"status":[45][0-9]{2}'
 
-# All clicks
-grep '"event":"click"' .react-recall/logs.jsonl
-
 # Search for specific text
 grep -i "submit" .react-recall/logs.jsonl
-
-# Pretty print last 5 events
-tail -n 5 .react-recall/logs.jsonl | jq .
 
 # Get just error messages
 grep '"type":"error"' .react-recall/logs.jsonl | jq -r '.message'
