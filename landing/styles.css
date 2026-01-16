@@ -1365,39 +1365,73 @@ body {
     max-width: 300px;
   }
 
-  /* Install command block */
-  .mobile-install {
+  /* ---- SETUP STEPS ---- */
+  .mobile-setup-steps {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .setup-step,
+  .setup-output {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .step-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .step-code {
     display: flex;
     align-items: center;
     gap: 10px;
     background: var(--bg-surface);
-    border: 1px solid var(--border-default);
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 16px;
-    width: 100%;
-    max-width: 320px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 10px 12px;
   }
 
-  .mobile-install code {
+  .step-code code {
     flex: 1;
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-primary);
   }
 
+  .step-code-multi {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .step-code-multi pre {
+    margin: 0;
+  }
+
+  .step-code-multi code {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
   .mobile-copy-btn {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-elevated);
+    background: transparent;
     border: 1px solid var(--border-default);
-    border-radius: 6px;
+    border-radius: 5px;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     flex-shrink: 0;
   }
 
@@ -1415,155 +1449,61 @@ body {
   }
 
   .mobile-copy-btn svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 
-  /* Inline setup code */
-  .mobile-setup-code {
-    width: 100%;
-    max-width: 320px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    padding: 14px 16px;
+  /* Log output */
+  .setup-output {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .step-code-logs {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 12px;
     overflow-x: auto;
   }
 
-  .mobile-setup-code pre {
-    margin: 0;
-  }
-
-  .mobile-setup-code code {
+  .log-line {
     font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.6;
-    color: var(--text-secondary);
-  }
-
-  /* CTA Section */
-  .mobile-cta-section {
-    padding: 32px 0;
-    animation: fadeInUp 0.6s ease-out 0.2s both;
-  }
-
-  .mobile-cta-group {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
-  }
-
-  .mobile-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 20px;
-    border-radius: 12px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .mobile-btn svg {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-  }
-
-  .mobile-btn-primary {
-    background: var(--text-primary);
-    color: var(--bg-void);
-  }
-
-  .mobile-btn-primary:active {
-    transform: scale(0.98);
-    background: var(--text-secondary);
-  }
-
-  .mobile-btn-secondary {
-    background: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border-strong);
-  }
-
-  .mobile-btn-secondary svg {
-    fill: #cb3837;
-  }
-
-  .mobile-btn-secondary:active {
-    transform: scale(0.98);
-    background: var(--bg-surface);
-  }
-
-  /* ---- FEATURES SECTION ---- */
-  .mobile-features {
-    padding: 24px 0 32px;
-    animation: fadeInUp 0.6s ease-out 0.1s both;
-  }
-
-  .mobile-section-title {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    margin: 0 0 14px;
-  }
-
-  .mobile-feature-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .mobile-feature-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    padding: 12px;
-  }
-
-  .feature-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-top: 5px;
-    flex-shrink: 0;
-  }
-
-  .feature-dot.blue { background: var(--dot-event); box-shadow: 0 0 6px rgba(59, 139, 255, 0.4); }
-  .feature-dot.red { background: var(--dot-error); box-shadow: 0 0 6px rgba(255, 77, 106, 0.4); }
-  .feature-dot.purple { background: var(--dot-network); box-shadow: 0 0 6px rgba(168, 85, 247, 0.4); }
-  .feature-dot.gray { background: var(--dot-log); }
-
-  .feature-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .feature-text strong {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .feature-text span {
-    font-family: var(--font-sans);
     font-size: 10px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .log-line-error {
+    background: rgba(255, 77, 106, 0.1);
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+
+  .log-key {
+    color: var(--accent);
+  }
+
+  .log-string {
+    color: var(--color-success);
+  }
+
+  .log-error {
+    color: var(--color-error);
+  }
+
+  .log-number {
+    color: var(--color-warning);
+  }
+
+  .logs-hint {
+    font-family: var(--font-sans);
+    font-size: 11px;
     color: var(--text-muted);
-    line-height: 1.3;
+    margin: 8px 0 0;
+    text-align: center;
   }
 
   /* ---- FOOTER ---- */
@@ -1574,10 +1514,30 @@ body {
     animation: fadeInUp 0.6s ease-out 0.3s both;
   }
 
-  .mobile-footer-text {
+  .mobile-footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     font-family: var(--font-sans);
     font-size: 12px;
+  }
+
+  .mobile-footer-links a {
     color: var(--text-muted);
-    margin: 0;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .mobile-footer-links a:active {
+    color: var(--accent);
+  }
+
+  .footer-dot {
+    color: var(--text-disabled);
+  }
+
+  .footer-desktop {
+    color: var(--text-muted);
   }
 }
