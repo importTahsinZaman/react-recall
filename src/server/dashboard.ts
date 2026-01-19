@@ -53,6 +53,7 @@ export function getDashboardHTML(): string {
       --dot-log: #5f6670;
       --dot-error: #ff4d6a;
       --dot-network: #a855f7;
+      --dot-server: #f59e0b;
 
       /* Typography */
       --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -302,6 +303,7 @@ export function getDashboardHTML(): string {
     .filter-chip .dot.gray { background: var(--dot-log); }
     .filter-chip .dot.red { background: var(--dot-error); }
     .filter-chip .dot.purple { background: var(--dot-network); }
+    .filter-chip .dot.orange { background: var(--dot-server); }
 
     .filter-chip .count {
       background: var(--bg-active);
@@ -472,6 +474,7 @@ export function getDashboardHTML(): string {
     .entry-dot.gray { background: var(--dot-log); }
     .entry-dot.red { background: var(--dot-error); box-shadow: 0 0 6px rgba(255, 77, 106, 0.4); }
     .entry-dot.purple { background: var(--dot-network); }
+    .entry-dot.orange { background: var(--dot-server); }
 
     /* Pending network request */
     .entry.pending .entry-dot {
@@ -994,6 +997,9 @@ export function getDashboardHTML(): string {
           <button class="filter-chip active" data-filter="network" onclick="toggleFilter('network')">
             <span class="dot purple"></span> Network <span class="count" id="countNetwork">0</span>
           </button>
+          <button class="filter-chip active" data-filter="server-log" onclick="toggleFilter('server-log')">
+            <span class="dot orange"></span> Server <span class="count" id="countServer">0</span>
+          </button>
         </div>
         <div class="toolbar-right">
           <select class="time-filter" id="timeFilter" onchange="setTimeFilter(this.value)">
@@ -1031,7 +1037,7 @@ export function getDashboardHTML(): string {
     let entries = [];
     let selectedIndices = new Set();
     let lastClickedIndex = null;
-    let activeFilters = new Set(['event', 'log', 'error', 'network']);
+    let activeFilters = new Set(['event', 'log', 'error', 'network', 'server-log']);
     let currentTimeFilter = '';
     let eventSource = null;
 
@@ -1088,7 +1094,7 @@ export function getDashboardHTML(): string {
       let filtered = entries;
 
       // Filter by active type filters
-      if (activeFilters.size < 4) {
+      if (activeFilters.size < 5) {
         filtered = filtered.filter(e => activeFilters.has(e.type));
       }
 
@@ -1134,11 +1140,13 @@ export function getDashboardHTML(): string {
       const logs = entries.filter(e => e.type === 'log').length;
       const errors = entries.filter(e => e.type === 'error').length;
       const network = entries.filter(e => e.type === 'network').length;
+      const server = entries.filter(e => e.type === 'server-log').length;
 
       document.getElementById('countEvents').textContent = events;
       document.getElementById('countLogs').textContent = logs;
       document.getElementById('countErrors').textContent = errors;
       document.getElementById('countNetwork').textContent = network;
+      document.getElementById('countServer').textContent = server;
 
       const errorTab = document.getElementById('errorTab');
       if (errors > 0) {
@@ -1217,6 +1225,16 @@ export function getDashboardHTML(): string {
           if (entry.pending) className += ' pending';
           dotColor = 'purple';
           typeLabel = entry.method || 'Request';
+        } else if (entry.type === 'server-log') {
+          className = 'server-log';
+          dotColor = 'orange';
+          if (entry.level === 'error') {
+            typeLabel = 'Server Error';
+          } else if (entry.level === 'warn') {
+            typeLabel = 'Server Warn';
+          } else {
+            typeLabel = 'Server';
+          }
         }
 
         let details = '';
@@ -1260,6 +1278,16 @@ export function getDashboardHTML(): string {
           }
         } else if (entry.type === 'error') {
           details = entry.message || '';
+        } else if (entry.type === 'server-log') {
+          // Server log: show source and message
+          if (entry.source) {
+            details = \`[\${entry.source}] \${entry.message || ''}\`;
+          } else {
+            details = entry.message || '';
+          }
+          if (entry.args && entry.args.length > 0) {
+            details += ' ' + entry.args.map(a => JSON.stringify(a)).join(' ');
+          }
         } else if (entry.type === 'network') {
           // URL only in details
           details = entry.url;
@@ -1712,6 +1740,14 @@ export function getDashboardHTML(): string {
         return str;
       } else if (entry.type === 'network') {
         return formatNetworkEntryForExport(entry);
+      } else if (entry.type === 'server-log') {
+        let str = \`[\${time}] SERVER \${entry.level.toUpperCase()}\`;
+        if (entry.source) str += \` [\${entry.source}]\`;
+        str += \`: \${entry.message}\`;
+        if (entry.args && entry.args.length > 0) {
+          str += ' ' + entry.args.map(a => JSON.stringify(a)).join(' ');
+        }
+        return str;
       }
       return '';
     }

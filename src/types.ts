@@ -96,7 +96,16 @@ export interface NetworkEntry extends BaseEntry {
   initiator?: string;
 }
 
-export type Entry = EventEntry | LogEntry | ErrorEntry | NetworkEntry;
+// Server-side log (from Node.js server)
+export interface ServerLogEntry extends BaseEntry {
+  type: "server-log";
+  level: "log" | "info" | "warn" | "debug" | "error";
+  message: string;
+  args?: unknown[];
+  source?: string; // e.g., "api/checkout.ts:42"
+}
+
+export type Entry = EventEntry | LogEntry | ErrorEntry | NetworkEntry | ServerLogEntry;
 
 // WebSocket message types (SDK -> Server)
 export interface SessionStartMessage {
@@ -152,12 +161,24 @@ export interface NetworkMessage {
   };
 }
 
+export interface ServerLogMessage {
+  type: "server-log";
+  data: {
+    level: "log" | "info" | "warn" | "debug" | "error";
+    message: string;
+    args?: unknown[];
+    timestamp: string;
+    source?: string; // e.g., "api/checkout.ts:42"
+  };
+}
+
 export type ClientMessage =
   | SessionStartMessage
   | EventMessage
   | LogMessage
   | ErrorMessage
-  | NetworkMessage;
+  | NetworkMessage
+  | ServerLogMessage;
 
 // Server config
 export interface ServerConfig {

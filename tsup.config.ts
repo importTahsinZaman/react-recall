@@ -26,4 +26,15 @@ export default defineConfig([
       js: '#!/usr/bin/env node',
     },
   },
+  {
+    entry: { 'server-capture/index': 'src/server-capture/index.ts' },
+    outDir: 'dist',
+    format: ['esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: true,
+    clean: false,
+    platform: 'node',
+    target: 'node18',
+  },
 ]);

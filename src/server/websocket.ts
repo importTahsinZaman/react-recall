@@ -1,6 +1,6 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import type { IncomingMessage } from 'http';
-import type { ClientMessage, Entry, EventEntry, LogEntry, ErrorEntry, NetworkEntry } from '../types.js';
+import type { ClientMessage, Entry, EventEntry, LogEntry, ErrorEntry, NetworkEntry, ServerLogEntry } from '../types.js';
 import type { Storage } from './storage.js';
 
 export class WebSocketHandler {
@@ -130,6 +130,21 @@ export class WebSocketHandler {
           await this.storage.appendEntry(networkEntry);
         }
         this.broadcast(networkEntry);
+        break;
+      }
+
+      case 'server-log': {
+        const serverLogEntry: ServerLogEntry = {
+          type: 'server-log',
+          ts: message.data.timestamp || ts,
+          ms,
+          level: message.data.level,
+          message: message.data.message,
+          args: message.data.args,
+          source: message.data.source,
+        };
+        await this.storage.appendEntry(serverLogEntry);
+        this.broadcast(serverLogEntry);
         break;
       }
     }

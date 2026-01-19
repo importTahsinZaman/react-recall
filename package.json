@@ -12,6 +12,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server-capture/index.js",
+      "types": "./dist/server-capture/index.d.ts"
     }
   },
   "scripts": {
