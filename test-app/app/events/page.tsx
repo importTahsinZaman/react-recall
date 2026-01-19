@@ -16,13 +16,13 @@ export default function EventsPage() {
 
       <section style={{ marginBottom: "30px" }}>
         <h2>Buttons</h2>
-        <button id="btn-primary" onClick={() => alert("Primary clicked!")}>
+        <button id="btn-primary">
           Primary Button
         </button>{" "}
-        <button className="btn-secondary" onClick={() => alert("Secondary clicked!")}>
+        <button className="btn-secondary">
           Secondary Button
         </button>{" "}
-        <button data-testid="btn-test" onClick={() => console.log("Test button clicked")}>
+        <button data-testid="btn-test">
           Test Button
         </button>
       </section>
