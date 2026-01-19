@@ -561,15 +561,11 @@ export function getDashboardHTML(): string {
     .stack-trace {
       font-family: var(--font-mono);
       font-size: var(--text-xs);
-      color: var(--color-error);
+      color: var(--text-muted);
       white-space: pre-wrap;
       margin-top: var(--space-2);
-      padding: var(--space-3);
-      background: var(--color-error-dim);
-      border-radius: var(--radius-md);
       max-height: 80px;
       overflow-y: auto;
-      border: 1px solid rgba(255, 77, 106, 0.2);
       line-height: 1.5;
     }
 
@@ -997,9 +993,6 @@ export function getDashboardHTML(): string {
           <button class="filter-chip active" data-filter="network" onclick="toggleFilter('network')">
             <span class="dot purple"></span> Network <span class="count" id="countNetwork">0</span>
           </button>
-          <button class="filter-chip active" data-filter="server-log" onclick="toggleFilter('server-log')">
-            <span class="dot orange"></span> Server <span class="count" id="countServer">0</span>
-          </button>
         </div>
         <div class="toolbar-right">
           <select class="time-filter" id="timeFilter" onchange="setTimeFilter(this.value)">
@@ -1037,7 +1030,7 @@ export function getDashboardHTML(): string {
     let entries = [];
     let selectedIndices = new Set();
     let lastClickedIndex = null;
-    let activeFilters = new Set(['event', 'log', 'error', 'network', 'server-log']);
+    let activeFilters = new Set(['event', 'log', 'error', 'network']);
     let currentTimeFilter = '';
     let eventSource = null;
 
@@ -1094,8 +1087,18 @@ export function getDashboardHTML(): string {
       let filtered = entries;
 
       // Filter by active type filters
-      if (activeFilters.size < 5) {
-        filtered = filtered.filter(e => activeFilters.has(e.type));
+      if (activeFilters.size < 4) {
+        filtered = filtered.filter(e => {
+          if (e.type === 'server-log') {
+            // Server errors go under Errors filter
+            if (e.level === 'error') {
+              return activeFilters.has('error');
+            }
+            // Other server logs go under Logs filter
+            return activeFilters.has('log');
+          }
+          return activeFilters.has(e.type);
+        });
       }
 
       if (currentTimeFilter) {
@@ -1137,16 +1140,14 @@ export function getDashboardHTML(): string {
     function updateCounts() {
       const all = entries.length;
       const events = entries.filter(e => e.type === 'event').length;
-      const logs = entries.filter(e => e.type === 'log').length;
-      const errors = entries.filter(e => e.type === 'error').length;
+      const logs = entries.filter(e => e.type === 'log' || (e.type === 'server-log' && e.level !== 'error')).length;
+      const errors = entries.filter(e => e.type === 'error' || (e.type === 'server-log' && e.level === 'error')).length;
       const network = entries.filter(e => e.type === 'network').length;
-      const server = entries.filter(e => e.type === 'server-log').length;
 
       document.getElementById('countEvents').textContent = events;
       document.getElementById('countLogs').textContent = logs;
       document.getElementById('countErrors').textContent = errors;
       document.getElementById('countNetwork').textContent = network;
-      document.getElementById('countServer').textContent = server;
 
       const errorTab = document.getElementById('errorTab');
       if (errors > 0) {
@@ -1227,13 +1228,15 @@ export function getDashboardHTML(): string {
           typeLabel = entry.method || 'Request';
         } else if (entry.type === 'server-log') {
           className = 'server-log';
-          dotColor = 'orange';
           if (entry.level === 'error') {
+            dotColor = 'red';
             typeLabel = 'Server Error';
           } else if (entry.level === 'warn') {
+            dotColor = 'gray';
             typeLabel = 'Server Warn';
           } else {
-            typeLabel = 'Server';
+            dotColor = 'gray';
+            typeLabel = 'Server Log';
           }
         }
 

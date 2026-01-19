@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  console.error("[API] Server error occurred in GET /api/error");
   return NextResponse.json(
     {
       status: "error",
