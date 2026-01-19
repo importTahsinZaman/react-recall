@@ -16,6 +16,9 @@ const NEXT_INTERNALS = new Set([
   'AppDevOverlay', 'HotReload', 'Router', 'ErrorBoundaryHandler',
   'AppRouter', 'ServerRoot', 'SegmentStateProvider', 'RootErrorBoundary',
   'LoadableComponent', 'MotionDOMComponent', 'PathnameContextProviderAdapter',
+  // App Router boundaries
+  'NotFoundBoundary', 'NotFoundErrorBoundary', 'DevRootNotFoundBoundary',
+  'ClientPageRoot', 'ReactDevOverlay', 'GlobalError',
 ]);
 
 const LIBRARY_INTERNALS = new Set([
