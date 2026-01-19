@@ -12,6 +12,79 @@ export async function register() {
 `;
 
 /**
+ * Checks Next.js version from package.json
+ * Returns major version number or null if not found
+ */
+function getNextJsVersion(workingDir: string): number | null {
+  const packageJsonPath = path.join(workingDir, 'package.json');
+  if (!fs.existsSync(packageJsonPath)) return null;
+
+  try {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+    const nextVersion = packageJson.dependencies?.next || packageJson.devDependencies?.next;
+    if (!nextVersion) return null;
+
+    // Extract major version from semver (e.g., "^14.0.0" -> 14)
+    const match = nextVersion.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Adds instrumentationHook to next.config.js for Next.js < 15
+ */
+function addInstrumentationHookConfig(workingDir: string): { success: boolean; message: string } | null {
+  const configFiles = ['next.config.js', 'next.config.mjs', 'next.config.ts'];
+
+  for (const configFile of configFiles) {
+    const configPath = path.join(workingDir, configFile);
+    if (!fs.existsSync(configPath)) continue;
+
+    let content = fs.readFileSync(configPath, 'utf-8');
+
+    // Check if already has instrumentationHook
+    if (content.includes('instrumentationHook')) {
+      return null; // Already configured
+    }
+
+    // Check if already has experimental block
+    if (content.includes('experimental')) {
+      // Add instrumentationHook to existing experimental block
+      const experimentalMatch = content.match(/experimental\s*:\s*\{/);
+      if (experimentalMatch) {
+        const insertPos = experimentalMatch.index! + experimentalMatch[0].length;
+        content = content.slice(0, insertPos) + '\n    instrumentationHook: true,' + content.slice(insertPos);
+        fs.writeFileSync(configPath, content);
+        return {
+          success: true,
+          message: `Added instrumentationHook to ${configFile}`,
+        };
+      }
+    }
+
+    // Need to add experimental block - find the nextConfig object
+    // Look for common patterns: module.exports = { or export default {
+    const configObjectMatch = content.match(/(const\s+nextConfig\s*=\s*\{|module\.exports\s*=\s*\{|export\s+default\s*\{)/);
+    if (configObjectMatch) {
+      const insertPos = configObjectMatch.index! + configObjectMatch[0].length;
+      content = content.slice(0, insertPos) + '\n  experimental: {\n    instrumentationHook: true,\n  },' + content.slice(insertPos);
+      fs.writeFileSync(configPath, content);
+      return {
+        success: true,
+        message: `Added experimental.instrumentationHook to ${configFile}`,
+      };
+    }
+  }
+
+  return {
+    success: false,
+    message: 'Could not automatically update next.config.js. Please add manually:\n  experimental: { instrumentationHook: true }',
+  };
+}
+
+/**
  * Detects if the current directory is a Next.js project
  */
 export function detectNextJs(workingDir: string): boolean {
@@ -74,52 +147,67 @@ function findInstrumentationPath(workingDir: string): string {
  */
 export function autoInstrument(workingDir: string): { success: boolean; message: string } {
   const instrumentationPath = findInstrumentationPath(workingDir);
+  const messages: string[] = [];
 
   // Check if file already exists
   const tsPath = instrumentationPath;
   const jsPath = instrumentationPath.replace('.ts', '.js');
+  let instrumentationCreated = false;
 
   if (fs.existsSync(tsPath)) {
     const content = fs.readFileSync(tsPath, 'utf-8');
     if (content.includes('react-recall/server')) {
+      messages.push('Server log capture already configured in instrumentation.ts');
+      instrumentationCreated = true;
+    } else {
       return {
-        success: true,
-        message: 'Server log capture already configured in instrumentation.ts',
+        success: false,
+        message: `instrumentation.ts already exists but doesn't include react-recall/server.\nPlease add: await import('react-recall/server') to your register() function.`,
       };
     }
-    return {
-      success: false,
-      message: `instrumentation.ts already exists but doesn't include react-recall/server.\nPlease add: await import('react-recall/server') to your register() function.`,
-    };
-  }
-
-  if (fs.existsSync(jsPath)) {
+  } else if (fs.existsSync(jsPath)) {
     const content = fs.readFileSync(jsPath, 'utf-8');
     if (content.includes('react-recall/server')) {
+      messages.push('Server log capture already configured in instrumentation.js');
+      instrumentationCreated = true;
+    } else {
       return {
-        success: true,
-        message: 'Server log capture already configured in instrumentation.js',
+        success: false,
+        message: `instrumentation.js already exists but doesn't include react-recall/server.\nPlease add: await import('react-recall/server') to your register() function.`,
       };
     }
-    return {
-      success: false,
-      message: `instrumentation.js already exists but doesn't include react-recall/server.\nPlease add: await import('react-recall/server') to your register() function.`,
-    };
+  } else {
+    // Create the instrumentation file
+    try {
+      fs.writeFileSync(tsPath, INSTRUMENTATION_CONTENT);
+      messages.push(`Created ${path.relative(workingDir, tsPath)}`);
+      instrumentationCreated = true;
+    } catch (err) {
+      return {
+        success: false,
+        message: `Failed to create instrumentation.ts: ${err}`,
+      };
+    }
   }
 
-  // Create the instrumentation file
-  try {
-    fs.writeFileSync(tsPath, INSTRUMENTATION_CONTENT);
-    return {
-      success: true,
-      message: `Created ${path.relative(workingDir, tsPath)} for server log capture`,
-    };
-  } catch (err) {
-    return {
-      success: false,
-      message: `Failed to create instrumentation.ts: ${err}`,
-    };
+  // For Next.js < 15, add instrumentationHook config
+  const nextVersion = getNextJsVersion(workingDir);
+  if (nextVersion !== null && nextVersion < 15) {
+    const configResult = addInstrumentationHookConfig(workingDir);
+    if (configResult) {
+      if (configResult.success) {
+        messages.push(configResult.message);
+      } else {
+        // Still return success for instrumentation.ts, but warn about config
+        messages.push(configResult.message);
+      }
+    }
   }
+
+  return {
+    success: instrumentationCreated,
+    message: messages.join('\n'),
+  };
 }
 
 /**
