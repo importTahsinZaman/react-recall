@@ -15,10 +15,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const contentType = request.headers.get("content-type") || "";
+  console.log("[API] POST /api/echo - Content-Type:", contentType);
 
   let body: unknown;
   if (contentType.includes("application/json")) {
     body = await request.json().catch(() => null);
+    console.log("[API] Echo received JSON body:", body);
   } else if (contentType.includes("multipart/form-data") || contentType.includes("application/x-www-form-urlencoded")) {
     const formData = await request.formData().catch(() => null);
     if (formData) {

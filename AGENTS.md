@@ -46,14 +46,25 @@ src/
 │   ├── events.ts         # Click, input, navigation capture
 │   ├── console.ts        # Console log capture
 │   ├── errors.ts         # Error/unhandledrejection capture
-│   └── network.ts        # Fetch/XHR interception
-└── server/
-    ├── index.ts          # Server entry point
-    ├── websocket.ts      # WebSocket message handler
-    ├── dashboard.ts      # Dashboard HTML generation
-    ├── storage.ts        # Event storage (memory/file)
-    └── routes.ts         # HTTP route handlers
+│   ├── network.ts        # Fetch/XHR interception
+│   └── react-fiber.ts    # React component hierarchy capture
+├── server/
+│   ├── index.ts          # Server entry point (CLI)
+│   ├── http.ts           # HTTP route handlers
+│   ├── websocket.ts      # Message handler and SSE broadcast
+│   ├── dashboard.ts      # Dashboard HTML generation
+│   ├── storage.ts        # Event storage (file-based)
+│   └── auto-instrument.ts # Auto-instrumentation utilities
+├── server-capture/
+│   └── index.ts          # Server-side console capture (Node.js)
+└── utils/
+    ├── selector.ts       # CSS selector generation
+    └── websocket.ts      # WebSocket utilities
 ```
+
+Additional directories:
+- `test-app/` - Next.js test application for manual testing
+- `.react-recall/` - Created at runtime, stores `logs.jsonl`
 
 ## Essential Commands
 
@@ -78,7 +89,11 @@ Opens the dashboard at `http://localhost:4312`. The server listens on port 4312 
 
 ### Development
 
-There is no watch mode configured. After making changes, run `npm run build` and restart the server.
+```bash
+npm run dev   # runs tsup --watch
+```
+
+This watches for changes and auto-rebuilds. You still need to restart the server to pick up changes.
 
 ### Testing
 
@@ -87,14 +102,19 @@ No unit test framework is currently configured. When adding unit tests, prefer V
 For integration/manual testing, use the included test app in `test-app/`:
 
 ```bash
-# Terminal 1 - Start the react-recall server
-cd /Users/tahsin/Desktop/react-recall
-npx react-recall
+# Terminal 1 - Start react-recall server (from test-app directory for server log capture)
+cd /Users/tahsin/Desktop/react-recall/test-app
+npx react-recall --with-server
 
-# Terminal 2 - Start the test app
+# Terminal 2 - Start the test app (restart required after react-recall creates instrumentation.ts)
 cd test-app
 npm run dev
 ```
+
+The `--with-server` flag:
+- Auto-creates `instrumentation.ts` in the Next.js project
+- Enables server-side log capture from API routes and server components
+- Logs appear as `server-log` type (green dot) with source file locations
 
 Then open http://localhost:3000 to interact with test pages, and http://localhost:4312 to view captured events in the dashboard.
 
@@ -229,7 +249,7 @@ Handles incoming messages from the SDK and broadcasts to dashboard clients.
 
 1. **Capture** - Browser events trigger capture modules in `src/capture/`
 2. **Send** - `provider.tsx` sends JSON via HTTP POST to `/events`
-3. **Process** - `routes.ts` receives POST, calls `websocket.handleMessage()`
+3. **Process** - `http.ts` receives POST, calls `websocket.handleMessage()`
 4. **Store** - `websocket.ts` appends entry to `storage` and calls `broadcast()`
 5. **Display** - SSE pushes entry to dashboard, `renderTimeline()` updates UI
 
@@ -238,9 +258,10 @@ Handles incoming messages from the SDK and broadcasts to dashboard clients.
 | Type | Dot Color | Captured From |
 |------|-----------|---------------|
 | `event` | Blue | Clicks, inputs, navigation, custom events |
-| `log` | Gray | `console.log/info/warn/debug` |
+| `log` | Gray | `console.log/info/warn/debug` (browser) |
 | `error` | Red | `console.error`, `window.onerror`, `unhandledrejection` |
 | `network` | Purple | `fetch`, `XMLHttpRequest` |
+| `server-log` | Green | Server-side `console.*` via `react-recall/server` |
 
 ## Configuration
 
@@ -322,10 +343,3 @@ interface ReactRecallConfig {
 6. **Timestamps** - SDK sends `timestamp` string, server generates `ts` (ISO) and `ms` (unix)
 7. **Pending requests** - Network entries are sent twice: once at start (`pending: true`), once at completion (`pending: false`). Dashboard merges by `requestId`
 
-## Future Considerations
-
-- Light mode theme (CSS variables are set up for easy theming)
-- Session persistence across page reloads
-- Export/import functionality
-- Search/filter within entries
-- Webhook integrations

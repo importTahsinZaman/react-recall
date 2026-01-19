@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  console.log("[API] GET /api/success called");
+
   return NextResponse.json({
     status: "success",
     message: "Request successful",
