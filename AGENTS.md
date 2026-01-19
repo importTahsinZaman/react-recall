@@ -82,7 +82,91 @@ There is no watch mode configured. After making changes, run `npm run build` and
 
 ### Testing
 
-No test framework is currently configured. When adding tests, prefer Vitest for consistency with the TypeScript/React ecosystem.
+No unit test framework is currently configured. When adding unit tests, prefer Vitest for consistency with the TypeScript/React ecosystem.
+
+For integration/manual testing, use the included test app in `test-app/`:
+
+```bash
+# Terminal 1 - Start the react-recall server
+cd /Users/tahsin/Desktop/react-recall
+npx react-recall
+
+# Terminal 2 - Start the test app
+cd test-app
+npm run dev
+```
+
+Then open http://localhost:3000 to interact with test pages, and http://localhost:4312 to view captured events in the dashboard.
+
+**Test app pages:**
+- `/events` - Buttons, inputs, checkboxes, forms, keypresses
+- `/console` - Triggers for all console log levels
+- `/errors` - Sync errors, promise rejections, custom errors
+- `/network` - GET/POST requests, slow/error responses, custom headers
+
+**After making changes to react-recall:**
+
+```bash
+# 1. Rebuild the package (from react-recall root)
+npm run build
+
+# 2. Restart the test-app dev server (picks up new dist/)
+# No npm install needed - just restart Next.js
+```
+
+For active development with auto-rebuild:
+
+```bash
+# Terminal 1 - Watch react-recall for changes
+npm run dev   # runs tsup --watch
+
+# Terminal 2 - Run test app
+cd test-app && npm run dev
+```
+
+**Test app setup:**
+- Uses `"react-recall": "file:.."` in package.json to link to parent
+- Changes to react-recall source require rebuild, not reinstall
+- Logs are written to `.react-recall/logs.jsonl`
+
+**Testing with agent-browser (agent-browser.dev) (for AI agents):**
+
+Install agent-browser if not already installed:
+```bash
+npm install -g agent-browser
+agent-browser install  # Download Chromium
+```
+
+Example workflow to test react-recall capture:
+```bash
+# Open the test app
+agent-browser open http://localhost:3000 --headed
+
+# Get interactive elements with refs
+agent-browser snapshot -i
+# Output:
+# - link "Events" [ref=e2]
+# - button "Primary Button" [ref=e6]
+# - textbox "Text Input:" [ref=e9]
+
+# Interact using refs
+agent-browser click @e2              # Navigate to events page
+agent-browser click @e6              # Click a button
+agent-browser fill @e9 "test input"  # Fill an input
+
+# Check captured logs
+cat .react-recall/logs.jsonl | tail -5
+
+# Close browser when done
+agent-browser close
+```
+
+Key agent-browser commands:
+- `snapshot -i` - Get interactive elements only (buttons, inputs, links)
+- `click @ref` - Click element by ref from snapshot
+- `fill @ref "text"` - Fill input by ref
+- `console` - View browser console messages
+- `screenshot [path]` - Take screenshot
 
 ## Key Files
 
