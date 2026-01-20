@@ -1842,8 +1842,9 @@ export function getDashboardHTML(): string {
       if (selected.length === 0) return;
 
       const md = selected.map(e => formatEntryForExport(e)).join('\\n');
+      const output = 'from .react-recall/logs.jsonl\\n\\n' + md;
 
-      await navigator.clipboard.writeText(md);
+      await navigator.clipboard.writeText(output);
 
       const copyBtn = document.getElementById('copyBtn');
       copyBtn.classList.add('copied');
