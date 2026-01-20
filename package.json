@@ -20,7 +20,10 @@
   },
   "scripts": {
     "build": "tsup && echo '\"use client\";' | cat - dist/index.js > temp && mv temp dist/index.js",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -30,12 +33,20 @@
     "ws": "^8.16.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/react": "^15.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
+    "@types/supertest": "^6.0.0",
     "@types/ws": "^8.5.10",
+    "@vitest/coverage-v8": "^2.0.0",
+    "jsdom": "^24.0.0",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "supertest": "^7.0.0",
     "tsup": "^8.0.0",
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0"
   },
   "files": [
     "dist"
