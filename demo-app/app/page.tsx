@@ -133,6 +133,7 @@ export default function Home() {
                     <button
                       onClick={() => toggleComplete(task.id)}
                       style={styles.checkbox}
+                      data-action={`Complete: ${task.text}`}
                     >
                       <div style={styles.checkboxInner} />
                     </button>
@@ -140,6 +141,7 @@ export default function Home() {
                     <button
                       onClick={() => deleteTask(task.id)}
                       style={styles.deleteButton}
+                      data-action={`Delete: ${task.text}`}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14" />
@@ -163,6 +165,7 @@ export default function Home() {
                     <button
                       onClick={() => toggleComplete(task.id)}
                       style={{ ...styles.checkbox, ...styles.checkboxChecked }}
+                      data-action={`Uncomplete: ${task.text}`}
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
                         <polyline points="20 6 9 17 4 12" />
@@ -174,6 +177,7 @@ export default function Home() {
                     <button
                       onClick={() => deleteTask(task.id)}
                       style={styles.deleteButton}
+                      data-action={`Delete: ${task.text}`}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14" />

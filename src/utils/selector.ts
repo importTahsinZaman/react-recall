@@ -1,23 +1,69 @@
+// Find the nearest interactive parent element (button, a, input, etc.)
+function findInteractiveParent(element: Element): Element {
+  const nonInteractiveTags = ['svg', 'path', 'circle', 'rect', 'line', 'polyline', 'polygon', 'g', 'span', 'div', 'img'];
+  const interactiveTags = ['button', 'a', 'input', 'select', 'textarea'];
+
+  let current: Element | null = element;
+
+  while (current) {
+    const tag = current.tagName.toLowerCase();
+
+    // If we found an interactive element, return it
+    if (interactiveTags.includes(tag)) {
+      return current;
+    }
+
+    // If the current element has role="button" or is clickable, return it
+    if (current.getAttribute('role') === 'button') {
+      return current;
+    }
+
+    // If current element is not a non-interactive child element, stop bubbling
+    if (!nonInteractiveTags.includes(tag)) {
+      return current;
+    }
+
+    current = current.parentElement;
+  }
+
+  return element;
+}
+
 // Generate a readable CSS selector for an element
 export function generateSelector(element: Element): string {
-  // 1. ID
+  // Bubble up to interactive parent for better selectors
+  element = findInteractiveParent(element);
+
+  // 1. data-action attribute (most descriptive for UI actions)
+  const dataAction = element.getAttribute('data-action');
+  if (dataAction) {
+    return `[data-action="${dataAction}"]`;
+  }
+
+  // 2. ID
   if (element.id && !isGeneratedId(element.id)) {
     return `#${element.id}`;
   }
 
-  // 2. Name attribute
+  // 3. Name attribute
   const name = element.getAttribute('name');
   if (name) {
     return `[name="${name}"]`;
   }
 
-  // 3. Data-testid
+  // 4. Data-testid
   const testId = element.getAttribute('data-testid');
   if (testId) {
     return `[data-testid="${testId}"]`;
   }
 
-  // 4. Type attribute for inputs
+  // 5. aria-label (useful for icon buttons)
+  const ariaLabel = element.getAttribute('aria-label');
+  if (ariaLabel) {
+    return `[aria-label="${ariaLabel}"]`;
+  }
+
+  // 6. Type attribute for inputs
   if (element.tagName.toLowerCase() === 'input') {
     const type = element.getAttribute('type');
     if (type) {
@@ -25,7 +71,7 @@ export function generateSelector(element: Element): string {
     }
   }
 
-  // 5. Tag + meaningful classes
+  // 7. Tag + meaningful classes
   const tag = element.tagName.toLowerCase();
   const meaningfulClasses = getMeaningfulClasses(element);
 
@@ -33,13 +79,13 @@ export function generateSelector(element: Element): string {
     return `${tag}.${meaningfulClasses.slice(0, 2).join('.')}`;
   }
 
-  // 6. Tag + text content hint
+  // 8. Tag + text content hint
   const text = getShortText(element);
   if (text) {
     return `${tag}[text="${text}"]`;
   }
 
-  // 7. Fallback to tag name
+  // 9. Fallback to tag name
   return tag;
 }
 
@@ -90,6 +136,21 @@ function getShortText(element: Element): string | null {
 
 // Get visible text content of an element (for logging)
 export function getElementText(element: Element): string {
+  // Bubble up to interactive parent for better text
+  element = findInteractiveParent(element);
+
+  // Check for data-action first (most descriptive)
+  const dataAction = element.getAttribute('data-action');
+  if (dataAction) {
+    return dataAction;
+  }
+
+  // Check for aria-label (useful for icon buttons)
+  const ariaLabel = element.getAttribute('aria-label');
+  if (ariaLabel) {
+    return ariaLabel;
+  }
+
   // For buttons, inputs, use value or text
   if (element.tagName.toLowerCase() === 'input') {
     const input = element as HTMLInputElement;
