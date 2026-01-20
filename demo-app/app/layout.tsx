@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactRecallProvider } from "react-recall";
+import "./globals.css";
 
 export default function RootLayout({
   children,
