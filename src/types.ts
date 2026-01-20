@@ -30,6 +30,7 @@ export const defaultConfig: Required<ReactRecallConfig> = {
 export interface BaseEntry {
   ts: string; // ISO timestamp (human readable)
   ms: number; // Unix milliseconds (for range queries)
+  count?: number; // Consolidation count for duplicate entries
 }
 
 // User interaction event

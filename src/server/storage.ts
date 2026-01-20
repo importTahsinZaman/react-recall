@@ -28,6 +28,7 @@ export class Storage {
   private config: ServerConfig;
   private lastEntry: Entry | null = null;
   private lastEntrySignature: string | null = null;
+  private lastEntryByteOffset: number = 0; // Track byte position for efficient rewrites
 
   constructor(workingDir: string, config: ServerConfig) {
     this.baseDir = path.join(workingDir, REACT_RECALL_DIR);
@@ -80,13 +81,18 @@ export class Storage {
 
       if (timeDiff <= 2000) {
         // Increment count on last entry
-        const count = ((this.lastEntry as any).count || 1) + 1;
-        (this.lastEntry as any).count = count;
-
-        // Rewrite the file with updated last entry
+        this.lastEntry.count = (this.lastEntry.count || 1) + 1;
         this.rewriteLastEntry(this.lastEntry);
         return;
       }
+    }
+
+    // Track byte offset before appending (for efficient rewrite)
+    try {
+      const stats = fs.statSync(this.logsPath);
+      this.lastEntryByteOffset = stats.size;
+    } catch {
+      this.lastEntryByteOffset = 0;
     }
 
     // New entry - append to file
@@ -103,16 +109,12 @@ export class Storage {
 
   private rewriteLastEntry(updatedEntry: Entry): void {
     try {
-      const content = fs.readFileSync(this.logsPath, "utf-8");
-      const lines = content.trim().split("\n").filter(l => l);
-
-      if (lines.length > 0) {
-        // Replace the last line with updated entry
-        lines[lines.length - 1] = JSON.stringify(updatedEntry);
-        fs.writeFileSync(this.logsPath, lines.join("\n") + "\n");
-      }
+      // Truncate file to remove old last entry, then append updated entry
+      fs.truncateSync(this.logsPath, this.lastEntryByteOffset);
+      const line = JSON.stringify(updatedEntry) + "\n";
+      fs.appendFileSync(this.logsPath, line);
     } catch {
-      // If rewrite fails, just append as new entry
+      // If truncate fails, fall back to append (may create duplicate)
       const line = JSON.stringify(updatedEntry) + "\n";
       fs.appendFileSync(this.logsPath, line);
     }
@@ -128,6 +130,11 @@ export class Storage {
         const rotatedPath = path.join(this.baseDir, `logs.${timestamp}.jsonl`);
         fs.renameSync(this.logsPath, rotatedPath);
         fs.writeFileSync(this.logsPath, "");
+
+        // Reset tracking state since file is now empty
+        this.lastEntry = null;
+        this.lastEntrySignature = null;
+        this.lastEntryByteOffset = 0;
 
         // Clean up old rotated files (keep last 3)
         await this.cleanupRotatedLogs();
@@ -186,6 +193,9 @@ export class Storage {
 
   clearLogs(): void {
     fs.writeFileSync(this.logsPath, "");
+    this.lastEntry = null;
+    this.lastEntrySignature = null;
+    this.lastEntryByteOffset = 0;
   }
 
   getLogFileSize(): number {
