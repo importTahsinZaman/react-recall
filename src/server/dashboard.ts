@@ -496,6 +496,16 @@ export function getDashboardHTML(): string {
       margin-left: var(--space-2);
     }
 
+    .count-badge {
+      background: var(--bg-active);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      padding: 1px 5px;
+      border-radius: var(--radius-sm);
+      margin-left: var(--space-2);
+    }
+
     .network-status {
       font-size: var(--text-2xs);
       font-weight: 500;
@@ -1157,10 +1167,54 @@ export function getDashboardHTML(): string {
       }
     }
 
+    // Create a signature for an entry to determine if two entries are identical
+    function getEntrySignature(entry) {
+      if (entry.type === 'event') {
+        return \`event:\${entry.event}:\${entry.text || ''}:\${entry.selector || ''}:\${entry.component || ''}:\${entry.value || ''}\`;
+      } else if (entry.type === 'log' || entry.type === 'server-log') {
+        return \`\${entry.type}:\${entry.level}:\${entry.message}:\${JSON.stringify(entry.args || [])}\`;
+      } else if (entry.type === 'error') {
+        return \`error:\${entry.message}\`;
+      } else if (entry.type === 'network') {
+        return \`network:\${entry.method}:\${entry.url}:\${entry.status || 'pending'}\`;
+      }
+      return JSON.stringify(entry);
+    }
+
+    // Group consecutive identical entries
+    function groupConsecutiveEntries(entries) {
+      if (entries.length === 0) return [];
+
+      const grouped = [];
+      let currentGroup = { entry: entries[0], count: 1, indices: [0] };
+
+      for (let i = 1; i < entries.length; i++) {
+        const prevSig = getEntrySignature(currentGroup.entry);
+        const currSig = getEntrySignature(entries[i]);
+
+        // Check if same signature AND within 2 seconds of each other
+        const prevTime = new Date(currentGroup.entry.ts).getTime();
+        const currTime = new Date(entries[i].ts).getTime();
+        const timeDiff = Math.abs(currTime - prevTime);
+
+        if (prevSig === currSig && timeDiff <= 2000) {
+          currentGroup.count++;
+          currentGroup.indices.push(i);
+        } else {
+          grouped.push(currentGroup);
+          currentGroup = { entry: entries[i], count: 1, indices: [i] };
+        }
+      }
+      grouped.push(currentGroup);
+
+      return grouped;
+    }
+
     function renderTimeline() {
       const timeline = document.getElementById('timeline');
       const emptyState = document.getElementById('emptyState');
       const filtered = getFilteredEntries();
+      const grouped = groupConsecutiveEntries(filtered);
 
       if (filtered.length === 0) {
         emptyState.style.display = 'flex';
@@ -1172,8 +1226,13 @@ export function getDashboardHTML(): string {
 
       emptyState.style.display = 'none';
 
-      const html = filtered.map((entry, filteredIndex) => {
+      const html = grouped.map((group, groupIndex) => {
+        const entry = group.entry;
+        const count = group.count;
         const realIndex = entries.indexOf(entry);
+        // For grouped entries, store all indices for selection
+        const groupIndices = group.indices.map(i => entries.indexOf(filtered[i]));
+
         // For completed network entries, show start time; otherwise show entry time
         const displayTs = (entry.type === 'network' && entry.startTs) ? entry.startTs : entry.ts;
         const time = new Date(displayTs).toLocaleTimeString('en-US', {
@@ -1306,8 +1365,14 @@ export function getDashboardHTML(): string {
           }
         }
 
-        const isSelected = selectedIndices.has(realIndex);
+        // For grouped entries, check if any of the group indices are selected
+        const isSelected = groupIndices.some(idx => selectedIndices.has(idx));
         const selectedClass = isSelected ? 'selected' : '';
+
+        // Count badge for grouped entries
+        const countBadgeHtml = count > 1
+          ? \`<span class="count-badge">×\${count}</span>\`
+          : '';
 
         const stackHtml = entry.stack
           ? \`<div class="stack-trace">\${escapeHtml(entry.stack)}</div>\`
@@ -1329,12 +1394,16 @@ export function getDashboardHTML(): string {
           }
         }
 
+        // Store group indices as data attribute for selection handling
+        const groupIndicesAttr = JSON.stringify(groupIndices);
+
         return \`
-          <div class="entry \${className} \${selectedClass}" onclick="toggleEntry(\${realIndex}, event)">
+          <div class="entry \${className} \${selectedClass}" onclick="toggleEntryGroup(\${realIndex}, \${groupIndicesAttr.replace(/"/g, '&quot;')}, event)">
             <div class="entry-main">
               <div class="entry-header">
                 <span class="entry-dot \${dotColor}"></span>
                 <span class="entry-type">\${typeLabel}</span>
+                \${countBadgeHtml}
                 \${networkBadgesHtml}
                 \${pendingBadgeHtml}
                 \${expandBtnHtml}
@@ -1370,6 +1439,25 @@ export function getDashboardHTML(): string {
         }
         lastClickedIndex = index;
       }
+
+      renderTimeline();
+    }
+
+    function toggleEntryGroup(primaryIndex, groupIndices, event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      // Check if any in group are selected
+      const anySelected = groupIndices.some(idx => selectedIndices.has(idx));
+
+      if (anySelected) {
+        // Deselect all in group
+        groupIndices.forEach(idx => selectedIndices.delete(idx));
+      } else {
+        // Select all in group
+        groupIndices.forEach(idx => selectedIndices.add(idx));
+      }
+      lastClickedIndex = primaryIndex;
 
       renderTimeline();
     }
