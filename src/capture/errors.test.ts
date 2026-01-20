@@ -247,10 +247,16 @@ describe('setupErrorCapture', () => {
 
   describe('cleanup', () => {
     it('removes error event listener on cleanup', async () => {
+      const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+
       cleanup = setupErrorCapture(callback);
       cleanup();
       cleanup = null;
 
+      // Verify removeEventListener was called for 'error'
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('error', expect.any(Function));
+
+      // Also verify behavior: no errors captured after cleanup
       const errorEvent = new ErrorEvent('error', {
         message: 'After cleanup',
       });
@@ -259,13 +265,21 @@ describe('setupErrorCapture', () => {
       await vi.advanceTimersByTimeAsync(100);
 
       expect(capturedErrors).toHaveLength(0);
+
+      removeEventListenerSpy.mockRestore();
     });
 
     it('removes unhandledrejection listener on cleanup', async () => {
+      const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+
       cleanup = setupErrorCapture(callback);
       cleanup();
       cleanup = null;
 
+      // Verify removeEventListener was called for 'unhandledrejection'
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
+
+      // Also verify behavior: no rejections captured after cleanup
       const event = new PromiseRejectionEvent('unhandledrejection', {
         promise: Promise.reject('test').catch(() => {}),
         reason: 'test',
@@ -275,6 +289,8 @@ describe('setupErrorCapture', () => {
       await vi.advanceTimersByTimeAsync(100);
 
       expect(capturedErrors).toHaveLength(0);
+
+      removeEventListenerSpy.mockRestore();
     });
 
     it('clears error queue on cleanup', async () => {

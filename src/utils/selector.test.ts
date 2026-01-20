@@ -276,6 +276,83 @@ describe('generateSelector', () => {
       expect(generateSelector(span)).toBe('#my-section');
     });
   });
+
+  describe('edge cases', () => {
+    describe('deeply nested elements', () => {
+      it('handles elements nested 5+ levels deep', () => {
+        // Create a deeply nested structure: div > div > div > div > div > button
+        let current: HTMLElement = container;
+        for (let i = 0; i < 5; i++) {
+          const div = document.createElement('div');
+          current.appendChild(div);
+          current = div;
+        }
+        const button = createButton({ id: 'deep-button' });
+        current.appendChild(button);
+
+        expect(generateSelector(button)).toBe('#deep-button');
+      });
+
+      it('bubbles through deeply nested non-interactive elements to find parent', () => {
+        const button = createButton({ id: 'outer-btn' });
+        container.appendChild(button);
+
+        // Nest spans 5 levels deep inside the button
+        let current: HTMLElement = button;
+        for (let i = 0; i < 5; i++) {
+          const span = document.createElement('span');
+          current.appendChild(span);
+          current = span;
+        }
+        const innerSpan = createSpan({ text: 'Deep text' });
+        current.appendChild(innerSpan);
+
+        // Should bubble up to the button
+        expect(generateSelector(innerSpan)).toBe('#outer-btn');
+      });
+    });
+
+    describe('special characters in attributes', () => {
+      it('handles data-action with special characters', () => {
+        const button = createButton({ dataAction: 'user:login-submit' });
+        container.appendChild(button);
+        expect(generateSelector(button)).toBe('[data-action="user:login-submit"]');
+      });
+
+      it('handles ID with hyphens and numbers', () => {
+        const button = createButton({ id: 'btn-submit-123' });
+        container.appendChild(button);
+        expect(generateSelector(button)).toBe('#btn-submit-123');
+      });
+
+      it('handles data-testid with dots', () => {
+        const button = document.createElement('button');
+        button.setAttribute('data-testid', 'form.submit.button');
+        container.appendChild(button);
+        expect(generateSelector(button)).toBe('[data-testid="form.submit.button"]');
+      });
+
+      it('handles aria-label with quotes (unescaped)', () => {
+        const button = createButton({ ariaLabel: 'Click "here" to continue' });
+        container.appendChild(button);
+        // Note: Current implementation doesn't escape quotes in attribute values
+        // This could cause issues with CSS selector parsing but reflects actual behavior
+        expect(generateSelector(button)).toBe('[aria-label="Click "here" to continue"]');
+      });
+
+      it('handles name attribute with brackets', () => {
+        const input = createInput({ name: 'user[email]' });
+        container.appendChild(input);
+        expect(generateSelector(input)).toBe('[name="user[email]"]');
+      });
+
+      it('handles classes with numbers', () => {
+        const button = createButton({ classes: ['mt-4', 'px-2'] });
+        container.appendChild(button);
+        expect(generateSelector(button)).toBe('button.mt-4.px-2');
+      });
+    });
+  });
 });
 
 describe('getElementText', () => {

@@ -166,7 +166,7 @@ describe('WebSocketClient', () => {
     it('limits queue size to 100 messages', async () => {
       const client = new WebSocketClient('ws://localhost:4312');
 
-      // Queue more than max
+      // Queue more than max (150 messages, but only 100 should be kept)
       for (let i = 0; i < 150; i++) {
         client.send({ type: 'test', data: { i } } as any);
       }
@@ -175,8 +175,14 @@ describe('WebSocketClient', () => {
       await vi.advanceTimersByTimeAsync(10);
       await vi.runAllTimersAsync();
 
-      // Should only have 100 messages
-      expect(mockWebSocketInstances[0].sentMessages.length).toBeLessThanOrEqual(100);
+      // Should have exactly 100 messages (the first 100 queued)
+      expect(mockWebSocketInstances[0].sentMessages).toHaveLength(100);
+
+      // Verify it's the first 100 messages (0-99), not the last 100
+      const firstMessage = JSON.parse(mockWebSocketInstances[0].sentMessages[0]);
+      const lastMessage = JSON.parse(mockWebSocketInstances[0].sentMessages[99]);
+      expect(firstMessage.data.i).toBe(0);
+      expect(lastMessage.data.i).toBe(99);
     });
 
     it('processes messages in batches of 10', async () => {
