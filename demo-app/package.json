@@ -1,0 +1,13 @@
+{
+  "name": "react-recall-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev -p 3000"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-recall": "file:.."
+  }
+}
