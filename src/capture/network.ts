@@ -56,12 +56,21 @@ let requestCount = 0;
 let lastReset = Date.now();
 const MAX_REQUESTS_PER_SECOND = 50;
 
-function isReactRecallRequest(url: string): boolean {
+function shouldSkipRequest(url: string): boolean {
   try {
     const parsed = new URL(url, window.location.origin);
-    return parsed.pathname === '/events' || parsed.pathname === '/health';
+    const path = parsed.pathname;
+
+    // Skip react-recall's own requests
+    if (path === '/events' || path === '/health') return true;
+
+    // Skip Next.js internal dev requests (source maps, HMR, etc.)
+    if (path.startsWith('/__nextjs')) return true;
+    if (path.startsWith('/_next/webpack')) return true;
+
+    return false;
   } catch {
-    return url.includes('/events') || url.includes('/health');
+    return url.includes('/events') || url.includes('/health') || url.includes('__nextjs');
   }
 }
 
@@ -315,7 +324,7 @@ export function setupNetworkCapture(callback: NetworkCallback): () => void {
     if (isServerDown()) return originalFetch.call(this, input, init);
 
     const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
-    if (isReactRecallRequest(url)) return originalFetch.call(this, input, init);
+    if (shouldSkipRequest(url)) return originalFetch.call(this, input, init);
 
     const requestId = generateRequestId();
     const rawStack = captureRawStack(); // Capture stack synchronously (fast)
@@ -458,7 +467,7 @@ export function setupNetworkCapture(callback: NetworkCallback): () => void {
 
   XMLHttpRequest.prototype.open = function(method: string, url: string | URL, ...rest: any[]) {
     const urlStr = typeof url === 'string' ? url : url.href;
-    if (!isReactRecallRequest(urlStr)) {
+    if (!shouldSkipRequest(urlStr)) {
       xhrData.set(this, {
         requestId: generateRequestId(),
         method: method.toUpperCase(),

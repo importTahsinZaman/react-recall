@@ -6,3 +6,5 @@ dist/
 
 # react-recall debug logs
 .react-recall/
+
+.next/
