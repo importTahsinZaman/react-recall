@@ -6,7 +6,7 @@ import type { Storage } from './storage.js';
 export class WebSocketHandler {
   private wss: WebSocketServer;
   private storage: Storage;
-  private sseClients: Set<(entry: Entry) => void> = new Set();
+  private sseClients: Set<(entry: Entry, consolidated: boolean) => void> = new Set();
 
   constructor(storage: Storage) {
     this.storage = storage;
@@ -71,8 +71,8 @@ export class WebSocketHandler {
           key: message.data.key,
           metadata: message.data.metadata,
         };
-        await this.storage.appendEntry(eventEntry);
-        this.broadcast(eventEntry);
+        const eventResult = await this.storage.appendEntry(eventEntry);
+        this.broadcast(eventResult.entry, eventResult.consolidated);
         break;
       }
 
@@ -85,8 +85,8 @@ export class WebSocketHandler {
           message: message.data.message,
           args: message.data.args,
         };
-        await this.storage.appendEntry(logEntry);
-        this.broadcast(logEntry);
+        const logResult = await this.storage.appendEntry(logEntry);
+        this.broadcast(logResult.entry, logResult.consolidated);
         break;
       }
 
@@ -98,8 +98,8 @@ export class WebSocketHandler {
           message: message.data.message,
           stack: message.data.stack,
         };
-        await this.storage.appendEntry(errorEntry);
-        this.broadcast(errorEntry);
+        const errorResult = await this.storage.appendEntry(errorEntry);
+        this.broadcast(errorResult.entry, errorResult.consolidated);
         break;
       }
 
@@ -127,9 +127,11 @@ export class WebSocketHandler {
         };
         // Skip storing pending entries (they'll be replaced by complete)
         if (!message.data.pending) {
-          await this.storage.appendEntry(networkEntry);
+          const networkResult = await this.storage.appendEntry(networkEntry);
+          this.broadcast(networkResult.entry, networkResult.consolidated);
+        } else {
+          this.broadcast(networkEntry, false);
         }
-        this.broadcast(networkEntry);
         break;
       }
 
@@ -143,23 +145,23 @@ export class WebSocketHandler {
           args: message.data.args,
           source: message.data.source,
         };
-        await this.storage.appendEntry(serverLogEntry);
-        this.broadcast(serverLogEntry);
+        const serverLogResult = await this.storage.appendEntry(serverLogEntry);
+        this.broadcast(serverLogResult.entry, serverLogResult.consolidated);
         break;
       }
     }
   }
 
-  registerSSEClient(callback: (entry: Entry) => void): () => void {
+  registerSSEClient(callback: (entry: Entry, consolidated: boolean) => void): () => void {
     this.sseClients.add(callback);
     return () => {
       this.sseClients.delete(callback);
     };
   }
 
-  private broadcast(entry: Entry): void {
+  private broadcast(entry: Entry, consolidated: boolean = false): void {
     for (const callback of this.sseClients) {
-      callback(entry);
+      callback(entry, consolidated);
     }
   }
 

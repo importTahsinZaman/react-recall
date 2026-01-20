@@ -72,7 +72,7 @@ export class Storage {
     }
   }
 
-  async appendEntry(entry: Entry): Promise<void> {
+  async appendEntry(entry: Entry): Promise<{ entry: Entry; consolidated: boolean }> {
     const signature = getEntrySignature(entry);
 
     // Check if this entry matches the last one (within 2 seconds)
@@ -83,7 +83,7 @@ export class Storage {
         // Increment count on last entry
         this.lastEntry.count = (this.lastEntry.count || 1) + 1;
         this.rewriteLastEntry(this.lastEntry);
-        return;
+        return { entry: this.lastEntry, consolidated: true };
       }
     }
 
@@ -105,6 +105,8 @@ export class Storage {
 
     // Check for rotation
     await this.checkRotation();
+
+    return { entry, consolidated: false };
   }
 
   private rewriteLastEntry(updatedEntry: Entry): void {

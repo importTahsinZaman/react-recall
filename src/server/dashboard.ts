@@ -1060,10 +1060,18 @@ export function getDashboardHTML(): string {
 
       eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        const isConsolidated = data._consolidated;
+        delete data._consolidated; // Remove internal flag
 
         if (data.type === 'init') {
           // Filter out pending entries from init (they should be replaced)
           entries = data.entries.filter(e => e.type !== 'network' || !e.pending);
+          renderTimeline();
+        } else if (isConsolidated) {
+          // Update existing entry (consolidation)
+          if (entries.length > 0) {
+            entries[entries.length - 1] = data;
+          }
           renderTimeline();
         } else {
           // For network entries, merge by requestId

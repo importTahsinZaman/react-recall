@@ -67,8 +67,8 @@ export function createHTTPServer(
       res.write(`data: ${JSON.stringify({ type: 'init', entries: initialLogs })}\n\n`);
 
       // Register for updates
-      const unsubscribe = wsHandler.registerSSEClient((entry) => {
-        res.write(`data: ${JSON.stringify(entry)}\n\n`);
+      const unsubscribe = wsHandler.registerSSEClient((entry, consolidated) => {
+        res.write(`data: ${JSON.stringify({ ...entry, _consolidated: consolidated })}\n\n`);
       });
 
       // Heartbeat to keep connection alive
