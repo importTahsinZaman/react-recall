@@ -1,6 +1,6 @@
 {
   "name": "react-recall",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Debug session recorder for AI-assisted development",
   "type": "module",
   "main": "./dist/index.js",
