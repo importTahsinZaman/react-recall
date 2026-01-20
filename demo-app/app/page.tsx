@@ -49,13 +49,6 @@ export default function Home() {
   };
 
   const deleteTask = (taskId: string) => {
-    // BUG: If task was completed, try to find it with wrong ID
-    if (completedTaskIds.includes(taskId)) {
-      const completedTask = tasks.find((t) => t.id === taskId + "-archived");
-      // This will be undefined, causing crash on next line
-      console.log(`Archiving completed task: ${completedTask!.id}`);
-    }
-
     setTasks((prev) => prev.filter((task) => task.id !== taskId));
     setCompletedTaskIds((prev) => prev.filter((id) => id !== taskId));
   };
