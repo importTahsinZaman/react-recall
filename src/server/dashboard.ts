@@ -985,7 +985,7 @@ export function getDashboardHTML(): string {
           <div class="status-dot" id="statusDot"></div>
           <span id="statusText">Connected</span>
         </div>
-        <button class="btn-clear" onclick="clearLogs()">Clear</button>
+        <button class="btn-clear" id="clearBtn" onclick="clearLogs()">Clear <span class="keybind" id="clearKeybind"></span></button>
       </div>
     </header>
 
@@ -1015,7 +1015,7 @@ export function getDashboardHTML(): string {
             <option value="1800">Past 30 minutes</option>
           </select>
           <button class="select-all" id="selectAll" onclick="toggleSelectAll()">
-            Select all
+            Select all <span class="keybind" id="selectAllKeybind"></span>
           </button>
         </div>
       </div>
@@ -1891,7 +1891,6 @@ export function getDashboardHTML(): string {
     }
 
     async function clearLogs() {
-      if (!confirm('Clear all logs?')) return;
 
       await fetch('/api/logs', { method: 'DELETE' });
       entries = [];
@@ -1911,11 +1910,23 @@ export function getDashboardHTML(): string {
         e.preventDefault();
         copySelected();
       }
+
+      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+        e.preventDefault();
+        toggleSelectAll();
+      }
+
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        clearLogs();
+      }
     });
 
-    // Set platform-specific keybind hint
+    // Set platform-specific keybind hints
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    document.getElementById('copyKeybind').textContent = isMac ? '⌘C' : 'Ctrl+C';
+    document.getElementById('copyKeybind').textContent = isMac ? '⌘c' : 'ctrl+c';
+    document.getElementById('selectAllKeybind').textContent = isMac ? '⌘a' : 'ctrl+a';
+    document.getElementById('clearKeybind').textContent = isMac ? '⌘k' : 'ctrl+k';
 
     connect();
     updateCounts();
