@@ -28,6 +28,14 @@ export default function EventsPage() {
       </section>
 
       <section style={{ marginBottom: "30px" }}>
+        <h2>Rapid Clicks (Test Consolidation)</h2>
+        <p style={{ fontSize: "14px", color: "#666" }}>Click these buttons multiple times rapidly to test log consolidation.</p>
+        <button id="btn-spam">
+          Click Me Rapidly!
+        </button>
+      </section>
+
+      <section style={{ marginBottom: "30px" }}>
         <h2>Text Inputs</h2>
         <div style={{ marginBottom: "10px" }}>
           <label>

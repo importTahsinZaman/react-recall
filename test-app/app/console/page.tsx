@@ -99,6 +99,53 @@ export default function ConsolePage() {
           Log Large Array (100 items)
         </button>
       </section>
+
+      <section style={{ marginBottom: "30px" }}>
+        <h2>Duplicate Logs (Test Consolidation)</h2>
+        <button
+          id="btn-duplicate-5"
+          onClick={() => {
+            for (let i = 0; i < 5; i++) {
+              console.log("Duplicate message");
+            }
+          }}
+        >
+          Log Same Message 5x
+        </button>{" "}
+        <button
+          id="btn-duplicate-10"
+          onClick={() => {
+            for (let i = 0; i < 10; i++) {
+              console.log("Repeated log entry");
+            }
+          }}
+        >
+          Log Same Message 10x
+        </button>{" "}
+        <button
+          id="btn-duplicate-warn"
+          onClick={() => {
+            for (let i = 0; i < 5; i++) {
+              console.warn("Repeated warning");
+            }
+          }}
+        >
+          Warn 5x
+        </button>{" "}
+        <button
+          id="btn-rapid-mixed"
+          onClick={() => {
+            console.log("First message");
+            console.log("First message");
+            console.log("Second message");
+            console.log("Second message");
+            console.log("Second message");
+            console.log("Third message");
+          }}
+        >
+          Mixed Duplicates
+        </button>
+      </section>
     </div>
   );
 }

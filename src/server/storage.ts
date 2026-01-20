@@ -7,20 +7,19 @@ const LOGS_FILE = "logs.jsonl";
 
 // Create a signature for an entry to determine if two entries are identical
 function getEntrySignature(entry: Entry): string {
-  if (entry.type === 'event') {
-    const e = entry as any;
-    return `event:${e.event}:${e.text || ''}:${e.selector || ''}:${e.component || ''}:${e.value || ''}`;
-  } else if (entry.type === 'log' || entry.type === 'server-log') {
-    const e = entry as any;
-    return `${e.type}:${e.level}:${e.message}:${JSON.stringify(e.args || [])}`;
-  } else if (entry.type === 'error') {
-    const e = entry as any;
-    return `error:${e.message}`;
-  } else if (entry.type === 'network') {
-    const e = entry as any;
-    return `network:${e.method}:${e.url}:${e.status || 'pending'}`;
+  switch (entry.type) {
+    case 'event':
+      return `event:${entry.event}:${entry.text || ''}:${entry.selector || ''}:${entry.component || ''}:${entry.value || ''}`;
+    case 'log':
+    case 'server-log':
+      return `${entry.type}:${entry.level}:${entry.message}:${JSON.stringify(entry.args || [])}`;
+    case 'error':
+      return `error:${entry.message}`;
+    case 'network':
+      return `network:${entry.method}:${entry.url}:${entry.status || 'pending'}`;
+    default:
+      return JSON.stringify(entry);
   }
-  return JSON.stringify(entry);
 }
 
 export class Storage {
@@ -74,12 +73,10 @@ export class Storage {
 
   async appendEntry(entry: Entry): Promise<void> {
     const signature = getEntrySignature(entry);
-    const entryTime = new Date(entry.ts).getTime();
 
     // Check if this entry matches the last one (within 2 seconds)
     if (this.lastEntry && this.lastEntrySignature === signature) {
-      const lastTime = new Date(this.lastEntry.ts).getTime();
-      const timeDiff = Math.abs(entryTime - lastTime);
+      const timeDiff = Math.abs(entry.ms - this.lastEntry.ms);
 
       if (timeDiff <= 2000) {
         // Increment count on last entry
