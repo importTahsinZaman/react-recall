@@ -803,6 +803,7 @@ export function getDashboardHTML(): string {
       font-size: var(--text-2xs);
       color: var(--text-muted);
       opacity: 0.7;
+      text-transform: uppercase;
     }
 
     .btn-primary .keybind {
@@ -1015,7 +1016,7 @@ export function getDashboardHTML(): string {
             <option value="1800">Past 30 minutes</option>
           </select>
           <button class="select-all" id="selectAll" onclick="toggleSelectAll()">
-            Select all <span class="keybind" id="selectAllKeybind"></span>
+            Select all
           </button>
         </div>
       </div>
@@ -1925,7 +1926,6 @@ export function getDashboardHTML(): string {
     // Set platform-specific keybind hints
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
     document.getElementById('copyKeybind').textContent = isMac ? '⌘c' : 'ctrl+c';
-    document.getElementById('selectAllKeybind').textContent = isMac ? '⌘a' : 'ctrl+a';
     document.getElementById('clearKeybind').textContent = isMac ? '⌘k' : 'ctrl+k';
 
     connect();
