@@ -1,52 +1,181 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// Pixel art coffee icons as SVG components
+const PixelCoffeeCup = () => (
+  <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
+    {/* Steam */}
+    <rect x="5" y="0" width="1" height="1" fill="currentColor" opacity="0.5" />
+    <rect x="7" y="1" width="1" height="1" fill="currentColor" opacity="0.5" />
+    <rect x="9" y="0" width="1" height="1" fill="currentColor" opacity="0.5" />
+    <rect x="6" y="2" width="1" height="1" fill="currentColor" opacity="0.3" />
+    <rect x="8" y="2" width="1" height="1" fill="currentColor" opacity="0.3" />
+    {/* Cup */}
+    <rect x="3" y="4" width="1" height="1" fill="currentColor" />
+    <rect x="4" y="4" width="6" height="1" fill="currentColor" />
+    <rect x="10" y="4" width="1" height="1" fill="currentColor" />
+    <rect x="3" y="5" width="1" height="6" fill="currentColor" />
+    <rect x="10" y="5" width="1" height="6" fill="currentColor" />
+    <rect x="4" y="11" width="6" height="1" fill="currentColor" />
+    {/* Handle */}
+    <rect x="11" y="5" width="1" height="1" fill="currentColor" />
+    <rect x="12" y="6" width="1" height="3" fill="currentColor" />
+    <rect x="11" y="9" width="1" height="1" fill="currentColor" />
+    {/* Coffee liquid */}
+    <rect x="4" y="6" width="6" height="4" fill="currentColor" opacity="0.4" />
+    {/* Saucer */}
+    <rect x="2" y="12" width="10" height="1" fill="currentColor" />
+    <rect x="1" y="13" width="12" height="1" fill="currentColor" />
+  </svg>
+);
+
+const PixelCoffeeBeans = () => (
+  <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
+    {/* Bean 1 - top left */}
+    <rect x="2" y="3" width="1" height="1" fill="currentColor" />
+    <rect x="3" y="2" width="2" height="1" fill="currentColor" />
+    <rect x="5" y="3" width="1" height="1" fill="currentColor" />
+    <rect x="1" y="4" width="1" height="2" fill="currentColor" />
+    <rect x="6" y="4" width="1" height="2" fill="currentColor" />
+    <rect x="2" y="6" width="1" height="1" fill="currentColor" />
+    <rect x="5" y="6" width="1" height="1" fill="currentColor" />
+    <rect x="3" y="7" width="2" height="1" fill="currentColor" />
+    <rect x="3" y="4" width="1" height="3" fill="currentColor" opacity="0.5" />
+    {/* Bean 2 - right */}
+    <rect x="9" y="4" width="1" height="1" fill="currentColor" />
+    <rect x="10" y="3" width="2" height="1" fill="currentColor" />
+    <rect x="12" y="4" width="1" height="1" fill="currentColor" />
+    <rect x="8" y="5" width="1" height="2" fill="currentColor" />
+    <rect x="13" y="5" width="1" height="2" fill="currentColor" />
+    <rect x="9" y="7" width="1" height="1" fill="currentColor" />
+    <rect x="12" y="7" width="1" height="1" fill="currentColor" />
+    <rect x="10" y="8" width="2" height="1" fill="currentColor" />
+    <rect x="10" y="5" width="1" height="3" fill="currentColor" opacity="0.5" />
+    {/* Bean 3 - bottom */}
+    <rect x="4" y="9" width="1" height="1" fill="currentColor" />
+    <rect x="5" y="8" width="2" height="1" fill="currentColor" />
+    <rect x="7" y="9" width="1" height="1" fill="currentColor" />
+    <rect x="3" y="10" width="1" height="2" fill="currentColor" />
+    <rect x="8" y="10" width="1" height="2" fill="currentColor" />
+    <rect x="4" y="12" width="1" height="1" fill="currentColor" />
+    <rect x="7" y="12" width="1" height="1" fill="currentColor" />
+    <rect x="5" y="13" width="2" height="1" fill="currentColor" />
+    <rect x="5" y="10" width="1" height="3" fill="currentColor" opacity="0.5" />
+  </svg>
+);
+
+const PixelPourOver = () => (
+  <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
+    {/* Dripper top */}
+    <rect x="3" y="1" width="10" height="1" fill="currentColor" />
+    <rect x="4" y="2" width="8" height="1" fill="currentColor" />
+    <rect x="5" y="3" width="6" height="1" fill="currentColor" />
+    <rect x="5" y="4" width="1" height="1" fill="currentColor" />
+    <rect x="10" y="4" width="1" height="1" fill="currentColor" />
+    <rect x="6" y="5" width="1" height="1" fill="currentColor" />
+    <rect x="9" y="5" width="1" height="1" fill="currentColor" />
+    <rect x="7" y="6" width="2" height="1" fill="currentColor" />
+    {/* Drip */}
+    <rect x="7" y="7" width="1" height="1" fill="currentColor" opacity="0.6" />
+    <rect x="7" y="9" width="1" height="1" fill="currentColor" opacity="0.4" />
+    {/* Carafe */}
+    <rect x="4" y="10" width="8" height="1" fill="currentColor" />
+    <rect x="3" y="11" width="1" height="3" fill="currentColor" />
+    <rect x="12" y="11" width="1" height="3" fill="currentColor" />
+    <rect x="4" y="14" width="8" height="1" fill="currentColor" />
+    {/* Coffee in carafe */}
+    <rect x="4" y="12" width="8" height="2" fill="currentColor" opacity="0.3" />
+    {/* Handle */}
+    <rect x="13" y="11" width="1" height="1" fill="currentColor" />
+    <rect x="14" y="12" width="1" height="1" fill="currentColor" />
+    <rect x="13" y="13" width="1" height="1" fill="currentColor" />
+  </svg>
+);
+
+const PixelEspresso = () => (
+  <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
+    {/* Portafilter handle */}
+    <rect x="1" y="5" width="3" height="1" fill="currentColor" />
+    <rect x="1" y="6" width="3" height="1" fill="currentColor" />
+    {/* Portafilter body */}
+    <rect x="4" y="4" width="8" height="1" fill="currentColor" />
+    <rect x="4" y="5" width="1" height="3" fill="currentColor" />
+    <rect x="11" y="5" width="1" height="3" fill="currentColor" />
+    <rect x="5" y="7" width="6" height="1" fill="currentColor" />
+    {/* Coffee basket */}
+    <rect x="5" y="5" width="6" height="2" fill="currentColor" opacity="0.4" />
+    {/* Spouts */}
+    <rect x="6" y="8" width="1" height="2" fill="currentColor" />
+    <rect x="9" y="8" width="1" height="2" fill="currentColor" />
+    {/* Drips */}
+    <rect x="6" y="10" width="1" height="1" fill="currentColor" opacity="0.6" />
+    <rect x="9" y="11" width="1" height="1" fill="currentColor" opacity="0.6" />
+    {/* Cup */}
+    <rect x="4" y="12" width="8" height="1" fill="currentColor" />
+    <rect x="3" y="13" width="10" height="1" fill="currentColor" />
+    <rect x="2" y="14" width="12" height="1" fill="currentColor" />
+  </svg>
+);
+
+const pixelIcons = [PixelCoffeeCup, PixelCoffeeBeans, PixelPourOver, PixelEspresso];
 
 // Products data
 const products = [
   {
     id: "ethiopian-yirgacheffe",
-    name: "Ethiopian Yirgacheffe",
-    origin: "Gedeo Zone, Ethiopia",
-    notes: "Jasmine, bergamot, honey",
-    roast: "Light",
+    name: "ETHIOPIAN_YIRGACHEFFE",
+    origin: "GEDEO_ZONE",
+    notes: "JASMINE, BERGAMOT, HONEY",
+    roast: "LIGHT",
     price: 24,
-    image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=500&fit=crop",
+    icon: 0,
   },
   {
     id: "colombian-supremo",
-    name: "Colombian Supremo",
-    origin: "Huila, Colombia",
-    notes: "Caramel, walnut, citrus",
-    roast: "Medium",
+    name: "COLOMBIAN_SUPREMO",
+    origin: "HUILA_REGION",
+    notes: "CARAMEL, WALNUT, CITRUS",
+    roast: "MEDIUM",
     price: 22,
-    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&h=500&fit=crop",
+    icon: 1,
   },
   {
     id: "sumatra-mandheling",
-    name: "Sumatra Mandheling",
-    origin: "North Sumatra, Indonesia",
-    notes: "Dark chocolate, cedar, earth",
-    roast: "Dark",
+    name: "SUMATRA_MANDHELING",
+    origin: "NORTH_SUMATRA",
+    notes: "DARK_CHOCOLATE, CEDAR, EARTH",
+    roast: "DARK",
     price: 26,
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=500&fit=crop",
+    icon: 2,
   },
   {
     id: "kenya-aa",
-    name: "Kenya AA",
-    origin: "Nyeri, Kenya",
-    notes: "Blackcurrant, tomato, brown sugar",
-    roast: "Medium-Light",
+    name: "KENYA_AA_RESERVE",
+    origin: "NYERI_COUNTY",
+    notes: "BLACKCURRANT, TOMATO, BROWN_SUGAR",
+    roast: "MED_LIGHT",
     price: 28,
-    image: "https://images.unsplash.com/photo-1497636577773-f1231844b336?w=400&h=500&fit=crop",
+    icon: 3,
   },
 ];
 
-// Cart state with intentional bug
 export default function Home() {
   const [cartItemIds, setCartItemIds] = useState<string[]>([]);
   const [removedItems, setRemovedItems] = useState<string[]>([]);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [bootSequence, setBootSequence] = useState(true);
+  const [cursorVisible, setCursorVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setBootSequence(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setCursorVisible(v => !v), 530);
+    return () => clearInterval(interval);
+  }, []);
 
   const addToCart = (product: typeof products[0]) => {
     setCartItemIds((prev) => [...prev, product.id]);
@@ -54,14 +183,12 @@ export default function Home() {
 
   const removeFromCart = (productId: string) => {
     setCartItemIds((prev) => prev.filter((id) => id !== productId));
-    // BUG: Track removed items but use them incorrectly in checkout
     setRemovedItems((prev) => [...prev, productId]);
   };
 
   const checkout = () => {
     setIsCheckingOut(true);
 
-    // Calculate order total
     let total = 0;
     for (const id of cartItemIds) {
       const item = products.find((p) => p.id === id);
@@ -69,19 +196,15 @@ export default function Home() {
     }
 
     // BUG: Show "savings" from removed items
-    // Developer tried to look up a "variant" product that doesn't exist
     if (removedItems.length > 0) {
       const savedItem = products.find(p => p.id === removedItems[0] + "-savings");
-      // BUG: savedItem is undefined - there's no product with "-savings" suffix
-      // This crashes: Cannot read property 'price' of undefined
       const savedAmount = savedItem!.price;
       console.log(`You saved $${savedAmount} by removing items`);
     }
 
-    // Never reaches here if items were removed
     setTimeout(() => {
       setIsCheckingOut(false);
-      alert(`Order placed! Total: $${total}`);
+      alert(`ORDER CONFIRMED. TOTAL: $${total} USD`);
     }, 1000);
   };
 
@@ -93,189 +216,265 @@ export default function Home() {
   }, {} as Record<string, number>);
   const uniqueCartItems = [...new Set(cartItemIds)].map((id) => products.find((p) => p.id === id)).filter(Boolean) as typeof products;
 
+  if (bootSequence) {
+    return (
+      <div style={styles.container}>
+        <div style={styles.scanlines} />
+        <div style={styles.crtOverlay} />
+        <div style={styles.bootScreen}>
+          <pre style={styles.bootText}>
+{`COFFEED.SYS v2.4.1
+(C) 1987 BEAN MACHINE CORP.
+
+INITIALIZING MEMORY............ OK
+LOADING FLAVOR PROFILES........ OK
+CONNECTING TO ROASTER.......... OK
+CALIBRATING GRINDER............ OK
+
+SYSTEM READY.
+
+`}
+            <span style={{ opacity: cursorVisible ? 1 : 0 }}>█</span>
+          </pre>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={styles.container}>
-      {/* Background texture */}
-      <div style={styles.bgTexture} />
+      {/* CRT Effects */}
+      <div style={styles.scanlines} />
+      <div style={styles.crtOverlay} />
+      <div style={styles.flicker} />
 
-      {/* Header */}
-      <header style={styles.header}>
-        <div style={styles.logoContainer}>
-          <div style={styles.logoIcon}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <path d="M16 4C10.477 4 6 8.477 6 14c0 4.418 2.865 8.166 6.84 9.49.18.036.24-.09.24-.18v-2.7c-2.78.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .09.06.22.24.18C23.135 22.166 26 18.418 26 14c0-5.523-4.477-10-10-10z" fill="currentColor"/>
-            </svg>
-          </div>
-          <div>
-            <h1 style={styles.logo}>ORIGIN</h1>
-            <p style={styles.tagline}>Specialty Coffee Roasters</p>
-          </div>
+      {/* Terminal Window */}
+      <div style={styles.terminal}>
+        {/* Title Bar */}
+        <div style={styles.titleBar}>
+          <span>■ COFFEED.SYS - REMOTE ORDERING TERMINAL</span>
+          <span style={styles.titleBarRight}>[$USER@roastery]</span>
         </div>
-        <nav style={styles.nav}>
-          <a href="#" style={styles.navLink}>Shop</a>
-          <a href="#" style={styles.navLink}>Our Story</a>
-          <a href="#" style={styles.navLink}>Subscriptions</a>
-        </nav>
-      </header>
 
-      {/* Main Content */}
-      <main style={styles.main}>
-        {/* Hero Section */}
-        <section style={styles.hero}>
-          <span style={styles.heroLabel}>New Harvest</span>
-          <h2 style={styles.heroTitle}>Single Origin<br />Collection</h2>
-          <p style={styles.heroSubtitle}>
-            Hand-selected beans from the world's finest growing regions,<br />
-            roasted in small batches for peak flavor.
-          </p>
-        </section>
+        {/* Main Content */}
+        <div style={styles.content}>
+          {/* Header */}
+          <pre style={styles.asciiHeader}>
+{`╔═══════════════════════════════════════════════════════════════════════════════╗
+║  ██████╗ ██████╗ ███████╗███████╗███████╗███████╗██████╗    ███████╗██╗   ██╗ ║
+║ ██╔════╝██╔═══██╗██╔════╝██╔════╝██╔════╝██╔════╝██╔══██╗   ██╔════╝╚██╗ ██╔╝ ║
+║ ██║     ██║   ██║█████╗  █████╗  █████╗  █████╗  ██║  ██║   ███████╗ ╚████╔╝  ║
+║ ██║     ██║   ██║██╔══╝  ██╔══╝  ██╔══╝  ██╔══╝  ██║  ██║   ╚════██║  ╚██╔╝   ║
+║ ╚██████╗╚██████╔╝██║     ██║     ███████╗███████╗██████╔╝██╗███████║   ██║    ║
+║  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═╝╚══════╝   ╚═╝    ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║  SPECIALTY COFFEE ORDERING SYSTEM          [AUTHORIZED PERSONNEL ONLY]        ║
+╚═══════════════════════════════════════════════════════════════════════════════╝`}
+          </pre>
 
-        {/* Products + Cart Layout */}
-        <div style={styles.shopLayout}>
-          {/* Product Grid */}
-          <section style={styles.productsSection}>
-            <div style={styles.productGrid}>
-              {products.map((product, index) => (
-                <article
-                  key={product.id}
-                  style={{
-                    ...styles.productCard,
-                    animationDelay: `${index * 0.1}s`,
-                  }}
-                >
-                  <div style={styles.productImageContainer}>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      style={styles.productImage}
-                    />
-                    <div style={styles.roastBadge}>{product.roast}</div>
-                  </div>
-                  <div style={styles.productInfo}>
-                    <span style={styles.productOrigin}>{product.origin}</span>
-                    <h3 style={styles.productName}>{product.name}</h3>
-                    <p style={styles.productNotes}>{product.notes}</p>
-                    <div style={styles.productFooter}>
-                      <span style={styles.productPrice}>${product.price}</span>
-                      <button
-                        onClick={() => addToCart(product)}
-                        style={styles.addButton}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#d4a574';
-                          e.currentTarget.style.color = '#0a0a0a';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.color = '#d4a574';
-                        }}
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          {/* Cart Sidebar */}
-          <aside style={styles.cartSidebar}>
-            <div style={styles.cartHeader}>
-              <h3 style={styles.cartTitle}>Your Cart</h3>
-              <span style={styles.cartCount}>
-                {cartItemIds.length} {cartItemIds.length === 1 ? 'item' : 'items'}
-              </span>
-            </div>
-
-            {uniqueCartItems.length === 0 ? (
-              <div style={styles.emptyCart}>
-                <div style={styles.emptyCartIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                    <path d="M6 6h15l-1.5 9h-12z" />
-                    <circle cx="9" cy="20" r="1" />
-                    <circle cx="18" cy="20" r="1" />
-                    <path d="M6 6L5 3H2" />
-                  </svg>
-                </div>
-                <p style={styles.emptyCartText}>Your cart is empty</p>
-                <p style={styles.emptyCartSubtext}>Add some coffee to get started</p>
+          {/* Two Column Layout */}
+          <div style={styles.columns}>
+            {/* Products Section */}
+            <div style={styles.productsSection}>
+              <div style={styles.sectionHeader}>
+                {'>'} SELECT PRODUCT FROM DATABASE:
               </div>
-            ) : (
-              <>
-                <div style={styles.cartItems}>
-                  {uniqueCartItems.map((item) => (
-                    <div key={item.id} style={styles.cartItem}>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={styles.cartItemImage}
-                      />
-                      <div style={styles.cartItemInfo}>
-                        <h4 style={styles.cartItemName}>{item.name}</h4>
-                        <p style={styles.cartItemMeta}>
-                          ${item.price} × {itemCounts[item.id]}
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        style={styles.removeButton}
-                        aria-label={`Remove ${item.name}`}
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M18 6L6 18M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
+              <pre style={styles.tableHeader}>
+{`┌──────┬────────────────────────┬────────────┬───────────┬─────────┐
+│ ICON │ PRODUCT_NAME           │ ORIGIN     │ ROAST_LVL │ PRICE   │
+├──────┼────────────────────────┼────────────┼───────────┼─────────┤`}
+              </pre>
 
-                <div style={styles.cartFooter}>
-                  <div style={styles.cartTotal}>
-                    <span style={styles.cartTotalLabel}>Subtotal</span>
-                    <span style={styles.cartTotalValue}>${cartTotal}</span>
+              {products.map((product, index) => {
+                const IconComponent = pixelIcons[product.icon];
+                return (
+                  <div key={product.id} style={styles.productRow}>
+                    <div style={styles.productIconCell}>
+                      <IconComponent />
+                    </div>
+                    <div style={styles.productInfo}>
+                      <div style={styles.productName}>{product.name}</div>
+                      <div style={styles.productMeta}>
+                        <span style={styles.dim}>ORIGIN:</span> {product.origin}
+                      </div>
+                      <div style={styles.productMeta}>
+                        <span style={styles.dim}>NOTES:</span> {product.notes}
+                      </div>
+                    </div>
+                    <div style={styles.productRoast}>{product.roast}</div>
+                    <div style={styles.productPrice}>${product.price}.00</div>
+                    <button
+                      onClick={() => addToCart(product)}
+                      style={styles.addButton}
+                    >
+                      [ADD]
+                    </button>
                   </div>
-                  <p style={styles.shippingNote}>Shipping calculated at checkout</p>
+                );
+              })}
+
+              <pre style={styles.tableFooter}>
+{`└──────┴────────────────────────┴────────────┴───────────┴─────────┘`}
+              </pre>
+
+              <div style={styles.statusLine}>
+                <span style={styles.dim}>STATUS:</span>{' '}
+                <span style={styles.success}>■</span> CONNECTED TO ROASTER{' '}
+                <span style={styles.dim}>|</span>{' '}
+                <span style={styles.warning}>■</span> {products.length} PRODUCTS LOADED{' '}
+                <span style={styles.dim}>|</span>{' '}
+                UPTIME: 847:23:41
+              </div>
+            </div>
+
+            {/* Cart Section */}
+            <div style={styles.cartSection}>
+              <div style={styles.sectionHeader}>
+                {'>'} ORDER_BUFFER [{cartItemIds.length} ITEMS]:
+              </div>
+
+              <div style={styles.cartBox}>
+                {uniqueCartItems.length === 0 ? (
+                  <div style={styles.emptyCart}>
+                    <pre>
+{`  ┌─────────────────────┐
+  │                     │
+  │   BUFFER EMPTY      │
+  │                     │
+  │   ADD ITEMS TO      │
+  │   BEGIN ORDER       │
+  │                     │
+  └─────────────────────┘`}
+                    </pre>
+                  </div>
+                ) : (
+                  <>
+                    {uniqueCartItems.map((item) => (
+                      <div key={item.id} style={styles.cartItem}>
+                        <div style={styles.cartItemIcon}>
+                          {(() => {
+                            const IconComponent = pixelIcons[item.icon];
+                            return <IconComponent />;
+                          })()}
+                        </div>
+                        <div style={styles.cartItemInfo}>
+                          <div>{item.name}</div>
+                          <div style={styles.dim}>
+                            QTY: {itemCounts[item.id]} × ${item.price}.00
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          style={styles.removeButton}
+                        >
+                          [DEL]
+                        </button>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+
+              {uniqueCartItems.length > 0 && (
+                <>
+                  <pre style={styles.cartTotal}>
+{`═══════════════════════════════
+ SUBTOTAL:           $${cartTotal.toString().padStart(6, ' ')}.00
+ TAX (0%):           $     0.00
+───────────────────────────────
+ TOTAL:              $${cartTotal.toString().padStart(6, ' ')}.00
+═══════════════════════════════`}
+                  </pre>
+
                   <button
                     onClick={checkout}
                     disabled={isCheckingOut}
                     style={{
                       ...styles.checkoutButton,
-                      opacity: isCheckingOut ? 0.7 : 1,
+                      opacity: isCheckingOut ? 0.5 : 1,
                     }}
                   >
-                    {isCheckingOut ? 'Processing...' : 'Checkout'}
+                    {isCheckingOut ? (
+                      '[ PROCESSING... ]'
+                    ) : (
+                      <>{'>'} EXECUTE ORDER{cursorVisible ? '█' : ' '}</>
+                    )}
                   </button>
-                </div>
-              </>
-            )}
-          </aside>
-        </div>
-      </main>
+                </>
+              )}
 
-      {/* Minimal Footer */}
-      <footer style={styles.footer}>
-        <p>© 2024 Origin Coffee Roasters. Crafted with care.</p>
-      </footer>
+              <div style={styles.systemLog}>
+                <div style={styles.sectionHeader}>{'>'} SYSTEM_LOG:</div>
+                <div style={styles.logEntry}>
+                  <span style={styles.dim}>[{new Date().toLocaleTimeString()}]</span>{' '}
+                  Terminal session active
+                </div>
+                {cartItemIds.length > 0 && (
+                  <div style={styles.logEntry}>
+                    <span style={styles.dim}>[{new Date().toLocaleTimeString()}]</span>{' '}
+                    <span style={styles.success}>+</span> Items added to buffer
+                  </div>
+                )}
+                {removedItems.length > 0 && (
+                  <div style={styles.logEntry}>
+                    <span style={styles.dim}>[{new Date().toLocaleTimeString()}]</span>{' '}
+                    <span style={styles.error}>-</span> Items removed from buffer
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div style={styles.footer}>
+            <span>COFFEED.SYS v2.4.1</span>
+            <span style={styles.dim}>|</span>
+            <span>BEAN MACHINE CORP © 1987</span>
+            <span style={styles.dim}>|</span>
+            <span>MEM: 640K</span>
+            <span style={styles.dim}>|</span>
+            <span>BAUD: 9600</span>
+            <span style={styles.dim}>|</span>
+            <span style={styles.blink}>● ONLINE</span>
+          </div>
+        </div>
+      </div>
 
       <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
         * {
           box-sizing: border-box;
         }
 
+        @keyframes flicker {
+          0% { opacity: 0.97; }
+          50% { opacity: 1; }
+          100% { opacity: 0.98; }
+        }
+
+        @keyframes scanline {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(4px); }
+        }
+
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+
+        @keyframes textShadowPulse {
+          0%, 100% {
+            text-shadow: 0 0 10px #ffb000, 0 0 20px #ffb00066, 0 0 30px #ffb00033;
+          }
+          50% {
+            text-shadow: 0 0 15px #ffb000, 0 0 25px #ffb00088, 0 0 40px #ffb00044;
+          }
+        }
+
         ::selection {
-          background: #d4a574;
-          color: #0a0a0a;
+          background: #ffb000;
+          color: #0a0a08;
         }
       `}</style>
     </div>
@@ -285,346 +484,249 @@ export default function Home() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    background: '#0a0a0a',
-    color: '#f5f0eb',
-    fontFamily: "'Inter', -apple-system, sans-serif",
+    background: '#0a0a08',
+    fontFamily: "'VT323', monospace",
+    fontSize: '18px',
+    color: '#ffb000',
     position: 'relative',
     overflow: 'hidden',
+    padding: '20px',
   },
-  bgTexture: {
+  scanlines: {
     position: 'fixed',
     inset: 0,
-    background: `
-      radial-gradient(ellipse at 20% 20%, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(212, 165, 116, 0.05) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")
-    `,
-    opacity: 0.4,
+    background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px)',
     pointerEvents: 'none',
-    zIndex: 0,
+    zIndex: 100,
   },
-  header: {
-    position: 'relative',
-    zIndex: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '24px 48px',
-    borderBottom: '1px solid rgba(212, 165, 116, 0.15)',
+  crtOverlay: {
+    position: 'fixed',
+    inset: 0,
+    background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0.6) 100%)',
+    pointerEvents: 'none',
+    zIndex: 99,
   },
-  logoContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px',
+  flicker: {
+    position: 'fixed',
+    inset: 0,
+    background: 'transparent',
+    pointerEvents: 'none',
+    zIndex: 98,
+    animation: 'flicker 0.15s infinite',
   },
-  logoIcon: {
-    width: '48px',
-    height: '48px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg, #d4a574 0%, #c9956c 100%)',
+  bootScreen: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#0a0a0a',
+    minHeight: 'calc(100vh - 40px)',
   },
-  logo: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '28px',
-    fontWeight: 500,
-    letterSpacing: '0.2em',
-    margin: 0,
-    color: '#f5f0eb',
+  bootText: {
+    fontSize: '20px',
+    lineHeight: 1.6,
+    textShadow: '0 0 10px #ffb000, 0 0 20px #ffb00066',
+    animation: 'textShadowPulse 2s ease-in-out infinite',
   },
-  tagline: {
-    fontSize: '11px',
-    letterSpacing: '0.15em',
-    textTransform: 'uppercase',
-    color: 'rgba(212, 165, 116, 0.8)',
-    margin: '2px 0 0 0',
+  terminal: {
+    maxWidth: '1400px',
+    margin: '0 auto',
+    border: '2px solid #ffb000',
+    boxShadow: '0 0 20px #ffb00044, inset 0 0 60px #ffb00011',
+    background: '#0d0d0a',
   },
-  nav: {
-    display: 'flex',
-    gap: '40px',
-  },
-  navLink: {
-    color: 'rgba(245, 240, 235, 0.7)',
-    textDecoration: 'none',
-    fontSize: '13px',
-    letterSpacing: '0.05em',
-    transition: 'color 0.2s ease',
-  },
-  main: {
-    position: 'relative',
-    zIndex: 10,
-    padding: '0 48px',
-  },
-  hero: {
-    textAlign: 'center',
-    padding: '80px 0 60px',
-  },
-  heroLabel: {
-    display: 'inline-block',
-    fontSize: '11px',
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase',
-    color: '#d4a574',
-    border: '1px solid rgba(212, 165, 116, 0.3)',
-    padding: '8px 20px',
-    marginBottom: '24px',
-  },
-  heroTitle: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '64px',
-    fontWeight: 400,
-    lineHeight: 1.1,
-    margin: '0 0 24px 0',
-    letterSpacing: '-0.02em',
-  },
-  heroSubtitle: {
-    fontSize: '15px',
-    lineHeight: 1.7,
-    color: 'rgba(245, 240, 235, 0.6)',
-    fontWeight: 300,
-    margin: 0,
-  },
-  shopLayout: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 380px',
-    gap: '48px',
-    paddingBottom: '80px',
-  },
-  productsSection: {
-    // No additional styles needed
-  },
-  productGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '32px',
-  },
-  productCard: {
-    background: 'rgba(20, 20, 20, 0.6)',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    border: '1px solid rgba(212, 165, 116, 0.1)',
-    transition: 'transform 0.3s ease, border-color 0.3s ease',
-    animation: 'fadeInUp 0.6s ease forwards',
-    opacity: 0,
-  },
-  productImageContainer: {
-    position: 'relative',
-    aspectRatio: '4/3',
-    overflow: 'hidden',
-  },
-  productImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    transition: 'transform 0.5s ease',
-  },
-  roastBadge: {
-    position: 'absolute',
-    top: '16px',
-    right: '16px',
-    background: 'rgba(10, 10, 10, 0.85)',
-    backdropFilter: 'blur(8px)',
-    padding: '6px 14px',
-    borderRadius: '20px',
-    fontSize: '11px',
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    color: '#d4a574',
-  },
-  productInfo: {
-    padding: '24px',
-  },
-  productOrigin: {
-    fontSize: '11px',
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    color: 'rgba(212, 165, 116, 0.7)',
-  },
-  productName: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '24px',
-    fontWeight: 500,
-    margin: '8px 0',
-    color: '#f5f0eb',
-  },
-  productNotes: {
-    fontSize: '13px',
-    color: 'rgba(245, 240, 235, 0.5)',
-    fontStyle: 'italic',
-    margin: '0 0 20px 0',
-  },
-  productFooter: {
+  titleBar: {
+    background: '#ffb000',
+    color: '#0a0a08',
+    padding: '8px 16px',
     display: 'flex',
     justifyContent: 'space-between',
+    fontWeight: 'bold',
+    fontSize: '16px',
+  },
+  titleBarRight: {
+    opacity: 0.7,
+  },
+  content: {
+    padding: '20px',
+  },
+  asciiHeader: {
+    fontSize: '12px',
+    lineHeight: 1.2,
+    textAlign: 'center',
+    margin: '0 0 20px 0',
+    textShadow: '0 0 10px #ffb000, 0 0 20px #ffb00044',
+    overflow: 'hidden',
+  },
+  columns: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 380px',
+    gap: '30px',
+  },
+  productsSection: {},
+  sectionHeader: {
+    fontSize: '20px',
+    marginBottom: '12px',
+    textShadow: '0 0 10px #ffb000',
+  },
+  tableHeader: {
+    margin: 0,
+    fontSize: '14px',
+    opacity: 0.7,
+  },
+  tableFooter: {
+    margin: 0,
+    fontSize: '14px',
+    opacity: 0.7,
+  },
+  productRow: {
+    display: 'flex',
     alignItems: 'center',
+    gap: '16px',
+    padding: '12px 8px',
+    borderLeft: '1px solid #ffb00044',
+    borderRight: '1px solid #ffb00044',
+    transition: 'background 0.1s',
+    cursor: 'default',
+  },
+  productIconCell: {
+    width: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+    filter: 'drop-shadow(0 0 8px #ffb000)',
+  },
+  productInfo: {
+    flex: 1,
+  },
+  productName: {
+    fontSize: '20px',
+    textShadow: '0 0 8px #ffb00088',
+  },
+  productMeta: {
+    fontSize: '14px',
+    opacity: 0.8,
+  },
+  productRoast: {
+    width: '80px',
+    textAlign: 'center',
+    fontSize: '14px',
   },
   productPrice: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '28px',
-    fontWeight: 500,
-    color: '#d4a574',
+    width: '80px',
+    textAlign: 'right',
+    fontSize: '20px',
+    textShadow: '0 0 8px #ffb00088',
   },
   addButton: {
     background: 'transparent',
-    border: '1px solid #d4a574',
-    color: '#d4a574',
-    padding: '12px 24px',
-    borderRadius: '6px',
-    fontSize: '12px',
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
+    border: '1px solid #ffb000',
+    color: '#ffb000',
+    padding: '8px 16px',
+    fontFamily: "'VT323', monospace",
+    fontSize: '18px',
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    fontFamily: "'Inter', sans-serif",
+    transition: 'all 0.1s',
+    textShadow: '0 0 8px #ffb00088',
   },
-  cartSidebar: {
-    background: 'rgba(20, 20, 20, 0.8)',
-    borderRadius: '16px',
-    border: '1px solid rgba(212, 165, 116, 0.15)',
-    padding: '32px',
-    position: 'sticky',
-    top: '24px',
-    height: 'fit-content',
-    maxHeight: 'calc(100vh - 48px)',
-    display: 'flex',
-    flexDirection: 'column',
+  dim: {
+    opacity: 0.5,
   },
-  cartHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '24px',
-    paddingBottom: '20px',
-    borderBottom: '1px solid rgba(212, 165, 116, 0.1)',
+  success: {
+    color: '#00ff00',
+    textShadow: '0 0 8px #00ff00',
   },
-  cartTitle: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '24px',
-    fontWeight: 500,
-    margin: 0,
+  warning: {
+    color: '#ffb000',
   },
-  cartCount: {
-    fontSize: '13px',
-    color: 'rgba(212, 165, 116, 0.7)',
+  error: {
+    color: '#ff4444',
+    textShadow: '0 0 8px #ff4444',
+  },
+  statusLine: {
+    marginTop: '16px',
+    fontSize: '14px',
+    padding: '8px',
+    borderTop: '1px dashed #ffb00044',
+  },
+  cartSection: {},
+  cartBox: {
+    border: '1px solid #ffb00066',
+    minHeight: '200px',
+    marginBottom: '16px',
+    background: '#0a0a0899',
   },
   emptyCart: {
-    textAlign: 'center',
-    padding: '48px 0',
-  },
-  emptyCartIcon: {
-    color: 'rgba(212, 165, 116, 0.3)',
-    marginBottom: '16px',
-  },
-  emptyCartText: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '20px',
-    margin: '0 0 8px 0',
-    color: 'rgba(245, 240, 235, 0.6)',
-  },
-  emptyCartSubtext: {
-    fontSize: '13px',
-    color: 'rgba(245, 240, 235, 0.4)',
-    margin: 0,
-  },
-  cartItems: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-    flex: 1,
-    overflowY: 'auto',
-    marginBottom: '24px',
-  },
-  cartItem: {
-    display: 'flex',
-    gap: '16px',
-    alignItems: 'center',
-    padding: '12px',
-    background: 'rgba(10, 10, 10, 0.4)',
-    borderRadius: '10px',
-  },
-  cartItemImage: {
-    width: '64px',
-    height: '64px',
-    objectFit: 'cover',
-    borderRadius: '8px',
-  },
-  cartItemInfo: {
-    flex: 1,
-  },
-  cartItemName: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '16px',
-    fontWeight: 500,
-    margin: '0 0 4px 0',
-  },
-  cartItemMeta: {
-    fontSize: '13px',
-    color: 'rgba(212, 165, 116, 0.7)',
-    margin: 0,
-  },
-  removeButton: {
-    background: 'transparent',
-    border: 'none',
-    color: 'rgba(245, 240, 235, 0.4)',
-    cursor: 'pointer',
-    padding: '8px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'color 0.2s ease',
-    borderRadius: '6px',
+    height: '200px',
+    opacity: 0.5,
+    fontSize: '14px',
   },
-  cartFooter: {
-    borderTop: '1px solid rgba(212, 165, 116, 0.1)',
-    paddingTop: '24px',
+  cartItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '12px',
+    borderBottom: '1px dashed #ffb00033',
+  },
+  cartItemIcon: {
+    filter: 'drop-shadow(0 0 6px #ffb000)',
+  },
+  cartItemInfo: {
+    flex: 1,
+    fontSize: '16px',
+  },
+  removeButton: {
+    background: 'transparent',
+    border: '1px solid #ff4444',
+    color: '#ff4444',
+    padding: '4px 12px',
+    fontFamily: "'VT323', monospace",
+    fontSize: '16px',
+    cursor: 'pointer',
+    textShadow: '0 0 8px #ff444488',
   },
   cartTotal: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '8px',
-  },
-  cartTotalLabel: {
-    fontSize: '14px',
-    color: 'rgba(245, 240, 235, 0.7)',
-  },
-  cartTotalValue: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '32px',
-    fontWeight: 500,
-    color: '#d4a574',
-  },
-  shippingNote: {
-    fontSize: '12px',
-    color: 'rgba(245, 240, 235, 0.4)',
-    margin: '0 0 20px 0',
+    fontSize: '16px',
+    margin: '0 0 16px 0',
+    lineHeight: 1.4,
   },
   checkoutButton: {
     width: '100%',
-    background: 'linear-gradient(135deg, #d4a574 0%, #c9956c 100%)',
+    background: '#ffb000',
     border: 'none',
-    color: '#0a0a0a',
-    padding: '18px 32px',
-    borderRadius: '8px',
-    fontSize: '13px',
-    fontWeight: 500,
-    letterSpacing: '0.15em',
-    textTransform: 'uppercase',
+    color: '#0a0a08',
+    padding: '16px',
+    fontFamily: "'VT323', monospace",
+    fontSize: '24px',
+    fontWeight: 'bold',
     cursor: 'pointer',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-    fontFamily: "'Inter', sans-serif",
+    textAlign: 'center',
+    transition: 'all 0.1s',
+    boxShadow: '0 0 20px #ffb00066',
+  },
+  systemLog: {
+    marginTop: '20px',
+    padding: '12px',
+    background: '#00000066',
+    border: '1px solid #ffb00033',
+    fontSize: '14px',
+  },
+  logEntry: {
+    marginTop: '4px',
+    opacity: 0.8,
   },
   footer: {
-    position: 'relative',
-    zIndex: 10,
-    textAlign: 'center',
-    padding: '40px',
-    borderTop: '1px solid rgba(212, 165, 116, 0.1)',
-    fontSize: '12px',
-    color: 'rgba(245, 240, 235, 0.4)',
-    letterSpacing: '0.05em',
+    marginTop: '20px',
+    paddingTop: '16px',
+    borderTop: '1px solid #ffb00044',
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '16px',
+    fontSize: '14px',
+    opacity: 0.7,
+  },
+  blink: {
+    animation: 'blink 1s infinite',
+    color: '#00ff00',
   },
 };
