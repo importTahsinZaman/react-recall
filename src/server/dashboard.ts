@@ -1369,9 +1369,10 @@ export function getDashboardHTML(): string {
         const isSelected = groupIndices.some(idx => selectedIndices.has(idx));
         const selectedClass = isSelected ? 'selected' : '';
 
-        // Count badge for grouped entries
-        const countBadgeHtml = count > 1
-          ? \`<span class="count-badge">×\${count}</span>\`
+        // Count badge - use entry.count from storage, or UI group count
+        const displayCount = entry.count || count;
+        const countBadgeHtml = displayCount > 1
+          ? \`<span class="count-badge">×\${displayCount}</span>\`
           : '';
 
         const stackHtml = entry.stack
@@ -1794,6 +1795,7 @@ export function getDashboardHTML(): string {
 
     function formatEntryForExport(entry) {
       const time = entry.ts.split('T')[1].split('.')[0];
+      const countSuffix = entry.count && entry.count > 1 ? \` (×\${entry.count})\` : '';
 
       if (entry.type === 'event') {
         const location = entry.component || entry.selector;
@@ -1822,17 +1824,17 @@ export function getDashboardHTML(): string {
           if (entry.url) details = \`: \${entry.url}\`;
           if (entry.value) details = \`: value="\${entry.value}"\`;
         }
-        return \`[\${time}] \${entry.event.toUpperCase()}\${details}\`;
+        return \`[\${time}] \${entry.event.toUpperCase()}\${countSuffix}\${details}\`;
       } else if (entry.type === 'log') {
-        return \`[\${time}] \${entry.level.toUpperCase()}: \${entry.message}\`;
+        return \`[\${time}] \${entry.level.toUpperCase()}\${countSuffix}: \${entry.message}\`;
       } else if (entry.type === 'error') {
-        let str = \`[\${time}] ERROR: \${entry.message}\`;
+        let str = \`[\${time}] ERROR\${countSuffix}: \${entry.message}\`;
         if (entry.stack) str += '\\n    ' + entry.stack.split('\\n').slice(0, 3).join('\\n    ');
         return str;
       } else if (entry.type === 'network') {
         return formatNetworkEntryForExport(entry);
       } else if (entry.type === 'server-log') {
-        let str = \`[\${time}] SERVER \${entry.level.toUpperCase()}\`;
+        let str = \`[\${time}] SERVER \${entry.level.toUpperCase()}\${countSuffix}\`;
         if (entry.source) str += \` [\${entry.source}]\`;
         str += \`: \${entry.message}\`;
         if (entry.args && entry.args.length > 0) {

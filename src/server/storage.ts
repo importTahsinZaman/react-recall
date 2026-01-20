@@ -5,10 +5,30 @@ import type { Entry, ServerConfig } from "../types.js";
 const REACT_RECALL_DIR = ".react-recall";
 const LOGS_FILE = "logs.jsonl";
 
+// Create a signature for an entry to determine if two entries are identical
+function getEntrySignature(entry: Entry): string {
+  if (entry.type === 'event') {
+    const e = entry as any;
+    return `event:${e.event}:${e.text || ''}:${e.selector || ''}:${e.component || ''}:${e.value || ''}`;
+  } else if (entry.type === 'log' || entry.type === 'server-log') {
+    const e = entry as any;
+    return `${e.type}:${e.level}:${e.message}:${JSON.stringify(e.args || [])}`;
+  } else if (entry.type === 'error') {
+    const e = entry as any;
+    return `error:${e.message}`;
+  } else if (entry.type === 'network') {
+    const e = entry as any;
+    return `network:${e.method}:${e.url}:${e.status || 'pending'}`;
+  }
+  return JSON.stringify(entry);
+}
+
 export class Storage {
   private baseDir: string;
   private logsPath: string;
   private config: ServerConfig;
+  private lastEntry: Entry | null = null;
+  private lastEntrySignature: string | null = null;
 
   constructor(workingDir: string, config: ServerConfig) {
     this.baseDir = path.join(workingDir, REACT_RECALL_DIR);
@@ -53,11 +73,52 @@ export class Storage {
   }
 
   async appendEntry(entry: Entry): Promise<void> {
+    const signature = getEntrySignature(entry);
+    const entryTime = new Date(entry.ts).getTime();
+
+    // Check if this entry matches the last one (within 2 seconds)
+    if (this.lastEntry && this.lastEntrySignature === signature) {
+      const lastTime = new Date(this.lastEntry.ts).getTime();
+      const timeDiff = Math.abs(entryTime - lastTime);
+
+      if (timeDiff <= 2000) {
+        // Increment count on last entry
+        const count = ((this.lastEntry as any).count || 1) + 1;
+        (this.lastEntry as any).count = count;
+
+        // Rewrite the file with updated last entry
+        this.rewriteLastEntry(this.lastEntry);
+        return;
+      }
+    }
+
+    // New entry - append to file
     const line = JSON.stringify(entry) + "\n";
     fs.appendFileSync(this.logsPath, line);
 
+    // Track this as the last entry
+    this.lastEntry = entry;
+    this.lastEntrySignature = signature;
+
     // Check for rotation
     await this.checkRotation();
+  }
+
+  private rewriteLastEntry(updatedEntry: Entry): void {
+    try {
+      const content = fs.readFileSync(this.logsPath, "utf-8");
+      const lines = content.trim().split("\n").filter(l => l);
+
+      if (lines.length > 0) {
+        // Replace the last line with updated entry
+        lines[lines.length - 1] = JSON.stringify(updatedEntry);
+        fs.writeFileSync(this.logsPath, lines.join("\n") + "\n");
+      }
+    } catch {
+      // If rewrite fails, just append as new entry
+      const line = JSON.stringify(updatedEntry) + "\n";
+      fs.appendFileSync(this.logsPath, line);
+    }
   }
 
   private async checkRotation(): Promise<void> {
