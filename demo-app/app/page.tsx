@@ -2,186 +2,60 @@
 
 import { useState } from "react";
 
-// Pixel art components - Stardew Valley style
-const PixelCoffeeCup = () => (
-  <svg width="48" height="48" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
-    {/* Steam wisps */}
-    <rect x="5" y="0" width="1" height="1" fill="#d4a574" />
-    <rect x="7" y="1" width="1" height="1" fill="#d4a574" />
-    <rect x="9" y="0" width="1" height="1" fill="#d4a574" />
-    <rect x="6" y="1" width="1" height="1" fill="#c49464" opacity="0.6" />
-    <rect x="8" y="0" width="1" height="1" fill="#c49464" opacity="0.6" />
-    {/* Cup body */}
-    <rect x="3" y="3" width="8" height="1" fill="#f5deb3" />
-    <rect x="2" y="4" width="1" height="7" fill="#e8c9a0" />
-    <rect x="11" y="4" width="1" height="7" fill="#d4b896" />
-    <rect x="3" y="4" width="8" height="7" fill="#fff8e7" />
-    <rect x="3" y="11" width="8" height="1" fill="#e8c9a0" />
-    {/* Coffee inside */}
-    <rect x="3" y="5" width="8" height="5" fill="#6b4423" />
-    <rect x="4" y="5" width="2" height="1" fill="#8b5a2b" />
-    {/* Handle */}
-    <rect x="12" y="5" width="1" height="1" fill="#e8c9a0" />
-    <rect x="13" y="6" width="1" height="3" fill="#f5deb3" />
-    <rect x="12" y="9" width="1" height="1" fill="#e8c9a0" />
-    {/* Saucer */}
-    <rect x="1" y="12" width="12" height="1" fill="#e8c9a0" />
-    <rect x="0" y="13" width="14" height="1" fill="#d4b896" />
-    <rect x="1" y="14" width="12" height="1" fill="#c9a886" />
-  </svg>
-);
-
-const PixelCoffeeBag = () => (
-  <svg width="48" height="48" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
-    {/* Bag body */}
-    <rect x="2" y="4" width="12" height="10" fill="#8b5a2b" />
-    <rect x="3" y="3" width="10" height="1" fill="#a0522d" />
-    <rect x="2" y="4" width="1" height="10" fill="#6b4423" />
-    <rect x="13" y="4" width="1" height="10" fill="#5a3a1d" />
-    <rect x="2" y="14" width="12" height="1" fill="#5a3a1d" />
-    {/* Fold at top */}
-    <rect x="4" y="2" width="8" height="1" fill="#a0522d" />
-    <rect x="5" y="1" width="6" height="1" fill="#8b5a2b" />
-    {/* Label */}
-    <rect x="4" y="6" width="8" height="6" fill="#f5deb3" />
-    <rect x="5" y="7" width="6" height="4" fill="#fff8e7" />
-    {/* Coffee bean on label */}
-    <rect x="6" y="8" width="1" height="2" fill="#6b4423" />
-    <rect x="7" y="7" width="2" height="1" fill="#6b4423" />
-    <rect x="7" y="10" width="2" height="1" fill="#6b4423" />
-    <rect x="9" y="8" width="1" height="2" fill="#6b4423" />
-    <rect x="7" y="8" width="2" height="2" fill="#8b5a2b" />
-  </svg>
-);
-
-const PixelLatte = () => (
-  <svg width="48" height="48" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
-    {/* Tall glass */}
-    <rect x="4" y="2" width="8" height="1" fill="#e8e8e8" />
-    <rect x="3" y="3" width="1" height="11" fill="#d0d0d0" />
-    <rect x="12" y="3" width="1" height="11" fill="#b8b8b8" />
-    <rect x="4" y="3" width="8" height="11" fill="#f0f0f0" />
-    <rect x="4" y="14" width="8" height="1" fill="#d0d0d0" />
-    {/* Coffee gradient layers */}
-    <rect x="4" y="11" width="8" height="3" fill="#6b4423" />
-    <rect x="4" y="8" width="8" height="3" fill="#c49464" />
-    <rect x="4" y="5" width="8" height="3" fill="#f5deb3" />
-    <rect x="4" y="3" width="8" height="2" fill="#fff8e7" />
-    {/* Foam art - heart */}
-    <rect x="6" y="3" width="1" height="1" fill="#d4a574" />
-    <rect x="9" y="3" width="1" height="1" fill="#d4a574" />
-    <rect x="7" y="4" width="2" height="1" fill="#d4a574" />
-    {/* Straw */}
-    <rect x="10" y="0" width="1" height="5" fill="#e74c3c" />
-    <rect x="10" y="0" width="1" height="1" fill="#c0392b" />
-  </svg>
-);
-
-const PixelEspresso = () => (
-  <svg width="48" height="48" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
-    {/* Steam */}
-    <rect x="6" y="2" width="1" height="1" fill="#d4a574" opacity="0.7" />
-    <rect x="8" y="1" width="1" height="1" fill="#d4a574" opacity="0.7" />
-    <rect x="7" y="3" width="1" height="1" fill="#c49464" opacity="0.5" />
-    {/* Small cup */}
-    <rect x="4" y="5" width="8" height="1" fill="#fff8e7" />
-    <rect x="3" y="6" width="1" height="5" fill="#e8c9a0" />
-    <rect x="12" y="6" width="1" height="5" fill="#d4b896" />
-    <rect x="4" y="6" width="8" height="5" fill="#fff8e7" />
-    <rect x="4" y="11" width="8" height="1" fill="#e8c9a0" />
-    {/* Espresso with crema */}
-    <rect x="4" y="7" width="8" height="1" fill="#d4a574" />
-    <rect x="4" y="8" width="8" height="3" fill="#3d2314" />
-    <rect x="5" y="8" width="2" height="1" fill="#4a2c1a" />
-    {/* Handle */}
-    <rect x="13" y="7" width="1" height="1" fill="#e8c9a0" />
-    <rect x="14" y="8" width="1" height="2" fill="#f5deb3" />
-    <rect x="13" y="10" width="1" height="1" fill="#e8c9a0" />
-    {/* Saucer */}
-    <rect x="2" y="12" width="12" height="1" fill="#e8c9a0" />
-    <rect x="1" y="13" width="14" height="1" fill="#d4b896" />
-    <rect x="2" y="14" width="12" height="1" fill="#c9a886" />
-  </svg>
-);
-
-const GoldCoin = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" style={{ imageRendering: 'pixelated' }}>
-    <rect x="5" y="1" width="6" height="1" fill="#ffd700" />
-    <rect x="3" y="2" width="2" height="1" fill="#ffd700" />
-    <rect x="11" y="2" width="2" height="1" fill="#daa520" />
-    <rect x="2" y="3" width="1" height="2" fill="#ffd700" />
-    <rect x="13" y="3" width="1" height="2" fill="#b8860b" />
-    <rect x="1" y="5" width="1" height="6" fill="#ffd700" />
-    <rect x="14" y="5" width="1" height="6" fill="#b8860b" />
-    <rect x="2" y="11" width="1" height="2" fill="#daa520" />
-    <rect x="13" y="11" width="1" height="2" fill="#b8860b" />
-    <rect x="3" y="13" width="2" height="1" fill="#daa520" />
-    <rect x="11" y="13" width="2" height="1" fill="#b8860b" />
-    <rect x="5" y="14" width="6" height="1" fill="#b8860b" />
-    {/* Inner fill */}
-    <rect x="3" y="3" width="10" height="10" fill="#ffc125" />
-    <rect x="5" y="2" width="6" height="1" fill="#ffe55c" />
-    <rect x="2" y="5" width="1" height="6" fill="#ffe55c" />
-    {/* G symbol */}
-    <rect x="6" y="5" width="4" height="1" fill="#b8860b" />
-    <rect x="5" y="6" width="1" height="4" fill="#b8860b" />
-    <rect x="6" y="10" width="4" height="1" fill="#b8860b" />
-    <rect x="9" y="8" width="1" height="2" fill="#b8860b" />
-    <rect x="7" y="8" width="2" height="1" fill="#b8860b" />
-  </svg>
-);
-
-const pixelIcons = [PixelCoffeeCup, PixelCoffeeBag, PixelLatte, PixelEspresso];
-
 const products = [
   {
-    id: "house-blend",
-    name: "House Blend",
-    description: "A cozy morning starter",
-    price: 24,
-    icon: 0,
-    season: "All Seasons",
+    id: "ethiopian-yirgacheffe",
+    name: "Ethiopian Yirgacheffe",
+    origin: "Gedeo Zone, Ethiopia",
+    description: "Bright and floral with notes of jasmine, bergamot, and raw honey. Light roast.",
+    price: 19,
+    image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&h=600&fit=crop&q=80",
   },
   {
-    id: "mountain-roast",
-    name: "Mountain Roast",
-    description: "Bold & adventurous",
+    id: "colombia-huila",
+    name: "Colombia Huila",
+    origin: "Huila Region, Colombia",
+    description: "Balanced and smooth with caramel sweetness and citrus brightness. Medium roast.",
+    price: 18,
+    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&h=600&fit=crop&q=80",
+  },
+  {
+    id: "guatemala-antigua",
+    name: "Guatemala Antigua",
+    origin: "Antigua Valley, Guatemala",
+    description: "Rich chocolate notes with subtle spice and a velvety body. Medium-dark roast.",
+    price: 20,
+    image: "https://images.unsplash.com/photo-1497636577773-f1231844b336?w=600&h=600&fit=crop&q=80",
+  },
+  {
+    id: "kenya-nyeri",
+    name: "Kenya Nyeri AA",
+    origin: "Nyeri County, Kenya",
+    description: "Complex and wine-like with blackcurrant, tomato, and brown sugar. Light-medium roast.",
     price: 22,
-    icon: 1,
-    season: "Winter favorite",
-  },
-  {
-    id: "honey-latte",
-    name: "Honey Latte",
-    description: "Sweet & creamy",
-    price: 26,
-    icon: 2,
-    season: "Spring special",
-  },
-  {
-    id: "farmers-espresso",
-    name: "Farmer's Espresso",
-    description: "Strong & energizing",
-    price: 28,
-    icon: 3,
-    season: "Harvest boost",
+    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=600&fit=crop&q=80",
   },
 ];
 
 export default function Home() {
-  const [cartItemIds, setCartItemIds] = useState<string[]>([]);
+  const [cartItems, setCartItems] = useState<string[]>([]);
   const [removedItems, setRemovedItems] = useState<string[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [clickedButton, setClickedButton] = useState<string | null>(null);
 
-  const addToCart = (product: typeof products[0]) => {
-    setCartItemIds((prev) => [...prev, product.id]);
-    setClickedButton(product.id);
-    setTimeout(() => setClickedButton(null), 150);
+  const addToCart = (productId: string) => {
+    setCartItems((prev) => [...prev, productId]);
+    setIsCartOpen(true);
   };
 
   const removeFromCart = (productId: string) => {
-    setCartItemIds((prev) => prev.filter((id) => id !== productId));
+    setCartItems((prev) => {
+      const index = prev.indexOf(productId);
+      if (index > -1) {
+        return [...prev.slice(0, index), ...prev.slice(index + 1)];
+      }
+      return prev;
+    });
     setRemovedItems((prev) => [...prev, productId]);
   };
 
@@ -189,228 +63,281 @@ export default function Home() {
     setIsCheckingOut(true);
 
     let total = 0;
-    for (const id of cartItemIds) {
+    for (const id of cartItems) {
       const item = products.find((p) => p.id === id);
       total += item!.price;
     }
 
-    // BUG: Show "savings" from removed items
+    // BUG: Attempt to calculate "savings" from removed items
     if (removedItems.length > 0) {
-      const savedItem = products.find(p => p.id === removedItems[0] + "-savings");
+      const savedItem = products.find((p) => p.id === removedItems[0] + "-savings");
       const savedAmount = savedItem!.price;
-      console.log(`You saved ${savedAmount}g by removing items`);
+      console.log(`You saved $${savedAmount} by removing items`);
     }
 
     setTimeout(() => {
       setIsCheckingOut(false);
-      alert(`Purchase complete! Total: ${total}g`);
-    }, 1000);
+      setCartItems([]);
+      setIsCartOpen(false);
+      alert(`Order confirmed! Total: $${total}`);
+    }, 1500);
   };
 
-  const cartTotal = cartItemIds.reduce((sum, id) => {
-    const item = products.find((p) => p.id === id);
-    return sum + (item?.price || 0);
+  const cartCount = cartItems.length;
+  const cartTotal = cartItems.reduce((sum, id) => {
+    const product = products.find((p) => p.id === id);
+    return sum + (product?.price || 0);
   }, 0);
 
-  const itemCounts = cartItemIds.reduce((acc, id) => {
+  const itemCounts = cartItems.reduce((acc, id) => {
     acc[id] = (acc[id] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  const uniqueCartItems = [...new Set(cartItemIds)]
+  const uniqueCartItems = [...new Set(cartItems)]
     .map((id) => products.find((p) => p.id === id))
     .filter(Boolean) as typeof products;
 
   return (
-    <div style={styles.container}>
-      {/* Decorative elements */}
-      <div style={styles.leafTopLeft}>🌿</div>
-      <div style={styles.leafTopRight}>🌿</div>
-      <div style={styles.flowerBottomLeft}>🌻</div>
-      <div style={styles.flowerBottomRight}>🌷</div>
+    <div style={styles.page}>
+      {/* Header */}
+      <header style={styles.header}>
+        <div style={styles.headerInner}>
+          <a href="#" style={styles.logo}>
+            <span style={styles.logoMark}>●</span>
+            <span style={styles.logoText}>Forthright Coffee</span>
+          </a>
 
-      {/* Main shop window */}
-      <div style={styles.shopWindow}>
-        {/* Wooden frame top */}
-        <div style={styles.frameTop}>
-          <div style={styles.frameCorner}>◈</div>
-          <div style={styles.shopTitle}>☕ Pelican Town Cafe ☕</div>
-          <div style={styles.frameCorner}>◈</div>
+          <nav style={styles.nav}>
+            <a href="#" style={styles.navLink}>Shop</a>
+            <a href="#" style={styles.navLink}>Subscribe</a>
+            <a href="#" style={styles.navLink}>About</a>
+            <a href="#" style={styles.navLink}>Locations</a>
+          </nav>
+
+          <button
+            onClick={() => setIsCartOpen(true)}
+            style={styles.cartButton}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            {cartCount > 0 && (
+              <span style={styles.cartBadge}>{cartCount}</span>
+            )}
+          </button>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section style={styles.hero}>
+        <div style={styles.heroContent}>
+          <p style={styles.heroLabel}>Single Origin Collection</p>
+          <h1 style={styles.heroTitle}>Coffee worth<br />waking up for</h1>
+          <p style={styles.heroSubtitle}>
+            Thoughtfully sourced, carefully roasted, delivered fresh to your door.
+          </p>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section style={styles.productsSection}>
+        <div style={styles.sectionHeader}>
+          <h2 style={styles.sectionTitle}>Our Coffees</h2>
+          <p style={styles.sectionSubtitle}>Each origin tells a story. Find yours.</p>
         </div>
 
-        {/* Content area */}
-        <div style={styles.contentArea}>
-          {/* Left side - Shop items */}
-          <div style={styles.shopSection}>
-            <div style={styles.sectionLabel}>
-              <span style={styles.pixelBorder}>~ For Sale ~</span>
+        <div style={styles.productGrid}>
+          {products.map((product) => (
+            <article key={product.id} style={styles.productCard}>
+              <div style={styles.productImageWrapper}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  style={styles.productImage}
+                />
+              </div>
+              <div style={styles.productContent}>
+                <p style={styles.productOrigin}>{product.origin}</p>
+                <h3 style={styles.productName}>{product.name}</h3>
+                <p style={styles.productDescription}>{product.description}</p>
+                <div style={styles.productFooter}>
+                  <span style={styles.productPrice}>${product.price}</span>
+                  <button
+                    onClick={() => addToCart(product.id)}
+                    style={styles.addToCartButton}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Features */}
+      <section style={styles.features}>
+        <div style={styles.feature}>
+          <div style={styles.featureIcon}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <h3 style={styles.featureTitle}>Direct Trade</h3>
+          <p style={styles.featureText}>We work directly with farmers, ensuring fair wages and sustainable practices.</p>
+        </div>
+        <div style={styles.feature}>
+          <div style={styles.featureIcon}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="1" y="3" width="15" height="13" rx="2" />
+              <path d="M16 8h4a2 2 0 012 2v6a2 2 0 01-2 2h-4" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+          </div>
+          <h3 style={styles.featureTitle}>Fresh Roasted</h3>
+          <p style={styles.featureText}>Roasted to order and shipped within 24 hours for peak freshness.</p>
+        </div>
+        <div style={styles.feature}>
+          <div style={styles.featureIcon}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
+          </div>
+          <h3 style={styles.featureTitle}>Satisfaction Guaranteed</h3>
+          <p style={styles.featureText}>Not in love? We'll make it right or refund your order.</p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer style={styles.footer}>
+        <div style={styles.footerContent}>
+          <div style={styles.footerBrand}>
+            <span style={styles.logoMark}>●</span>
+            <span style={styles.footerLogoText}>Forthright Coffee</span>
+          </div>
+          <p style={styles.footerText}>Honest coffee for discerning people.</p>
+          <p style={styles.footerCopyright}>© 2024 Forthright Coffee Co. All rights reserved.</p>
+        </div>
+      </footer>
+
+      {/* Cart Overlay */}
+      {isCartOpen && (
+        <div style={styles.cartOverlay} onClick={() => setIsCartOpen(false)}>
+          <div style={styles.cartPanel} onClick={(e) => e.stopPropagation()}>
+            <div style={styles.cartHeader}>
+              <h2 style={styles.cartTitle}>Your Cart</h2>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                style={styles.closeButton}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
             </div>
 
-            <div style={styles.itemGrid}>
-              {products.map((product) => {
-                const IconComponent = pixelIcons[product.icon];
-                const isClicked = clickedButton === product.id;
-                return (
-                  <div
-                    key={product.id}
-                    style={{
-                      ...styles.itemCard,
-                      transform: isClicked ? 'scale(0.95)' : 'scale(1)',
-                    }}
-                  >
-                    <div style={styles.itemIconWrapper}>
-                      <IconComponent />
-                    </div>
-                    <div style={styles.itemName}>{product.name}</div>
-                    <div style={styles.itemDesc}>{product.description}</div>
-                    <div style={styles.itemSeason}>{product.season}</div>
-                    <div style={styles.itemFooter}>
-                      <div style={styles.priceTag}>
-                        <GoldCoin />
-                        <span style={styles.priceAmount}>{product.price}g</span>
+            {uniqueCartItems.length === 0 ? (
+              <div style={styles.emptyCart}>
+                <p style={styles.emptyCartText}>Your cart is empty</p>
+                <button
+                  onClick={() => setIsCartOpen(false)}
+                  style={styles.continueShoppingButton}
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            ) : (
+              <>
+                <div style={styles.cartItems}>
+                  {uniqueCartItems.map((item) => (
+                    <div key={item.id} style={styles.cartItem}>
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        style={styles.cartItemImage}
+                      />
+                      <div style={styles.cartItemDetails}>
+                        <h4 style={styles.cartItemName}>{item.name}</h4>
+                        <p style={styles.cartItemPrice}>
+                          ${item.price} × {itemCounts[item.id]}
+                        </p>
                       </div>
                       <button
-                        onClick={() => addToCart(product)}
-                        style={styles.buyButton}
+                        onClick={() => removeFromCart(item.id)}
+                        style={styles.removeItemButton}
                       >
-                        Buy
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
                       </button>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Shop info */}
-            <div style={styles.shopInfo}>
-              <span>Open 9am - 5pm</span>
-              <span style={styles.divider}>◆</span>
-              <span>Closed on Wednesdays</span>
-            </div>
-          </div>
-
-          {/* Right side - Cart/Bag */}
-          <div style={styles.cartSection}>
-            <div style={styles.sectionLabel}>
-              <span style={styles.pixelBorder}>~ Your Bag ~</span>
-            </div>
-
-            <div style={styles.cartBag}>
-              {uniqueCartItems.length === 0 ? (
-                <div style={styles.emptyBag}>
-                  <div style={styles.emptyBagIcon}>🎒</div>
-                  <div style={styles.emptyBagText}>Your bag is empty!</div>
-                  <div style={styles.emptyBagSubtext}>Select items to purchase</div>
+                  ))}
                 </div>
-              ) : (
-                <div style={styles.cartItems}>
-                  {uniqueCartItems.map((item) => {
-                    const IconComponent = pixelIcons[item.icon];
-                    return (
-                      <div key={item.id} style={styles.cartItem}>
-                        <div style={styles.cartItemIcon}>
-                          <IconComponent />
-                        </div>
-                        <div style={styles.cartItemInfo}>
-                          <div style={styles.cartItemName}>{item.name}</div>
-                          <div style={styles.cartItemQty}>
-                            ×{itemCounts[item.id]}
-                          </div>
-                        </div>
-                        <div style={styles.cartItemPrice}>
-                          {item.price * itemCounts[item.id]}g
-                        </div>
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          style={styles.removeButton}
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
 
-              {/* Cart total */}
-              {uniqueCartItems.length > 0 && (
                 <div style={styles.cartFooter}>
-                  <div style={styles.totalRow}>
-                    <span>Total:</span>
-                    <div style={styles.totalAmount}>
-                      <GoldCoin />
-                      <span style={styles.totalValue}>{cartTotal}g</span>
-                    </div>
+                  <div style={styles.cartTotal}>
+                    <span style={styles.cartTotalLabel}>Subtotal</span>
+                    <span style={styles.cartTotalAmount}>${cartTotal}</span>
                   </div>
-
+                  <p style={styles.cartShipping}>Shipping calculated at checkout</p>
                   <button
                     onClick={checkout}
                     disabled={isCheckingOut}
                     style={{
                       ...styles.checkoutButton,
                       opacity: isCheckingOut ? 0.7 : 1,
+                      cursor: isCheckingOut ? 'not-allowed' : 'pointer',
                     }}
                   >
-                    {isCheckingOut ? '...' : 'Purchase'}
+                    {isCheckingOut ? 'Processing...' : 'Checkout'}
                   </button>
                 </div>
-              )}
-            </div>
-
-            {/* Player money display */}
-            <div style={styles.walletDisplay}>
-              <div style={styles.walletLabel}>Your Gold:</div>
-              <div style={styles.walletAmount}>
-                <GoldCoin />
-                <span>1,247g</span>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
-
-        {/* Wooden frame bottom */}
-        <div style={styles.frameBottom}>
-          <div style={styles.framePattern}>═══════════════════════════════════════════════</div>
-        </div>
-      </div>
-
-      {/* Dialogue box */}
-      <div style={styles.dialogueBox}>
-        <div style={styles.dialoguePortrait}>👩‍🌾</div>
-        <div style={styles.dialogueContent}>
-          <div style={styles.dialogueName}>Cafe Owner</div>
-          <div style={styles.dialogueText}>
-            "Welcome to my little cafe! Everything's made fresh with ingredients from the valley."
-          </div>
-        </div>
-      </div>
+      )}
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
         * {
           box-sizing: border-box;
-          image-rendering: pixelated;
+          margin: 0;
+          padding: 0;
         }
 
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-5px); }
-        }
-
-        @keyframes sway {
-          0%, 100% { transform: rotate(-3deg); }
-          50% { transform: rotate(3deg); }
-        }
-
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+        html {
+          scroll-behavior: smooth;
         }
 
         ::selection {
-          background: #8b5a2b;
-          color: #fff8e7;
+          background: #c45d3a;
+          color: white;
+        }
+
+        @keyframes slideIn {
+          from {
+            transform: translateX(100%);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
       `}</style>
     </div>
@@ -418,368 +345,410 @@ export default function Home() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  container: {
+  page: {
     minHeight: '100vh',
-    background: 'linear-gradient(180deg, #87CEEB 0%, #98D8C8 50%, #7CB342 100%)',
-    fontFamily: "'Press Start 2P', cursive",
-    fontSize: '10px',
-    color: '#3d2914',
-    padding: '20px',
+    background: '#fafaf9',
+    fontFamily: "'DM Sans', -apple-system, sans-serif",
+    color: '#1a1a1a',
+  },
+
+  // Header
+  header: {
+    position: 'sticky',
+    top: 0,
+    background: 'rgba(250, 250, 249, 0.95)',
+    backdropFilter: 'blur(10px)',
+    borderBottom: '1px solid #eaeaea',
+    zIndex: 100,
+  },
+  headerInner: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '16px 24px',
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: '20px',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  leafTopLeft: {
-    position: 'absolute',
-    top: '20px',
-    left: '20px',
-    fontSize: '40px',
-    animation: 'sway 3s ease-in-out infinite',
-    opacity: 0.8,
-  },
-  leafTopRight: {
-    position: 'absolute',
-    top: '20px',
-    right: '20px',
-    fontSize: '40px',
-    animation: 'sway 3s ease-in-out infinite',
-    animationDelay: '0.5s',
-    opacity: 0.8,
-    transform: 'scaleX(-1)',
-  },
-  flowerBottomLeft: {
-    position: 'absolute',
-    bottom: '20px',
-    left: '30px',
-    fontSize: '32px',
-    animation: 'float 4s ease-in-out infinite',
-  },
-  flowerBottomRight: {
-    position: 'absolute',
-    bottom: '20px',
-    right: '30px',
-    fontSize: '32px',
-    animation: 'float 4s ease-in-out infinite',
-    animationDelay: '1s',
-  },
-  shopWindow: {
-    background: '#f4e4bc',
-    border: '8px solid #8b5a2b',
-    borderRadius: '4px',
-    boxShadow: `
-      0 0 0 4px #6b4423,
-      0 0 0 8px #5a3a1d,
-      8px 8px 0 0 rgba(0,0,0,0.3)
-    `,
-    maxWidth: '900px',
-    width: '100%',
-  },
-  frameTop: {
-    background: 'linear-gradient(180deg, #a0522d 0%, #8b5a2b 100%)',
-    padding: '12px 20px',
-    display: 'flex',
     justifyContent: 'space-between',
+  },
+  logo: {
+    display: 'flex',
     alignItems: 'center',
-    borderBottom: '4px solid #6b4423',
+    gap: '10px',
+    textDecoration: 'none',
+    color: '#1a1a1a',
   },
-  frameCorner: {
-    color: '#ffd700',
-    fontSize: '16px',
-    textShadow: '2px 2px 0 #8b5a2b',
+  logoMark: {
+    fontSize: '24px',
+    color: '#c45d3a',
   },
-  shopTitle: {
-    color: '#fff8e7',
+  logoText: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '20px',
+    fontWeight: 500,
+  },
+  nav: {
+    display: 'flex',
+    gap: '32px',
+  },
+  navLink: {
+    color: '#4a4a4a',
+    textDecoration: 'none',
     fontSize: '14px',
-    textShadow: '2px 2px 0 #5a3a1d',
-    letterSpacing: '2px',
+    fontWeight: 500,
+    transition: 'color 0.2s',
   },
-  contentArea: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 280px',
-    gap: '20px',
-    padding: '20px',
-  },
-  shopSection: {},
-  sectionLabel: {
-    marginBottom: '16px',
-    textAlign: 'center',
-  },
-  pixelBorder: {
-    background: '#8b5a2b',
-    color: '#fff8e7',
-    padding: '8px 16px',
-    border: '2px solid #6b4423',
-    boxShadow: '2px 2px 0 #5a3a1d',
-  },
-  itemGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '16px',
-  },
-  itemCard: {
-    background: '#fff8e7',
-    border: '4px solid #d4b896',
-    borderRadius: '4px',
-    padding: '12px',
-    textAlign: 'center',
-    boxShadow: '4px 4px 0 #c9a886',
-    transition: 'transform 0.1s',
-  },
-  itemIconWrapper: {
-    background: '#f4e4bc',
-    border: '2px solid #d4b896',
-    borderRadius: '4px',
+  cartButton: {
+    position: 'relative',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
     padding: '8px',
-    marginBottom: '8px',
+    color: '#1a1a1a',
+  },
+  cartBadge: {
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    background: '#c45d3a',
+    color: 'white',
+    fontSize: '10px',
+    fontWeight: 600,
+    width: '18px',
+    height: '18px',
+    borderRadius: '50%',
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  itemName: {
-    fontSize: '10px',
-    fontWeight: 'bold',
-    color: '#5a3a1d',
-    marginBottom: '4px',
-  },
-  itemDesc: {
-    fontSize: '8px',
-    color: '#8b5a2b',
-    marginBottom: '4px',
-  },
-  itemSeason: {
-    fontSize: '7px',
-    color: '#5a8f3d',
-    marginBottom: '8px',
-    fontStyle: 'italic',
-  },
-  itemFooter: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '8px',
-  },
-  priceTag: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-  },
-  priceAmount: {
-    color: '#b8860b',
-    fontWeight: 'bold',
-  },
-  buyButton: {
-    background: 'linear-gradient(180deg, #5a8f3d 0%, #4a7f2d 100%)',
-    border: '2px solid #3d6b24',
-    borderRadius: '2px',
-    color: '#fff8e7',
-    padding: '6px 12px',
-    fontFamily: "'Press Start 2P', cursive",
-    fontSize: '8px',
-    cursor: 'pointer',
-    boxShadow: '2px 2px 0 #2d5a1a',
-    transition: 'all 0.1s',
-  },
-  shopInfo: {
-    marginTop: '16px',
+
+  // Hero
+  hero: {
+    background: 'linear-gradient(180deg, #fafaf9 0%, #f5f0eb 100%)',
+    padding: '80px 24px 100px',
     textAlign: 'center',
-    fontSize: '8px',
-    color: '#8b5a2b',
-    padding: '8px',
-    borderTop: '2px dashed #d4b896',
   },
-  divider: {
-    margin: '0 8px',
-    color: '#d4b896',
+  heroContent: {
+    maxWidth: '600px',
+    margin: '0 auto',
   },
-  cartSection: {},
-  cartBag: {
-    background: '#fff8e7',
-    border: '4px solid #d4b896',
-    borderRadius: '4px',
-    minHeight: '280px',
-    boxShadow: '4px 4px 0 #c9a886',
+  heroLabel: {
+    fontSize: '12px',
+    fontWeight: 600,
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase',
+    color: '#c45d3a',
+    marginBottom: '16px',
+  },
+  heroTitle: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '56px',
+    fontWeight: 400,
+    lineHeight: 1.1,
+    marginBottom: '20px',
+    color: '#1a1a1a',
+  },
+  heroSubtitle: {
+    fontSize: '18px',
+    color: '#5a5a5a',
+    lineHeight: 1.6,
+  },
+
+  // Products
+  productsSection: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '80px 24px',
+  },
+  sectionHeader: {
+    textAlign: 'center',
+    marginBottom: '48px',
+  },
+  sectionTitle: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '36px',
+    fontWeight: 400,
+    marginBottom: '12px',
+  },
+  sectionSubtitle: {
+    fontSize: '16px',
+    color: '#6a6a6a',
+  },
+  productGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '24px',
+  },
+  productCard: {
+    background: 'white',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+  },
+  productImageWrapper: {
+    aspectRatio: '1',
+    overflow: 'hidden',
+    background: '#f5f0eb',
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    transition: 'transform 0.3s',
+  },
+  productContent: {
+    padding: '20px',
+  },
+  productOrigin: {
+    fontSize: '11px',
+    fontWeight: 600,
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase',
+    color: '#888',
+    marginBottom: '6px',
+  },
+  productName: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '18px',
+    fontWeight: 500,
+    marginBottom: '8px',
+    color: '#1a1a1a',
+  },
+  productDescription: {
+    fontSize: '13px',
+    color: '#6a6a6a',
+    lineHeight: 1.5,
+    marginBottom: '16px',
+  },
+  productFooter: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  productPrice: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '20px',
+    fontWeight: 500,
+    color: '#1a1a1a',
+  },
+  addToCartButton: {
+    background: '#1a1a1a',
+    color: 'white',
+    border: 'none',
+    padding: '10px 18px',
+    borderRadius: '6px',
+    fontSize: '13px',
+    fontWeight: 500,
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+    fontFamily: "'DM Sans', sans-serif",
+  },
+
+  // Features
+  features: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '40px',
+    maxWidth: '1000px',
+    margin: '0 auto',
+    padding: '60px 24px 100px',
+    borderTop: '1px solid #eaeaea',
+  },
+  feature: {
+    textAlign: 'center',
+  },
+  featureIcon: {
+    width: '48px',
+    height: '48px',
+    background: '#f5f0eb',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '0 auto 16px',
+    color: '#c45d3a',
+  },
+  featureTitle: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '18px',
+    fontWeight: 500,
+    marginBottom: '8px',
+  },
+  featureText: {
+    fontSize: '14px',
+    color: '#6a6a6a',
+    lineHeight: 1.6,
+  },
+
+  // Footer
+  footer: {
+    background: '#1a1a1a',
+    color: 'white',
+    padding: '60px 24px',
+  },
+  footerContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    textAlign: 'center',
+  },
+  footerBrand: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '10px',
+    marginBottom: '12px',
+  },
+  footerLogoText: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '20px',
+    fontWeight: 500,
+  },
+  footerText: {
+    color: '#888',
+    fontSize: '14px',
+    marginBottom: '24px',
+  },
+  footerCopyright: {
+    color: '#555',
+    fontSize: '12px',
+  },
+
+  // Cart
+  cartOverlay: {
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(0,0,0,0.4)',
+    zIndex: 200,
+    animation: 'fadeIn 0.2s ease',
+  },
+  cartPanel: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: '420px',
+    maxWidth: '100%',
+    background: 'white',
+    boxShadow: '-4px 0 20px rgba(0,0,0,0.1)',
     display: 'flex',
     flexDirection: 'column',
+    animation: 'slideIn 0.3s ease',
   },
-  emptyBag: {
+  cartHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '20px 24px',
+    borderBottom: '1px solid #eaeaea',
+  },
+  cartTitle: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '20px',
+    fontWeight: 500,
+  },
+  closeButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: '4px',
+    color: '#666',
+  },
+  emptyCart: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '20px',
-    color: '#a0896b',
+    padding: '40px',
   },
-  emptyBagIcon: {
-    fontSize: '40px',
-    marginBottom: '12px',
-    animation: 'float 3s ease-in-out infinite',
+  emptyCartText: {
+    color: '#888',
+    marginBottom: '20px',
   },
-  emptyBagText: {
-    fontSize: '10px',
-    marginBottom: '4px',
-  },
-  emptyBagSubtext: {
-    fontSize: '8px',
-    opacity: 0.7,
+  continueShoppingButton: {
+    background: 'none',
+    border: '1px solid #1a1a1a',
+    padding: '12px 24px',
+    borderRadius: '6px',
+    fontSize: '14px',
+    fontWeight: 500,
+    cursor: 'pointer',
+    fontFamily: "'DM Sans', sans-serif",
   },
   cartItems: {
     flex: 1,
-    padding: '8px',
+    overflow: 'auto',
+    padding: '16px 24px',
   },
   cartItem: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    padding: '8px',
-    borderBottom: '2px dashed #e8d8c0',
+    gap: '16px',
+    padding: '16px 0',
+    borderBottom: '1px solid #f0f0f0',
   },
-  cartItemIcon: {
-    flexShrink: 0,
+  cartItemImage: {
+    width: '72px',
+    height: '72px',
+    objectFit: 'cover',
+    borderRadius: '8px',
   },
-  cartItemInfo: {
+  cartItemDetails: {
     flex: 1,
-    minWidth: 0,
   },
   cartItemName: {
-    fontSize: '9px',
-    fontWeight: 'bold',
-    color: '#5a3a1d',
-  },
-  cartItemQty: {
-    fontSize: '8px',
-    color: '#8b5a2b',
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '15px',
+    fontWeight: 500,
+    marginBottom: '4px',
   },
   cartItemPrice: {
-    fontSize: '9px',
-    color: '#b8860b',
-    fontWeight: 'bold',
+    fontSize: '13px',
+    color: '#666',
   },
-  removeButton: {
-    background: '#e74c3c',
-    border: '2px solid #c0392b',
-    borderRadius: '2px',
-    color: 'white',
-    width: '20px',
-    height: '20px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  removeItemButton: {
+    background: 'none',
+    border: 'none',
     cursor: 'pointer',
-    fontFamily: "'Press Start 2P', cursive",
-    fontSize: '8px',
-    padding: 0,
+    padding: '8px',
+    color: '#999',
+    transition: 'color 0.2s',
   },
   cartFooter: {
-    padding: '12px',
-    borderTop: '4px solid #d4b896',
-    background: '#f4e4bc',
+    padding: '24px',
+    borderTop: '1px solid #eaeaea',
+    background: '#fafaf9',
   },
-  totalRow: {
+  cartTotal: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px',
-    fontSize: '10px',
+    marginBottom: '8px',
   },
-  totalAmount: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
+  cartTotalLabel: {
+    fontSize: '14px',
+    color: '#666',
   },
-  totalValue: {
-    color: '#b8860b',
-    fontWeight: 'bold',
+  cartTotalAmount: {
+    fontFamily: "'Fraunces', Georgia, serif",
+    fontSize: '24px',
+    fontWeight: 500,
+  },
+  cartShipping: {
     fontSize: '12px',
+    color: '#888',
+    marginBottom: '20px',
   },
   checkoutButton: {
     width: '100%',
-    background: 'linear-gradient(180deg, #e8a030 0%, #d4902a 100%)',
-    border: '3px solid #b8860b',
-    borderRadius: '2px',
-    color: '#fff8e7',
-    padding: '10px',
-    fontFamily: "'Press Start 2P', cursive",
-    fontSize: '10px',
-    cursor: 'pointer',
-    boxShadow: '3px 3px 0 #8b6508',
-    textShadow: '1px 1px 0 #8b6508',
-    transition: 'all 0.1s',
-  },
-  walletDisplay: {
-    marginTop: '16px',
-    background: '#5a3a1d',
-    border: '3px solid #3d2914',
-    borderRadius: '4px',
-    padding: '12px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    boxShadow: '3px 3px 0 #2d1f0d',
-  },
-  walletLabel: {
-    color: '#d4b896',
-    fontSize: '8px',
-  },
-  walletAmount: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    color: '#ffd700',
-    fontSize: '11px',
-  },
-  frameBottom: {
-    background: 'linear-gradient(180deg, #8b5a2b 0%, #6b4423 100%)',
-    padding: '8px 20px',
-    borderTop: '4px solid #a0522d',
-    textAlign: 'center',
-  },
-  framePattern: {
-    color: '#5a3a1d',
-    fontSize: '8px',
-    opacity: 0.5,
-  },
-  dialogueBox: {
-    background: '#fff8e7',
-    border: '4px solid #8b5a2b',
-    borderRadius: '4px',
+    background: '#c45d3a',
+    color: 'white',
+    border: 'none',
     padding: '16px',
-    maxWidth: '600px',
-    width: '100%',
-    display: 'flex',
-    gap: '16px',
-    boxShadow: `
-      0 0 0 2px #6b4423,
-      4px 4px 0 0 rgba(0,0,0,0.2)
-    `,
-  },
-  dialoguePortrait: {
-    width: '64px',
-    height: '64px',
-    background: '#f4e4bc',
-    border: '3px solid #d4b896',
-    borderRadius: '4px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '32px',
-    flexShrink: 0,
-  },
-  dialogueContent: {
-    flex: 1,
-  },
-  dialogueName: {
-    fontSize: '10px',
-    fontWeight: 'bold',
-    color: '#5a8f3d',
-    marginBottom: '8px',
-  },
-  dialogueText: {
-    fontSize: '9px',
-    lineHeight: 1.8,
-    color: '#3d2914',
+    borderRadius: '8px',
+    fontSize: '15px',
+    fontWeight: 600,
+    cursor: 'pointer',
+    fontFamily: "'DM Sans', sans-serif",
+    transition: 'background 0.2s',
   },
 };
